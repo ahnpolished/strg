@@ -1,0 +1,98 @@
+{
+  "server/qwen2-vl": {
+    "model": "qwen2-vl",
+    "avg_cer": 0.1082,
+    "macro_field_acc": 0.8929,
+    "parse_errors": 0,
+    "acc_date": 1.0,
+    "acc_exercise": 0.786,
+    "acc_sets": 1.0,
+    "acc_reps": 0.893,
+    "acc_weight_kg": 0.857,
+    "acc_notes": 0.821
+  },
+  "server/internvl2": {
+    "model": "internvl2",
+    "avg_cer": 0.0623,
+    "macro_field_acc": 0.8988,
+    "parse_errors": 0,
+    "acc_date": 1.0,
+    "acc_exercise": 0.893,
+    "acc_sets": 0.786,
+    "acc_reps": 0.857,
+    "acc_weight_kg": 0.929,
+    "acc_notes": 0.929
+  },
+  "server/florence2": {
+    "model": "florence2",
+    "avg_cer": 0.2095,
+    "macro_field_acc": 0.6522,
+    "parse_errors": 2,
+    "acc_date": 1.0,
+    "acc_exercise": 0.565,
+    "acc_sets": 0.478,
+    "acc_reps": 0.609,
+    "acc_weight_kg": 0.565,
+    "acc_notes": 0.696
+  },
+  "server/donut": {
+    "model": "donut",
+    "avg_cer": 0.2251,
+    "macro_field_acc": 0.6146,
+    "parse_errors": 4,
+    "acc_date": 1.0,
+    "acc_exercise": 0.562,
+    "acc_sets": 0.688,
+    "acc_reps": 0.5,
+    "acc_weight_kg": 0.375,
+    "acc_notes": 0.562
+  },
+  "local/moondream": {
+    "model": "moondream",
+    "avg_cer": 0.1601,
+    "macro_field_acc": 0.72,
+    "parse_errors": 1,
+    "acc_date": 1.0,
+    "acc_exercise": 0.8,
+    "acc_sets": 0.48,
+    "acc_reps": 0.64,
+    "acc_weight_kg": 0.68,
+    "acc_notes": 0.72
+  },
+  "local/smolvlm": {
+    "model": "smolvlm",
+    "avg_cer": 0.2795,
+    "macro_field_acc": 0.5897,
+    "parse_errors": 1,
+    "acc_date": 1.0,
+    "acc_exercise": 0.538,
+    "acc_sets": 0.538,
+    "acc_reps": 0.462,
+    "acc_weight_kg": 0.5,
+    "acc_notes": 0.5
+  },
+  "local/minicpm": {
+    "model": "minicpm",
+    "avg_cer": 0.1031,
+    "macro_field_acc": 0.8393,
+    "parse_errors": 0,
+    "acc_date": 1.0,
+    "acc_exercise": 0.643,
+    "acc_sets": 0.821,
+    "acc_reps": 0.857,
+    "acc_weight_kg": 0.893,
+    "acc_notes": 0.821
+  },
+  "local/phi35": {
+    "model": "phi35",
+    "avg_cer": 0.0652,
+    "macro_field_acc": 0.8654,
+    "parse_errors": 1,
+    "acc_date": 1.0,
+    "acc_exercise": 0.962,
+    "acc_sets": 0.808,
+    "acc_reps": 0.731,
+    "acc_weight_kg": 0.846,
+    "acc_notes": 0.846
+  }
+}
