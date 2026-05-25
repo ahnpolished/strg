@@ -8,6 +8,9 @@ dependencies = [
     "editdistance>=0.6",
 ]
 
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
