@@ -1,0 +1,132 @@
+{
+  "entries": [
+    {
+      "date": "2026-02-21",
+      "exercise": "Barbell Curl",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 20,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Barbell Curl",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 25,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Barbell Curl",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 25,
+      "notes": "drop\u219215"
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Hammer Curl",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 17.5,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Hammer Curl",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 17.5,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Hammer Curl",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 17.5,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Preacher Curl",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 15,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Preacher Curl",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 15,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Preacher Curl",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 15,
+      "notes": "slow"
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Tri Pushdown",
+      "sets": 1,
+      "reps": 15,
+      "weight_kg": 30,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Tri Pushdown",
+      "sets": 1,
+      "reps": 15,
+      "weight_kg": 30,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Tri Pushdown",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 30,
+      "notes": "drop\u219220"
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Skull Crusher",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 25,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Skull Crusher",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 25,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Skull Crusher",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 25,
+      "notes": null
+    },
+    {
+      "date": "2026-02-21",
+      "exercise": "Close Grip Bench",
+      "sets": 3,
+      "reps": 8,
+      "weight_kg": 60.0,
+      "notes": "pause"
+    }
+  ]
+}

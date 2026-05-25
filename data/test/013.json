@@ -1,0 +1,76 @@
+{
+  "entries": [
+    {
+      "date": "2026-02-05",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 60,
+      "notes": "warmup"
+    },
+    {
+      "date": "2026-02-05",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 100,
+      "notes": "warmup"
+    },
+    {
+      "date": "2026-02-05",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 1,
+      "weight_kg": 130,
+      "notes": null
+    },
+    {
+      "date": "2026-02-05",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 1,
+      "weight_kg": 140,
+      "notes": "PR!"
+    },
+    {
+      "date": "2026-02-05",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 1,
+      "weight_kg": 140,
+      "notes": null
+    },
+    {
+      "date": "2026-02-05",
+      "exercise": "Barbell Row",
+      "sets": 4,
+      "reps": 8,
+      "weight_kg": 80.0,
+      "notes": "pause @ chest"
+    },
+    {
+      "date": "2026-02-05",
+      "exercise": "Lat Pulldown",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 65.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-05",
+      "exercise": "Face Pull",
+      "sets": 3,
+      "reps": 15,
+      "weight_kg": 20.0,
+      "notes": "slow tempo"
+    },
+    {
+      "date": "2026-02-05",
+      "exercise": "Hammer Curl",
+      "sets": 3,
+      "reps": 12,
+      "weight_kg": 15.0,
+      "notes": null
+    }
+  ]
+}

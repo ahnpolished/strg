@@ -1,0 +1,76 @@
+{
+  "entries": [
+    {
+      "date": "2026-02-07",
+      "exercise": "Squat (WU)",
+      "sets": 2,
+      "reps": 5,
+      "weight_kg": 60.0,
+      "notes": "warmup"
+    },
+    {
+      "date": "2026-02-07",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 100.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-07",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 120.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-07",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 1,
+      "weight_kg": 135.0,
+      "notes": "PR!"
+    },
+    {
+      "date": "2026-02-07",
+      "exercise": "Leg Press",
+      "sets": 4,
+      "reps": 12,
+      "weight_kg": 150.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-07",
+      "exercise": "RDL",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 80.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-07",
+      "exercise": "Leg Curl",
+      "sets": 3,
+      "reps": 12,
+      "weight_kg": 40.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-07",
+      "exercise": "Leg Extension",
+      "sets": 3,
+      "reps": 15,
+      "weight_kg": 35.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-07",
+      "exercise": "Calf Raise",
+      "sets": 4,
+      "reps": 20,
+      "weight_kg": 80.0,
+      "notes": null
+    }
+  ]
+}

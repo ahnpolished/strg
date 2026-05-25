@@ -1,0 +1,84 @@
+{
+  "entries": [
+    {
+      "date": "2026-02-12",
+      "exercise": "Goblet Squat",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 24.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-12",
+      "exercise": "Push-up",
+      "sets": 1,
+      "reps": 15,
+      "weight_kg": null,
+      "notes": "BW"
+    },
+    {
+      "date": "2026-02-12",
+      "exercise": "KB Swing",
+      "sets": 1,
+      "reps": 20,
+      "weight_kg": 24.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-12",
+      "exercise": "TRX Row",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": null,
+      "notes": "BW"
+    },
+    {
+      "date": "2026-02-12",
+      "exercise": "Jump Rope",
+      "sets": 1,
+      "reps": 50,
+      "weight_kg": null,
+      "notes": "30sec"
+    },
+    {
+      "date": "2026-02-12",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 80,
+      "notes": "warmup"
+    },
+    {
+      "date": "2026-02-12",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 110,
+      "notes": null
+    },
+    {
+      "date": "2026-02-12",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 110,
+      "notes": null
+    },
+    {
+      "date": "2026-02-12",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 110,
+      "notes": "PR!"
+    },
+    {
+      "date": "2026-02-12",
+      "exercise": "Barbell Row",
+      "sets": 3,
+      "reps": 8,
+      "weight_kg": 75.0,
+      "notes": null
+    }
+  ]
+}

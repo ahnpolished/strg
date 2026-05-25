@@ -1,0 +1,68 @@
+{
+  "entries": [
+    {
+      "date": "2026-05-25",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 225,
+      "notes": null
+    },
+    {
+      "date": "2026-05-25",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 225,
+      "notes": null
+    },
+    {
+      "date": "2026-05-25",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": 225,
+      "notes": null
+    },
+    {
+      "date": "2026-05-25",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": 225,
+      "notes": null
+    },
+    {
+      "date": "2026-05-25",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 2,
+      "weight_lbs": 225,
+      "notes": null
+    },
+    {
+      "date": "2026-05-25",
+      "exercise": "Incline Bench Press",
+      "sets": 3,
+      "reps": 7,
+      "weight_lbs": 135,
+      "notes": null
+    },
+    {
+      "date": "2026-05-25",
+      "exercise": "Incline Bench Press",
+      "sets": 3,
+      "reps": 17,
+      "weight_lbs": 45,
+      "notes": null
+    },
+    {
+      "date": "2026-05-25",
+      "exercise": "Dumbbell Fly",
+      "sets": 3,
+      "reps": 10,
+      "weight_lbs": 15,
+      "notes": null
+    }
+  ]
+}

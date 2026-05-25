@@ -1,0 +1,116 @@
+{
+  "entries": [
+    {
+      "date": "2026-02-03",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 60,
+      "notes": "warmup"
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 80,
+      "notes": null
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 100,
+      "notes": null
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 100,
+      "notes": null
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 100,
+      "notes": "grind"
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 45,
+      "notes": "warmup"
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 50,
+      "notes": null
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 55,
+      "notes": null
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 55,
+      "notes": null
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "Incline DB Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 30,
+      "notes": null
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "Incline DB Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 30,
+      "notes": null
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "Incline DB Press",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 32.5,
+      "notes": null
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "Tricep Dip",
+      "sets": 3,
+      "reps": 12,
+      "weight_kg": null,
+      "notes": "BW"
+    },
+    {
+      "date": "2026-02-03",
+      "exercise": "Cable Pushdown",
+      "sets": 3,
+      "reps": 15,
+      "weight_kg": 25.0,
+      "notes": null
+    }
+  ]
+}

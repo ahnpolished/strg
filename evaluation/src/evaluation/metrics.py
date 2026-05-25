@@ -15,11 +15,12 @@ def field_match(pred: WorkoutEntry, ref: WorkoutEntry) -> dict[str, bool]:
         "sets": pred.sets == ref.sets,
         "reps": pred.reps == ref.reps,
         "weight_kg": pred.weight_kg == ref.weight_kg,
+        "weight_lbs": pred.weight_lbs == ref.weight_lbs,
         "notes": (pred.notes or "").strip().lower() == (ref.notes or "").strip().lower(),
     }
 
 
-FIELDS = ["date", "exercise", "sets", "reps", "weight_kg", "notes"]
+FIELDS = ["date", "exercise", "sets", "reps", "weight_kg", "weight_lbs", "notes"]
 
 
 def evaluate_pages(

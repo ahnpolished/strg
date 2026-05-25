@@ -40,3 +40,4 @@ data/predictions/
 .DS_Store
 .idea/
 .vscode/
+.claude/worktrees/

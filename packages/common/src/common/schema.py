@@ -10,6 +10,7 @@ class WorkoutEntry(BaseModel):
     sets: int | None = None
     reps: int | None = None
     weight_kg: float | None = None
+    weight_lbs: float | None = None
     notes: str | None = None
 
 
@@ -30,12 +31,18 @@ def load_entry(data: dict) -> WorkoutEntry:
 
 
 def entries_to_text(entry: WorkoutEntry) -> str:
+    if entry.weight_kg is not None:
+        weight_str = f"{entry.weight_kg}kg"
+    elif entry.weight_lbs is not None:
+        weight_str = f"{entry.weight_lbs}lbs"
+    else:
+        weight_str = ""
     parts = [
         str(entry.date),
         entry.exercise,
         str(entry.sets) if entry.sets is not None else "",
         str(entry.reps) if entry.reps is not None else "",
-        str(entry.weight_kg) if entry.weight_kg is not None else "",
+        weight_str,
         entry.notes or "",
     ]
     return " ".join(p for p in parts if p)

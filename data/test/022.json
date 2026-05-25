@@ -1,0 +1,92 @@
+{
+  "entries": [
+    {
+      "date": "2026-05-22",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_lbs": 95,
+      "notes": null
+    },
+    {
+      "date": "2026-05-22",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 115,
+      "notes": null
+    },
+    {
+      "date": "2026-05-22",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_lbs": 95,
+      "notes": null
+    },
+    {
+      "date": "2026-05-22",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 6,
+      "weight_lbs": 95,
+      "notes": null
+    },
+    {
+      "date": "2026-05-22",
+      "exercise": "Dumbbell Shoulder Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_lbs": 25,
+      "notes": null
+    },
+    {
+      "date": "2026-05-22",
+      "exercise": "Dumbbell Shoulder Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_lbs": 35,
+      "notes": null
+    },
+    {
+      "date": "2026-05-22",
+      "exercise": "Dumbbell Shoulder Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_lbs": 35,
+      "notes": null
+    },
+    {
+      "date": "2026-05-22",
+      "exercise": "Dumbbell Shoulder Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_lbs": 35,
+      "notes": null
+    },
+    {
+      "date": "2026-05-22",
+      "exercise": "Arnold Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_lbs": 25,
+      "notes": null
+    },
+    {
+      "date": "2026-05-22",
+      "exercise": "Arnold Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_lbs": 25,
+      "notes": null
+    },
+    {
+      "date": "2026-05-22",
+      "exercise": "Arnold Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_lbs": 25,
+      "notes": null
+    }
+  ]
+}

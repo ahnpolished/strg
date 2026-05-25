@@ -5,7 +5,7 @@ requires-python = ">=3.12"
 dependencies = [
     "common",
     "torch>=2.0",
-    "transformers>=4.40",
+    "transformers>=4.40,<5.0",
     "pillow>=10.0",
     "wandb>=0.16",
 ]

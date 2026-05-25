@@ -1,0 +1,116 @@
+{
+  "entries": [
+    {
+      "date": "2026-02-14",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 60,
+      "notes": "bar+plates WU"
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 100,
+      "notes": "WU"
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": 120,
+      "notes": "WU"
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 1,
+      "weight_kg": 140,
+      "notes": null
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 1,
+      "weight_kg": 150,
+      "notes": "PR!"
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 1,
+      "weight_kg": 150,
+      "notes": null
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 140,
+      "notes": "back-off"
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 140,
+      "notes": "back-off"
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Romanian DL",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 90,
+      "notes": null
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Romanian DL",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 90,
+      "notes": null
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Romanian DL",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 90,
+      "notes": null
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Pull-up",
+      "sets": 4,
+      "reps": 6,
+      "weight_kg": null,
+      "notes": "+10kg"
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Cable Row",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 70.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-14",
+      "exercise": "Face Pull",
+      "sets": 3,
+      "reps": 15,
+      "weight_kg": 20.0,
+      "notes": "slow"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "entries": [
+    {
+      "date": "2026-02-24",
+      "exercise": "Squat",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 70.0,
+      "notes": "easy"
+    },
+    {
+      "date": "2026-02-24",
+      "exercise": "Bench Press",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 65.0,
+      "notes": "easy"
+    },
+    {
+      "date": "2026-02-24",
+      "exercise": "Deadlift",
+      "sets": 3,
+      "reps": 3,
+      "weight_kg": 90.0,
+      "notes": "easy"
+    },
+    {
+      "date": "2026-02-24",
+      "exercise": "OHP",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 40.0,
+      "notes": "easy"
+    },
+    {
+      "date": "2026-02-24",
+      "exercise": "Pull-up",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": null,
+      "notes": "BW easy"
+    },
+    {
+      "date": "2026-02-24",
+      "exercise": "Row",
+      "sets": 3,
+      "reps": 8,
+      "weight_kg": 60.0,
+      "notes": "pause at top"
+    }
+  ]
+}

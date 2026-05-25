@@ -1,0 +1,52 @@
+{
+  "entries": [
+    {
+      "date": "2026-02-10",
+      "exercise": "Bench Press",
+      "sets": 4,
+      "reps": 8,
+      "weight_kg": 90.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-10",
+      "exercise": "Pull-up",
+      "sets": 4,
+      "reps": 8,
+      "weight_kg": null,
+      "notes": "BW"
+    },
+    {
+      "date": "2026-02-10",
+      "exercise": "OHP",
+      "sets": 3,
+      "reps": 8,
+      "weight_kg": 55.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-10",
+      "exercise": "DB Row",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 35.0,
+      "notes": "each arm"
+    },
+    {
+      "date": "2026-02-10",
+      "exercise": "Lateral Raise",
+      "sets": 3,
+      "reps": 15,
+      "weight_kg": 12.0,
+      "notes": null
+    },
+    {
+      "date": "2026-02-10",
+      "exercise": "Tri Pushdown",
+      "sets": 3,
+      "reps": 15,
+      "weight_kg": 25.0,
+      "notes": null
+    }
+  ]
+}
