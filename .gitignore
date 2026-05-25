@@ -32,7 +32,9 @@ data/predictions/
 
 # Env
 .env
-.env.*
+.env.local
+.env.*.local
+!.env.example
 
 # IDE
 .DS_Store
