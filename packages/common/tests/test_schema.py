@@ -1,23 +1,26 @@
 import datetime
-import json
 import tempfile
 from pathlib import Path
-
-import pytest
 
 from common.schema import WorkoutEntry, WorkoutPage, dump_page, entries_to_text, load_page
 
 
-def make_entry(**kwargs) -> WorkoutEntry:
-    defaults = {
-        "date": datetime.date(2026, 1, 15),
-        "exercise": "bench press",
-        "sets": 3,
-        "reps": 10,
-        "weight_kg": 80.0,
-        "notes": None,
-    }
-    return WorkoutEntry(**{**defaults, **kwargs})
+def make_entry(
+    date: datetime.date = datetime.date(2026, 1, 15),
+    exercise: str = "bench press",
+    sets: int | None = 3,
+    reps: int | None = 10,
+    weight_kg: float | None = 80.0,
+    notes: str | None = None,
+) -> WorkoutEntry:
+    return WorkoutEntry(
+        date=date,
+        exercise=exercise,
+        sets=sets,
+        reps=reps,
+        weight_kg=weight_kg,
+        notes=notes,
+    )
 
 
 def test_workout_entry_required_fields():

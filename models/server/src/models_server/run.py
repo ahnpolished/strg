@@ -5,17 +5,19 @@ from pathlib import Path
 
 import torch
 import wandb
-
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
+
 from models_server.base import ServerModelRunner
 
 RUNNERS: dict[str, type[ServerModelRunner]] = {}
+
 
 def _registry():
     from models_server.donut import DonutRunner
     from models_server.florence2 import Florence2Runner
     from models_server.internvl2 import InternVL2Runner
     from models_server.qwen2_vl import Qwen2VLRunner
+
     return {
         "qwen2-vl": Qwen2VLRunner,
         "internvl2": InternVL2Runner,
@@ -26,7 +28,9 @@ def _registry():
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", required=True, choices=["qwen2-vl", "internvl2", "florence2", "donut"])
+    parser.add_argument(
+        "--model", required=True, choices=["qwen2-vl", "internvl2", "florence2", "donut"]
+    )
     parser.add_argument("--images", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--ground-truth", type=Path, default=None)
@@ -49,9 +53,7 @@ def main() -> None:
     p50 = statistics.median(latencies) if latencies else 0.0
     p95 = sorted(latencies)[int(len(latencies) * 0.95)] if latencies else 0.0
     parse_errors = sum(r["parse_error"] for r in results)
-    vram_gb = (
-        torch.cuda.max_memory_allocated() / 1e9 if torch.cuda.is_available() else 0.0
-    )
+    vram_gb = torch.cuda.max_memory_allocated() / 1e9 if torch.cuda.is_available() else 0.0
 
     summary = {
         "model": args.model,
@@ -66,13 +68,22 @@ def main() -> None:
 
     if args.ground_truth:
         import subprocess
-        subprocess.run([
-            "python", "-m", "evaluation.run",
-            "--model", args.model,
-            "--predictions", str(output_dir),
-            "--ground-truth", str(args.ground_truth),
-            "--phase", args.phase,
-        ])
+
+        subprocess.run(
+            [
+                "python",
+                "-m",
+                "evaluation.run",
+                "--model",
+                args.model,
+                "--predictions",
+                str(output_dir),
+                "--ground-truth",
+                str(args.ground_truth),
+                "--phase",
+                args.phase,
+            ]
+        )
     else:
         _load_dotenv()
         run = wandb.init(

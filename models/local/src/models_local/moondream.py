@@ -2,10 +2,10 @@ import json
 from pathlib import Path
 
 import torch
+from common.schema import WorkoutPage
 from PIL import Image
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from common.schema import WorkoutPage
 from models_local.base import LocalModelRunner
 from models_local.prompt import EXTRACTION_PROMPT
 

@@ -2,10 +2,10 @@ import json
 from pathlib import Path
 
 import torch
+from common.schema import WorkoutPage
 from PIL import Image
 from transformers import AutoModelForCausalLM, AutoProcessor
 
-from common.schema import WorkoutPage
 from models_local.base import LocalModelRunner
 from models_local.prompt import EXTRACTION_PROMPT
 
@@ -27,9 +27,7 @@ class Phi35VisionRunner(LocalModelRunner):
 
     def predict(self, image_path: Path) -> WorkoutPage:
         image = Image.open(image_path).convert("RGB")
-        messages = [
-            {"role": "user", "content": "<|image_1|>\n" + EXTRACTION_PROMPT}
-        ]
+        messages = [{"role": "user", "content": "<|image_1|>\n" + EXTRACTION_PROMPT}]
         prompt = self._processor.tokenizer.apply_chat_template(
             messages, tokenize=False, add_generation_prompt=True
         )
@@ -41,7 +39,7 @@ class Phi35VisionRunner(LocalModelRunner):
                 eos_token_id=self._processor.tokenizer.eos_token_id,
             )
         generated = self._processor.batch_decode(
-            output_ids[:, inputs["input_ids"].shape[1]:],
+            output_ids[:, inputs["input_ids"].shape[1] :],
             skip_special_tokens=True,
         )[0]
         return WorkoutPage.model_validate(json.loads(generated.strip()))

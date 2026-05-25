@@ -41,5 +41,8 @@ class LocalModelRunner(ABC):
                     "entry_count": len(page.entries),
                 }
             )
-            print(f"  {img_path.stem}: {latency:.2f}s, {len(page.entries)} entries, error={parse_error}")
+            print(
+                f"  {img_path.stem}: {latency:.2f}s, "
+                f"{len(page.entries)} entries, error={parse_error}"
+            )
         return results

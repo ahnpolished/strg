@@ -1,8 +1,7 @@
 import datetime
 
-import pytest
-
 from common.schema import WorkoutEntry, WorkoutPage
+
 from evaluation.metrics import FIELDS, cer, evaluate_pages, field_match
 
 
@@ -18,6 +17,7 @@ def entry(exercise="bench press", sets=3, reps=10, weight_kg=80.0, notes=None):
 
 
 # --- CER ---
+
 
 def test_cer_identical():
     assert cer("hello", "hello") == 0.0
@@ -39,6 +39,7 @@ def test_cer_completely_wrong():
 
 
 # --- Field match ---
+
 
 def test_field_match_all_correct():
     e = entry()
@@ -65,6 +66,7 @@ def test_field_match_none_notes():
 
 
 # --- evaluate_pages ---
+
 
 def test_evaluate_pages_perfect():
     page = WorkoutPage(entries=[entry()])

@@ -3,8 +3,9 @@ import json
 import time
 from pathlib import Path
 
-from common.schema import WorkoutPage, load_page
+from common.schema import load_page
 from common.wandb_utils import init_run, log_prediction_table
+
 from evaluation.metrics import FIELDS, evaluate_pages
 
 
@@ -44,14 +45,10 @@ def main() -> None:
         all_rows.extend(result["rows"])
         all_cer.append(result["avg_cer"])
         for f in FIELDS:
-            per_field_matches[f].extend(
-                [r["match"] for r in result["rows"] if r["field"] == f]
-            )
+            per_field_matches[f].extend([r["match"] for r in result["rows"] if r["field"] == f])
 
     avg_cer = sum(all_cer) / len(all_cer) if all_cer else 0.0
-    field_accuracy = {
-        f: sum(v) / len(v) if v else 0.0 for f, v in per_field_matches.items()
-    }
+    field_accuracy = {f: sum(v) / len(v) if v else 0.0 for f, v in per_field_matches.items()}
     macro_accuracy = sum(field_accuracy.values()) / len(FIELDS)
     p50_lat = sorted(latencies)[len(latencies) // 2] if latencies else 0.0
     p95_lat = sorted(latencies)[int(len(latencies) * 0.95)] if latencies else 0.0

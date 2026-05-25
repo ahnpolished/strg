@@ -15,18 +15,19 @@ Usage:
 
 Requirements: GPU for fine-tuning; CoreML export works on macOS.
 """
+
 import argparse
 from pathlib import Path
 
 import torch
 import wandb
-from peft import LoraConfig, TaskType, get_peft_model, PeftModel
+from common.schema import WorkoutPage, load_page
+from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
+from peft import LoraConfig, PeftModel, TaskType, get_peft_model
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoModelForCausalLM, AutoProcessor, BitsAndBytesConfig
 
-from common.schema import WorkoutPage, load_page
-from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 from models_local.prompt import EXTRACTION_PROMPT
 
 MODEL_ID = "microsoft/Phi-3.5-vision-instruct"
@@ -82,12 +83,22 @@ def train(args: argparse.Namespace) -> None:
         tags=["phase:finetune", "model:phi35"],
     )
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-    bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16,
-    ) if torch.cuda.is_available() else None
+    device = torch.device(
+        "cuda"
+        if torch.cuda.is_available()
+        else "mps"
+        if torch.backends.mps.is_available()
+        else "cpu"
+    )
+    bnb_config = (
+        BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16,
+        )
+        if torch.cuda.is_available()
+        else None
+    )
 
     processor = AutoProcessor.from_pretrained(MODEL_ID, trust_remote_code=True, num_crops=4)
     model = AutoModelForCausalLM.from_pretrained(
@@ -151,7 +162,10 @@ def train(args: argparse.Namespace) -> None:
         # Eval at end of epoch
         metrics = _quick_eval(model, processor, val_loader, device)
         run.log({f"val/{k}": v for k, v in metrics.items()}, step=global_step)
-        print(f"Epoch {epoch+1}: val CER={metrics['avg_cer']:.4f} FieldAcc={metrics['macro_field_acc']:.4f}")
+        print(
+            f"Epoch {epoch + 1}: val CER={metrics['avg_cer']:.4f}"
+            f" FieldAcc={metrics['macro_field_acc']:.4f}"
+        )
 
         if metrics["macro_field_acc"] > best_field_acc:
             best_field_acc = metrics["macro_field_acc"]
@@ -174,6 +188,7 @@ def train(args: argparse.Namespace) -> None:
 
 def _quick_eval(model, processor, val_loader, device) -> dict:
     from evaluation.metrics import FIELDS, evaluate_pages
+
     model.eval()
     all_cer, per_field = [], {f: [] for f in FIELDS}
     with torch.no_grad():
@@ -181,8 +196,12 @@ def _quick_eval(model, processor, val_loader, device) -> dict:
             try:
                 input_ids = batch["input_ids"].to(device)
                 pixel_values = batch["pixel_values"].to(device)
-                out = model.generate(input_ids=input_ids, pixel_values=pixel_values, max_new_tokens=512)
-                text = processor.batch_decode(out[:, input_ids.shape[1]:], skip_special_tokens=True)[0]
+                out = model.generate(
+                    input_ids=input_ids, pixel_values=pixel_values, max_new_tokens=512
+                )
+                text = processor.batch_decode(
+                    out[:, input_ids.shape[1] :], skip_special_tokens=True
+                )[0]
                 predicted = WorkoutPage.model_validate_json(text.strip())
                 ref_text = processor.tokenizer.decode(batch["labels"][0], skip_special_tokens=True)
                 reference = WorkoutPage.model_validate_json(ref_text.split("Answer: ")[-1])
@@ -218,13 +237,19 @@ def export_coreml(args: argparse.Namespace) -> None:
     # Trace the vision encoder for CoreML export
     sample_img = Image.new("RGB", (448, 448), color=(240, 240, 240))
     msgs = [{"role": "user", "content": "<|image_1|>\nTest"}]
-    prompt = processor.tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
+    prompt = processor.tokenizer.apply_chat_template(
+        msgs, tokenize=False, add_generation_prompt=True
+    )
     inputs = processor(prompt, [sample_img], return_tensors="pt")
     pixel_values = inputs["pixel_values"]
 
     class VisionWrapper(torch.nn.Module):
-        def __init__(self, m): super().__init__(); self.m = m
-        def forward(self, x): return self.m.model.vision_embed_tokens(x)
+        def __init__(self, m):
+            super().__init__()
+            self.m = m
+
+        def forward(self, x):
+            return self.m.model.vision_embed_tokens(x)
 
     wrapper = VisionWrapper(model)
     with torch.no_grad():
@@ -240,7 +265,10 @@ def export_coreml(args: argparse.Namespace) -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     coreml_model.save(str(out_path))
     print(f"CoreML model saved to {out_path}")
-    print("Note: full autoregressive text decoding must run via the HuggingFace model on-device or via CoreML LLM pipeline.")
+    print(
+        "Note: full autoregressive text decoding must run via the HuggingFace model"
+        " on-device or via CoreML LLM pipeline."
+    )
 
 
 def main() -> None:

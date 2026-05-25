@@ -5,23 +5,27 @@ import tracemalloc
 from pathlib import Path
 
 import wandb
-
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
+
 from models_local.base import LocalModelRunner
 
 
 def _get_runner_class(model_name: str):
     if model_name == "moondream":
         from models_local.moondream import MoondreamRunner
+
         return MoondreamRunner
     elif model_name == "smolvlm":
         from models_local.smolvlm import SmolVLMRunner
+
         return SmolVLMRunner
     elif model_name == "minicpm":
         from models_local.minicpm import MiniCPMRunner
+
         return MiniCPMRunner
     elif model_name == "phi35":
         from models_local.phi35 import Phi35VisionRunner
+
         return Phi35VisionRunner
     else:
         raise ValueError(f"Unknown model: {model_name}")
@@ -29,7 +33,9 @@ def _get_runner_class(model_name: str):
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", required=True, choices=["moondream", "smolvlm", "minicpm", "phi35"])
+    parser.add_argument(
+        "--model", required=True, choices=["moondream", "smolvlm", "minicpm", "phi35"]
+    )
     parser.add_argument("--images", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--ground-truth", type=Path, default=None)
@@ -66,13 +72,22 @@ def main() -> None:
 
     if args.ground_truth:
         import subprocess
-        subprocess.run([
-            "python", "-m", "evaluation.run",
-            "--model", args.model,
-            "--predictions", str(output_dir),
-            "--ground-truth", str(args.ground_truth),
-            "--phase", args.phase,
-        ])
+
+        subprocess.run(
+            [
+                "python",
+                "-m",
+                "evaluation.run",
+                "--model",
+                args.model,
+                "--predictions",
+                str(output_dir),
+                "--ground-truth",
+                str(args.ground_truth),
+                "--phase",
+                args.phase,
+            ]
+        )
     else:
         _load_dotenv()
         run = wandb.init(

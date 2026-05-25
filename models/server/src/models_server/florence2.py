@@ -1,11 +1,10 @@
-import json
 from pathlib import Path
 
 import torch
+from common.schema import WorkoutPage
 from PIL import Image
 from transformers import AutoModelForCausalLM, AutoProcessor
 
-from common.schema import WorkoutPage
 from models_server.base import ServerModelRunner
 
 # Florence-2 uses a fixed task token format — OCR then parse
@@ -16,9 +15,7 @@ class Florence2Runner(ServerModelRunner):
     model_id = "microsoft/florence-2-large"
 
     def load(self) -> None:
-        self._processor = AutoProcessor.from_pretrained(
-            self.model_id, trust_remote_code=True
-        )
+        self._processor = AutoProcessor.from_pretrained(self.model_id, trust_remote_code=True)
         self._model = AutoModelForCausalLM.from_pretrained(
             self.model_id,
             torch_dtype=torch.float16,
@@ -28,9 +25,9 @@ class Florence2Runner(ServerModelRunner):
 
     def predict(self, image_path: Path) -> WorkoutPage:
         image = Image.open(image_path).convert("RGB")
-        inputs = self._processor(
-            text=_OCR_TASK, images=image, return_tensors="pt"
-        ).to(self._model.device, torch.float16)
+        inputs = self._processor(text=_OCR_TASK, images=image, return_tensors="pt").to(
+            self._model.device, torch.float16
+        )
 
         with torch.no_grad():
             output_ids = self._model.generate(

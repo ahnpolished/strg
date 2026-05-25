@@ -14,7 +14,7 @@ Usage:
   # Version current dataset as W&B artifact
   uv run python data/collect_training.py push --version v1
 """
-import json
+
 import shutil
 import sys
 from pathlib import Path
@@ -26,6 +26,7 @@ TEST_DIR = Path("data/test")
 # ---------------------------------------------------------------------------
 # add
 # ---------------------------------------------------------------------------
+
 
 def cmd_add(image_path: Path) -> None:
     TRAIN_DIR.mkdir(parents=True, exist_ok=True)
@@ -39,6 +40,7 @@ def cmd_add(image_path: Path) -> None:
     print("Enter workout entries (empty exercise to finish):")
 
     import datetime
+
     from common.schema import WorkoutEntry, WorkoutPage, dump_page
 
     date_str = input("  Date (YYYY-MM-DD): ").strip()
@@ -57,14 +59,16 @@ def cmd_add(image_path: Path) -> None:
         reps_s = input("    Reps (enter to skip): ").strip()
         kg_s = input("    Weight kg (enter to skip): ").strip()
         notes = input("    Notes (enter to skip): ").strip() or None
-        entries.append(WorkoutEntry(
-            date=date,
-            exercise=exercise,
-            sets=int(sets_s) if sets_s else None,
-            reps=int(reps_s) if reps_s else None,
-            weight_kg=float(kg_s) if kg_s else None,
-            notes=notes,
-        ))
+        entries.append(
+            WorkoutEntry(
+                date=date,
+                exercise=exercise,
+                sets=int(sets_s) if sets_s else None,
+                reps=int(reps_s) if reps_s else None,
+                weight_kg=float(kg_s) if kg_s else None,
+                notes=notes,
+            )
+        )
 
     page = WorkoutPage(entries=entries)
     dump_page(page, dest_json)
@@ -74,6 +78,7 @@ def cmd_add(image_path: Path) -> None:
 # ---------------------------------------------------------------------------
 # augment
 # ---------------------------------------------------------------------------
+
 
 def cmd_augment(target: int) -> None:
     try:
@@ -94,19 +99,22 @@ def cmd_augment(target: int) -> None:
         print(f"Already have {current_count} training images (target={target}), nothing to do")
         return
 
-    transform = A.Compose([
-        A.Rotate(limit=5, p=0.5),
-        A.RandomBrightnessContrast(brightness_limit=0.15, contrast_limit=0.15, p=0.7),
-        A.GaussNoise(var_limit=(5, 25), p=0.5),
-        A.Perspective(scale=(0.02, 0.05), p=0.4),
-        A.Sharpen(alpha=(0.1, 0.3), p=0.3),
-    ])
+    transform = A.Compose(
+        [
+            A.Rotate(limit=5, p=0.5),
+            A.RandomBrightnessContrast(brightness_limit=0.15, contrast_limit=0.15, p=0.7),
+            A.GaussNoise(var_limit=(5, 25), p=0.5),
+            A.Perspective(scale=(0.02, 0.05), p=0.4),
+            A.Sharpen(alpha=(0.1, 0.3), p=0.3),
+        ]
+    )
 
     needed = target - current_count
     aug_dir = TRAIN_DIR / "aug"
     aug_dir.mkdir(exist_ok=True)
 
     import random
+
     aug_idx = 0
     while aug_idx < needed:
         src = random.choice(sources)
@@ -127,6 +135,7 @@ def cmd_augment(target: int) -> None:
 # ---------------------------------------------------------------------------
 # stats
 # ---------------------------------------------------------------------------
+
 
 def cmd_stats() -> None:
     from common.schema import load_page
@@ -153,16 +162,18 @@ def cmd_stats() -> None:
     if total_entries:
         print("Null rates by field:")
         for field, count in field_null_counts.items():
-            print(f"  {field:<12}: {count/total_entries:.1%}")
+            print(f"  {field:<12}: {count / total_entries:.1%}")
 
 
 # ---------------------------------------------------------------------------
 # push (W&B artifact)
 # ---------------------------------------------------------------------------
 
+
 def cmd_push(version: str) -> None:
     import wandb
     from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
+
     _load_dotenv()
 
     run = wandb.init(entity=WANDB_ENTITY, project=WANDB_PROJECT, job_type="dataset")
@@ -179,6 +190,7 @@ def cmd_push(version: str) -> None:
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="cmd")
 

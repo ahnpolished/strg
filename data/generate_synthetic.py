@@ -1,16 +1,27 @@
 """Generate synthetic handwritten workout journal test images."""
+
 import datetime
 import json
-import random
-import textwrap
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
 EXERCISES = [
-    "Bench Press", "Squat", "Deadlift", "OHP", "Pull-ups",
-    "Row", "Incline Bench", "Leg Press", "Dips", "Curl",
-    "Tricep Ext", "Lat Pulldown", "Cable Row", "RDL", "Hip Thrust",
+    "Bench Press",
+    "Squat",
+    "Deadlift",
+    "OHP",
+    "Pull-ups",
+    "Row",
+    "Incline Bench",
+    "Leg Press",
+    "Dips",
+    "Curl",
+    "Tricep Ext",
+    "Lat Pulldown",
+    "Cable Row",
+    "RDL",
+    "Hip Thrust",
 ]
 NOTES_OPTIONS = [None, None, None, "PR!", "felt heavy", "easy day", "slow tempo", "pause reps"]
 
@@ -52,7 +63,13 @@ SESSIONS = [
         "entries": [
             {"exercise": "Bench Press", "sets": 4, "reps": 6, "weight_kg": 85.0, "notes": None},
             {"exercise": "Curl", "sets": 3, "reps": 12, "weight_kg": 15.0, "notes": None},
-            {"exercise": "Cable Row", "sets": 3, "reps": 10, "weight_kg": 60.0, "notes": "easy day"},
+            {
+                "exercise": "Cable Row",
+                "sets": 3,
+                "reps": 10,
+                "weight_kg": 60.0,
+                "notes": "easy day",
+            },
         ],
     },
     {
@@ -80,7 +97,13 @@ SESSIONS = [
     {
         "date": datetime.date(2026, 1, 24),
         "entries": [
-            {"exercise": "Bench Press", "sets": 3, "reps": 10, "weight_kg": 75.0, "notes": "easy day"},
+            {
+                "exercise": "Bench Press",
+                "sets": 3,
+                "reps": 10,
+                "weight_kg": 75.0,
+                "notes": "easy day",
+            },
             {"exercise": "Incline DB", "sets": 3, "reps": 12, "weight_kg": 28.0, "notes": None},
             {"exercise": "Dips", "sets": 3, "reps": 15, "weight_kg": None, "notes": None},
         ],
@@ -104,11 +127,9 @@ def render_session(session: dict, path: Path) -> None:
     try:
         font_title = ImageFont.truetype("/System/Library/Fonts/Supplemental/Courier New.ttf", 22)
         font_body = ImageFont.truetype("/System/Library/Fonts/Supplemental/Courier New.ttf", 18)
-        font_small = ImageFont.truetype("/System/Library/Fonts/Supplemental/Courier New.ttf", 15)
     except OSError:
         font_title = ImageFont.load_default()
         font_body = font_title
-        font_small = font_title
 
     # Ruled lines
     for y in range(60, h - 20, 30):
@@ -138,6 +159,7 @@ def render_session(session: dict, path: Path) -> None:
 
     # Slight noise / aging effect
     import random as _r
+
     pixels = img.load()
     for _ in range(3000):
         x = _r.randint(0, w - 1)

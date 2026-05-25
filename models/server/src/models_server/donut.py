@@ -2,21 +2,23 @@
 Donut zero-shot runner using DocVQA task to extract structured workout data.
 Fine-tuned performance will be significantly better than zero-shot.
 """
+
 import json
 import re
 from pathlib import Path
 
 import torch
+from common.schema import WorkoutPage
 from PIL import Image
 from transformers import DonutProcessor, VisionEncoderDecoderModel
 
-from common.schema import WorkoutPage
 from models_server.base import ServerModelRunner
 
 _MODEL_ID = "naver-clova-ix/donut-base-finetuned-docvqa"
 _TASK_PROMPT = "<s_docvqa><s_question>{}</s_question><s_answer>"
 _QUESTION = (
-    "Extract all workout entries as JSON with fields: date, exercise, sets, reps, weight_kg, notes. "
+    "Extract all workout entries as JSON with fields: "
+    "date, exercise, sets, reps, weight_kg, notes. "
     "Return only valid JSON with an 'entries' array."
 )
 

@@ -11,19 +11,19 @@ Usage:
 
 Requirements: GPU with >=20GB VRAM (A100/H100 recommended), bitsandbytes, peft.
 """
+
 import argparse
-import json
 from pathlib import Path
 
 import torch
 import wandb
+from common.schema import WorkoutPage, load_page
+from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 from peft import LoraConfig, TaskType, get_peft_model
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoModel, AutoTokenizer, BitsAndBytesConfig
 
-from common.schema import WorkoutPage, entries_to_text, load_page
-from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 from models_server.prompt import EXTRACTION_PROMPT
 
 MODEL_ID = "OpenGVLab/InternVL2-8B"
@@ -58,17 +58,18 @@ class WorkoutDataset(Dataset):
 
         import torchvision.transforms as T
         from torchvision.transforms.functional import InterpolationMode
-        transform = T.Compose([
-            T.Resize((448, 448), interpolation=InterpolationMode.BICUBIC),
-            T.ToTensor(),
-            T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-        ])
+
+        transform = T.Compose(
+            [
+                T.Resize((448, 448), interpolation=InterpolationMode.BICUBIC),
+                T.ToTensor(),
+                T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+            ]
+        )
         pixel_values = transform(image).to(torch.bfloat16)
 
         prompt = f"{EXTRACTION_PROMPT}\n\nAnswer: {target_json}"
-        encoding = self._tokenizer(
-            prompt, truncation=True, max_length=512, return_tensors="pt"
-        )
+        encoding = self._tokenizer(prompt, truncation=True, max_length=512, return_tensors="pt")
         return {
             "pixel_values": pixel_values,
             "input_ids": encoding["input_ids"].squeeze(0),
@@ -79,6 +80,7 @@ class WorkoutDataset(Dataset):
 
 def evaluate(model, tokenizer, val_loader, device) -> dict:
     from evaluation.metrics import FIELDS, evaluate_pages
+
     model.eval()
     all_cer, per_field = [], {f: [] for f in FIELDS}
     with torch.no_grad():
@@ -86,12 +88,12 @@ def evaluate(model, tokenizer, val_loader, device) -> dict:
             pixel_values = batch["pixel_values"].to(device, torch.bfloat16)
             generation_config = {"max_new_tokens": 512, "do_sample": False}
             try:
-                response = model.chat(
-                    tokenizer, pixel_values, EXTRACTION_PROMPT, generation_config
-                )
+                response = model.chat(tokenizer, pixel_values, EXTRACTION_PROMPT, generation_config)
                 predicted = WorkoutPage.model_validate_json(response)
                 reference = WorkoutPage.model_validate_json(
-                    tokenizer.decode(batch["labels"][0], skip_special_tokens=True).split("Answer: ")[-1]
+                    tokenizer.decode(batch["labels"][0], skip_special_tokens=True).split(
+                        "Answer: "
+                    )[-1]
                 )
                 result = evaluate_pages("val", predicted, reference)
                 all_cer.append(result["avg_cer"])
@@ -102,7 +104,11 @@ def evaluate(model, tokenizer, val_loader, device) -> dict:
     model.train()
     avg_cer = sum(all_cer) / len(all_cer) if all_cer else 1.0
     field_acc = {f: sum(v) / len(v) if v else 0.0 for f, v in per_field.items()}
-    return {"avg_cer": avg_cer, "macro_field_acc": sum(field_acc.values()) / len(FIELDS), **field_acc}
+    return {
+        "avg_cer": avg_cer,
+        "macro_field_acc": sum(field_acc.values()) / len(FIELDS),
+        **field_acc,
+    }
 
 
 def main() -> None:
@@ -191,7 +197,10 @@ def main() -> None:
             if global_step > 0 and global_step % args.eval_steps == 0:
                 metrics = evaluate(model, tokenizer, val_loader, device)
                 run.log({f"val/{k}": v for k, v in metrics.items()}, step=global_step)
-                print(f"Step {global_step}: val CER={metrics['avg_cer']:.4f} FieldAcc={metrics['macro_field_acc']:.4f}")
+                print(
+                    f"Step {global_step}: val CER={metrics['avg_cer']:.4f}"
+                    f" FieldAcc={metrics['macro_field_acc']:.4f}"
+                )
 
                 if metrics["macro_field_acc"] > best_field_acc:
                     best_field_acc = metrics["macro_field_acc"]
@@ -210,7 +219,7 @@ def main() -> None:
                         run.finish()
                         return
 
-        print(f"Epoch {epoch+1}/{args.epochs} loss={epoch_loss/len(train_loader):.4f}")
+        print(f"Epoch {epoch + 1}/{args.epochs} loss={epoch_loss / len(train_loader):.4f}")
 
     run.finish()
     print(f"Training complete. Best field accuracy: {best_field_acc:.4f}")

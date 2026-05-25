@@ -1,5 +1,4 @@
 import editdistance
-
 from common.schema import WorkoutEntry, WorkoutPage, entries_to_text
 
 
@@ -52,9 +51,7 @@ def evaluate_pages(
 
     entry_count = len(cer_scores)
     avg_cer = sum(cer_scores) / entry_count if entry_count else 0.0
-    field_accuracy = {
-        f: sum(v) / len(v) if v else 0.0 for f, v in per_field_matches.items()
-    }
+    field_accuracy = {f: sum(v) / len(v) if v else 0.0 for f, v in per_field_matches.items()}
     macro_field_accuracy = sum(field_accuracy.values()) / len(FIELDS)
 
     return {

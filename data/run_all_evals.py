@@ -1,16 +1,18 @@
 """Run evaluation harness for all models and print comparison table."""
+
 import json
 from pathlib import Path
 
-from evaluation.metrics import FIELDS, evaluate_pages
 from common.schema import load_page
+
+from evaluation.metrics import FIELDS, evaluate_pages
 
 GT_DIR = Path("data/test")
 PRED_BASE = Path("data/predictions")
 
 MODELS = {
     "server": ["qwen2-vl", "internvl2", "florence2", "donut"],
-    "local":  ["moondream", "smolvlm", "minicpm", "phi35"],
+    "local": ["moondream", "smolvlm", "minicpm", "phi35"],
 }
 
 

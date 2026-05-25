@@ -17,14 +17,15 @@ Usage:
     --local-preds data/predictions/finetuned/phi35 \
     --baseline-results data/eval_results.json
 """
+
 import argparse
 import json
 from pathlib import Path
 
 import wandb
-
 from common.schema import WorkoutPage, load_page
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
+
 from evaluation.metrics import FIELDS, evaluate_pages
 
 TARGET_FIELD_ACC = 0.90
@@ -72,9 +73,9 @@ def run_model_inference(checkpoint: Path, model_name: str, out_dir: Path) -> Pat
     pred_dir.mkdir(parents=True, exist_ok=True)
 
     if model_name == "internvl2":
-        from transformers import AutoModel, AutoTokenizer
-        from peft import PeftModel
         from models_server.prompt import EXTRACTION_PROMPT
+        from peft import PeftModel
+        from transformers import AutoModel, AutoTokenizer
 
         tokenizer = AutoTokenizer.from_pretrained(checkpoint, trust_remote_code=True)
         base = AutoModel.from_pretrained(
@@ -86,9 +87,9 @@ def run_model_inference(checkpoint: Path, model_name: str, out_dir: Path) -> Pat
         model = PeftModel.from_pretrained(base, checkpoint).merge_and_unload()
 
     elif model_name == "phi35":
-        from transformers import AutoModelForCausalLM, AutoProcessor
-        from peft import PeftModel
         from models_local.prompt import EXTRACTION_PROMPT
+        from peft import PeftModel
+        from transformers import AutoModelForCausalLM, AutoProcessor
 
         processor = AutoProcessor.from_pretrained(checkpoint, trust_remote_code=True, num_crops=4)
         base = AutoModelForCausalLM.from_pretrained(
@@ -105,19 +106,28 @@ def run_model_inference(checkpoint: Path, model_name: str, out_dir: Path) -> Pat
             if model_name == "internvl2":
                 import torchvision.transforms as T
                 from torchvision.transforms.functional import InterpolationMode
-                transform = T.Compose([
-                    T.Resize((448, 448), interpolation=InterpolationMode.BICUBIC),
-                    T.ToTensor(),
-                    T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-                ])
+
+                transform = T.Compose(
+                    [
+                        T.Resize((448, 448), interpolation=InterpolationMode.BICUBIC),
+                        T.ToTensor(),
+                        T.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                    ]
+                )
                 pixel_values = transform(image).unsqueeze(0).to(torch.bfloat16)
-                response = model.chat(tokenizer, pixel_values, EXTRACTION_PROMPT, {"max_new_tokens": 512})
+                response = model.chat(
+                    tokenizer, pixel_values, EXTRACTION_PROMPT, {"max_new_tokens": 512}
+                )
             else:
                 msgs = [{"role": "user", "content": f"<|image_1|>\n{EXTRACTION_PROMPT}"}]
-                prompt = processor.tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
+                prompt = processor.tokenizer.apply_chat_template(
+                    msgs, tokenize=False, add_generation_prompt=True
+                )
                 inputs = processor(prompt, [image], return_tensors="pt")
                 out = model.generate(**inputs, max_new_tokens=512)
-                response = processor.batch_decode(out[:, inputs["input_ids"].shape[1]:], skip_special_tokens=True)[0]
+                response = processor.batch_decode(
+                    out[:, inputs["input_ids"].shape[1] :], skip_special_tokens=True
+                )[0]
 
             page = WorkoutPage.model_validate_json(response.strip())
         except Exception as e:
@@ -125,20 +135,24 @@ def run_model_inference(checkpoint: Path, model_name: str, out_dir: Path) -> Pat
             page = WorkoutPage()
 
         from common.schema import dump_page
+
         dump_page(page, pred_dir / f"{img_path.stem}.json")
 
     return pred_dir
 
 
 def print_comparison(baseline: dict, finetuned: dict, model_name: str) -> None:
-    print(f"\n{'='*50}")
+    print(f"\n{'=' * 50}")
     print(f"  {model_name} — Baseline vs Fine-tuned")
-    print(f"{'='*50}")
+    print(f"{'=' * 50}")
     b = baseline.get(model_name, {})
     f = finetuned
-    print(f"  CER:        {b.get('avg_cer','?'):>8} → {f['avg_cer']:>8}  (target ≤{TARGET_CER})")
-    print(f"  FieldAcc:   {b.get('macro_field_acc','?'):>8} → {f['macro_field_acc']:>8}  (target ≥{TARGET_FIELD_ACC})")
-    print(f"  ParseErr:   {b.get('parse_errors','?'):>8} → {f['parse_errors']:>8}")
+    print(f"  CER:        {b.get('avg_cer', '?'):>8} → {f['avg_cer']:>8}  (target ≤{TARGET_CER})")
+    print(
+        f"  FieldAcc:   {b.get('macro_field_acc', '?'):>8} → {f['macro_field_acc']:>8}"
+        f"  (target ≥{TARGET_FIELD_ACC})"
+    )
+    print(f"  ParseErr:   {b.get('parse_errors', '?'):>8} → {f['parse_errors']:>8}")
 
     meets_target = f["avg_cer"] <= TARGET_CER and f["macro_field_acc"] >= TARGET_FIELD_ACC
     print(f"\n  {'✓ TARGET MET' if meets_target else '✗ TARGET NOT MET — see failure modes below'}")
@@ -209,11 +223,35 @@ def main() -> None:
         tags=["phase:post-finetune", "report"],
     )
     if server_results:
-        run.log({f"server_finetuned/{k}": v for k, v in server_results.items() if isinstance(v, (int, float))})
-        run.log({f"server_baseline/{k}": v for k, v in baseline.get("internvl2", {}).items() if isinstance(v, (int, float))})
+        run.log(
+            {
+                f"server_finetuned/{k}": v
+                for k, v in server_results.items()
+                if isinstance(v, int | float)
+            }
+        )
+        run.log(
+            {
+                f"server_baseline/{k}": v
+                for k, v in baseline.get("internvl2", {}).items()
+                if isinstance(v, int | float)
+            }
+        )
     if local_results:
-        run.log({f"local_finetuned/{k}": v for k, v in local_results.items() if isinstance(v, (int, float))})
-        run.log({f"local_baseline/{k}": v for k, v in baseline.get("phi35", {}).items() if isinstance(v, (int, float))})
+        run.log(
+            {
+                f"local_finetuned/{k}": v
+                for k, v in local_results.items()
+                if isinstance(v, int | float)
+            }
+        )
+        run.log(
+            {
+                f"local_baseline/{k}": v
+                for k, v in baseline.get("phi35", {}).items()
+                if isinstance(v, int | float)
+            }
+        )
     run.finish()
     print("\nW&B report logged.")
 
