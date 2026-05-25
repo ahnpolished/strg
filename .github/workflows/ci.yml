@@ -19,9 +19,6 @@ jobs:
       - name: Set up Python
         run: uv python install 3.12
 
-      - name: Install dependencies
-        run: uv sync --all-packages
-
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -37,10 +34,10 @@ jobs:
           terraform validate
 
       - name: Ruff lint
-        run: uv run ruff check .
+        run: uvx ruff@0.9.9 check --fix --exit-non-zero-on-fix .
 
       - name: Ruff format check
-        run: uv run ruff format --check .
+        run: uvx ruff@0.9.9 format --check .
 
       - name: Type check
-        run: uv run ty check packages/common evaluation
+        run: uvx ty check packages/common evaluation
