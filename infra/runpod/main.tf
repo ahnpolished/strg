@@ -1,8 +1,9 @@
 locals {
-  name_prefix       = trimspace(var.name_prefix)
-  selected_gpu_ids  = length(var.gpu_type_ids) > 0 ? var.gpu_type_ids : [var.gpu_type_id]
-  selected_dc_ids   = length(var.data_center_ids) > 0 ? var.data_center_ids : [var.data_center_id]
-  model_volume_path = var.volume_mount_path
+  name_prefix        = trimspace(var.name_prefix)
+  selected_gpu_ids   = length(var.gpu_type_ids) > 0 ? var.gpu_type_ids : [var.gpu_type_id]
+  selected_dc_ids    = length(var.data_center_ids) > 0 ? var.data_center_ids : (var.attach_network_volume ? [var.data_center_id] : [])
+  pod_workspace_path = "/workspace"
+  model_volume_path  = var.attach_network_volume ? var.volume_mount_path : local.pod_workspace_path
 }
 
 resource "runpod_network_volume" "model_weights" {
@@ -38,7 +39,7 @@ resource "runpod_pod" "trainer" {
   container_disk_in_gb       = var.container_disk_in_gb
   volume_in_gb               = var.pod_volume_size_gb
   volume_mount_path          = local.model_volume_path
-  network_volume_id          = runpod_network_volume.model_weights.id
+  network_volume_id          = var.attach_network_volume ? runpod_network_volume.model_weights.id : null
   min_vcpu_per_gpu           = var.min_vcpu_per_gpu
   min_ram_per_gpu            = var.min_ram_per_gpu
   allowed_cuda_versions      = var.allowed_cuda_versions
@@ -67,8 +68,8 @@ resource "runpod_pod" "trainer" {
     }
 
     precondition {
-      condition     = contains(local.selected_dc_ids, var.data_center_id)
-      error_message = "data_center_ids must include data_center_id so pods can attach the network volume."
+      condition     = !var.attach_network_volume || contains(local.selected_dc_ids, var.data_center_id)
+      error_message = "When attach_network_volume is true, data_center_ids must include data_center_id so pods can attach the network volume."
     }
   }
 }

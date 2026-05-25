@@ -39,17 +39,21 @@ variable "max_pod_count_guardrail" {
 }
 
 variable "gpu_type_id" {
-  description = "Primary RunPod GPU type. RTX 4090 and RTX 3090 both provide 24GB VRAM. Ignored when gpu_type_ids is non-empty."
+  description = "Primary RunPod GPU type using the RunPod API enum name. A40 provides 48GB VRAM and currently shows medium availability in RunPod. Ignored when gpu_type_ids is non-empty."
   type        = string
-  default     = "NVIDIA GeForce RTX 4090"
+  default     = "NVIDIA A40"
 }
 
 variable "gpu_type_ids" {
-  description = "Ordered GPU fallback list for availability. Use RTX 4090/3090 for the low-budget 24GB VRAM research phase."
+  description = "Ordered low-cost research GPU fallback list using RunPod API enum names. Excludes premium 80GB GPUs by default; add A100/H100 manually only when needed."
   type        = list(string)
   default = [
-    "NVIDIA GeForce RTX 4090",
+    "NVIDIA A40",
+    "NVIDIA RTX A6000",
     "NVIDIA GeForce RTX 3090",
+    "NVIDIA RTX A5000",
+    "NVIDIA GeForce RTX 4090",
+    "NVIDIA RTX 6000 Ada Generation",
   ]
 
   validation {
@@ -99,9 +103,15 @@ variable "data_center_id" {
 }
 
 variable "data_center_ids" {
-  description = "Data centers pods may launch in. Must include the volume's data_center_id for volume attachment. Defaults to data_center_id when empty."
+  description = "Data centers pods may launch in. When attach_network_volume is true, this must include data_center_id and defaults to data_center_id. When attach_network_volume is false, [] leaves data center selection unconstrained."
   type        = list(string)
   default     = []
+}
+
+variable "attach_network_volume" {
+  description = "Attach the persistent RunPod network volume to trainer pods. Disable temporarily to avoid data-center capacity constraints; checkpoints then live only on the pod volume unless copied elsewhere."
+  type        = bool
+  default     = true
 }
 
 variable "data_center_priority" {
@@ -127,7 +137,7 @@ variable "network_volume_size_gb" {
 }
 
 variable "volume_mount_path" {
-  description = "Mount path for the persistent RunPod network volume inside trainer pods."
+  description = "Mount path for the persistent RunPod network volume inside trainer pods. Ignored when attach_network_volume is false; pods then use /workspace like the provider examples."
   type        = string
   default     = "/workspace/models"
 }
@@ -145,15 +155,15 @@ variable "container_disk_in_gb" {
 }
 
 variable "min_vcpu_per_gpu" {
-  description = "Minimum vCPUs per GPU."
+  description = "Optional minimum vCPUs per GPU. Null omits this constraint, matching the provider examples and improving scheduling chances."
   type        = number
-  default     = 8
+  default     = null
 }
 
 variable "min_ram_per_gpu" {
-  description = "Minimum RAM in GB per GPU."
+  description = "Optional minimum RAM in GB per GPU. Null omits this constraint, matching the provider examples and improving scheduling chances."
   type        = number
-  default     = 24
+  default     = null
 }
 
 variable "allowed_cuda_versions" {
@@ -177,7 +187,7 @@ variable "support_public_ip" {
 variable "global_networking" {
   description = "Enable RunPod global networking."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "ports" {
