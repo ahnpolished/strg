@@ -1,0 +1,38 @@
+# Copy to terraform.tfvars and edit locally. Do not commit terraform.tfvars.
+
+# Authentication: prefer `export RUNPOD_API_KEY=...` instead of setting this.
+# runpod_api_key = ""
+
+name_prefix = "strg"
+
+# Cost guardrail: keep at 0 unless actively training/evaluating.
+pod_count = 0
+
+# For an active training pod, set:
+# pod_count = 1
+
+gpu_type_ids = [
+  "NVIDIA GeForce RTX 4090",
+  "NVIDIA GeForce RTX 3090",
+]
+
+gpu_count = 1
+
+# Network volumes must live in the same RunPod data center as attached pods.
+data_center_id  = "US-CA-2"
+data_center_ids = ["US-CA-2"]
+
+image_name             = "runpod/pytorch:2.8.0-py3.11-cuda12.8.1-cudnn-devel-ubuntu22.04"
+network_volume_size_gb = 100
+pod_volume_size_gb     = 50
+container_disk_in_gb   = 50
+
+ports = [
+  "22/tcp",
+  "8888/http",
+  "6006/http",
+]
+
+env = {
+  STRG_ENV = "research"
+}

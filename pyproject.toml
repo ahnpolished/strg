@@ -18,3 +18,9 @@ quote-style = "double"
 
 [tool.ty.rules]
 unresolved-import = "ignore"
+
+[dependency-groups]
+dev = [
+    "ruff==0.9.9",
+    "ty>=0.0.39",
+]

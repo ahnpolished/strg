@@ -19,6 +19,20 @@ jobs:
       - name: Set up Python
         run: uv python install 3.12
 
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform format check
+        run: terraform fmt -check -recursive infra/runpod
+
+      - name: Terraform validate
+        working-directory: infra/runpod
+        run: |
+          terraform init -backend=false
+          terraform validate
+
       - name: Ruff lint
         run: uvx ruff@0.9.9 check --fix --exit-non-zero-on-fix .
 
