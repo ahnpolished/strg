@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+
+# uv
+.uv/
+
+# W&B
+wandb/
+
+# Data (track structure, not content)
+data/test/*.jpg
+data/test/*.jpeg
+data/test/*.png
+data/train/*.jpg
+data/train/*.jpeg
+data/train/*.png
+data/predictions/
+
+# Model weights
+*.bin
+*.safetensors
+*.gguf
+*.mlmodel
+*.mlpackage
+*.pt
+*.pth
+
+# Env
+.env
+.env.*
+
+# IDE
+.DS_Store
+.idea/
+.vscode/
