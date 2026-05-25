@@ -10,17 +10,21 @@ from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 from models_local.base import LocalModelRunner
 
 
-def _registry():
-    from models_local.minicpm import MiniCPMRunner
-    from models_local.moondream import MoondreamRunner
-    from models_local.phi35 import Phi35VisionRunner
-    from models_local.smolvlm import SmolVLMRunner
-    return {
-        "moondream": MoondreamRunner,
-        "smolvlm": SmolVLMRunner,
-        "minicpm": MiniCPMRunner,
-        "phi35": Phi35VisionRunner,
-    }
+def _get_runner_class(model_name: str):
+    if model_name == "moondream":
+        from models_local.moondream import MoondreamRunner
+        return MoondreamRunner
+    elif model_name == "smolvlm":
+        from models_local.smolvlm import SmolVLMRunner
+        return SmolVLMRunner
+    elif model_name == "minicpm":
+        from models_local.minicpm import MiniCPMRunner
+        return MiniCPMRunner
+    elif model_name == "phi35":
+        from models_local.phi35 import Phi35VisionRunner
+        return Phi35VisionRunner
+    else:
+        raise ValueError(f"Unknown model: {model_name}")
 
 
 def main() -> None:
@@ -32,8 +36,7 @@ def main() -> None:
     parser.add_argument("--phase", default="baseline")
     args = parser.parse_args()
 
-    registry = _registry()
-    runner: LocalModelRunner = registry[args.model]()
+    runner: LocalModelRunner = _get_runner_class(args.model)()
 
     tracemalloc.start()
     print(f"Loading {args.model}...")

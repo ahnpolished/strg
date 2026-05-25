@@ -3,7 +3,11 @@ from pathlib import Path
 
 import torch
 from PIL import Image
-from transformers import AutoModelForVision2Seq, AutoProcessor
+try:
+    from transformers import AutoModelForVision2Seq
+except ImportError:
+    from transformers import AutoModelForCausalLM as AutoModelForVision2Seq  # transformers ≥5.x
+from transformers import AutoProcessor
 
 from common.schema import WorkoutPage
 from models_local.base import LocalModelRunner
