@@ -22,6 +22,20 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-packages
 
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform format check
+        run: terraform fmt -check -recursive infra/runpod
+
+      - name: Terraform validate
+        working-directory: infra/runpod
+        run: |
+          terraform init -backend=false
+          terraform validate
+
       - name: Ruff lint
         run: uv run ruff check .
 
