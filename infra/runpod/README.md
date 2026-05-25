@@ -114,9 +114,24 @@ The `--all` mode temporarily removes the volume `prevent_destroy` lifecycle guar
 
 1. Keep `pod_count = 0` while preparing code and datasets.
 2. Set `pod_count = 1`, then `terraform plan` and `terraform apply` when ready to train.
-3. Use the mounted model directory from `network_volume_mount_path` for downloaded base weights and checkpoints.
-4. Run evaluation/fine-tuning jobs.
-5. Immediately run `./scripts/teardown.sh` or apply `pod_count = 0` when the run is finished.
+3. Clone/sync the repo into the pod under `/workspace`.
+4. Use the fast RunPod install script instead of `uv sync --all-packages`:
+
+```bash
+./scripts/runpod_install_fast.sh
+```
+
+For evaluation-only work, install even less:
+
+```bash
+./scripts/runpod_install_fast.sh evaluation
+```
+
+The script creates a uv venv with system site packages so it can reuse the PyTorch/CUDA stack already present in the RunPod PyTorch image, skips reinstalling `torch` when available, and avoids local/iOS dependencies unless requested.
+
+5. Use the mounted model directory from `network_volume_mount_path` for downloaded base weights and checkpoints.
+6. Run evaluation/fine-tuning jobs.
+7. Immediately run `./scripts/teardown.sh` or apply `pod_count = 0` when the run is finished.
 
 ## Notes
 

@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Fast dependency install for RunPod PyTorch images.
+#
+# Why this exists:
+# - `uv sync --all-packages` installs every workspace package, including local/iOS
+#   dependencies like coremltools/moondream/pyvips that are not needed for server GPU work.
+# - RunPod PyTorch images already include torch/CUDA. A normal uv-created isolated
+#   venv cannot see that install, so uv may spend a long time downloading torch wheels.
+#
+# Usage from repo root on RunPod:
+#   ./scripts/runpod_install_fast.sh              # server + evaluation workflow
+#   ./scripts/runpod_install_fast.sh evaluation   # evaluation-only workflow
+#   ./scripts/runpod_install_fast.sh all          # full workspace, slow fallback
+
+MODE="${1:-server}"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
+VENV_DIR="${VENV_DIR:-.venv}"
+
+case "$MODE" in
+  server|models-server)
+    # uv accepts only one --package per sync invocation, so install package
+    # environments sequentially. --inexact keeps already-installed packages.
+    SYNC_TARGETS=(models-server evaluation)
+    ;;
+  evaluation|eval)
+    SYNC_TARGETS=(evaluation)
+    ;;
+  local|models-local)
+    SYNC_TARGETS=(models-local evaluation)
+    ;;
+  all)
+    SYNC_TARGETS=(__all__)
+    ;;
+  *)
+    echo "Unknown mode: $MODE" >&2
+    echo "Usage: $0 [server|evaluation|local|all]" >&2
+    exit 2
+    ;;
+esac
+
+echo "==> Checking base image torch/CUDA"
+if "$PYTHON_BIN" - <<'PY'
+try:
+    import torch
+    print("base torch:", torch.__version__)
+    print("cuda available:", torch.cuda.is_available())
+    print("device:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else None)
+except Exception as exc:
+    raise SystemExit(f"torch check failed: {exc}")
+PY
+then
+  SKIP_TORCH=(--no-install-package torch)
+else
+  echo "Base image torch was not importable; uv will install torch from the lockfile." >&2
+  SKIP_TORCH=()
+fi
+
+echo "==> Creating venv with system site packages: $VENV_DIR"
+uv venv --system-site-packages --python "$PYTHON_BIN" "$VENV_DIR"
+
+echo "==> Syncing mode '$MODE' with uv"
+for target in "${SYNC_TARGETS[@]}"; do
+  if [[ "$target" == "__all__" ]]; then
+    target_args=(--all-packages)
+    label="all packages"
+  else
+    target_args=(--package "$target")
+    label="package $target"
+  fi
+
+  echo "==> Syncing $label"
+  uv sync \
+    --frozen \
+    --no-dev \
+    --inexact \
+    "${target_args[@]}" \
+    "${SKIP_TORCH[@]}"
+done
+
+echo "==> Verifying environment"
+uv run python - <<'PY'
+import sys
+print("python:", sys.executable)
+try:
+    import torch
+    print("torch:", torch.__version__)
+    print("cuda available:", torch.cuda.is_available())
+    print("device:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else None)
+except Exception as exc:
+    print("torch import failed:", exc)
+PY
+
+echo "==> Done"
