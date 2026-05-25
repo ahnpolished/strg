@@ -4,41 +4,47 @@ import statistics
 from pathlib import Path
 
 import torch
-import wandb
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 
+import wandb
 from models_server.base import ServerModelRunner
 
-RUNNERS: dict[str, type[ServerModelRunner]] = {}
+MODEL_CHOICES = ["qwen2-vl", "internvl2", "florence2", "donut"]
 
 
-def _registry():
-    from models_server.donut import DonutRunner
-    from models_server.florence2 import Florence2Runner
-    from models_server.internvl2 import InternVL2Runner
-    from models_server.qwen2_vl import Qwen2VLRunner
+def _load_runner(model_name: str) -> ServerModelRunner:
+    # Import only the requested runner. Some model families have optional
+    # dependencies; importing all runners up front can break unrelated models
+    # such as Florence-2 when Donut's optional dependencies are unavailable.
+    if model_name == "qwen2-vl":
+        from models_server.qwen2_vl import Qwen2VLRunner
 
-    return {
-        "qwen2-vl": Qwen2VLRunner,
-        "internvl2": InternVL2Runner,
-        "florence2": Florence2Runner,
-        "donut": DonutRunner,
-    }
+        return Qwen2VLRunner()
+    if model_name == "internvl2":
+        from models_server.internvl2 import InternVL2Runner
+
+        return InternVL2Runner()
+    if model_name == "florence2":
+        from models_server.florence2 import Florence2Runner
+
+        return Florence2Runner()
+    if model_name == "donut":
+        from models_server.donut import DonutRunner
+
+        return DonutRunner()
+    raise ValueError(f"Unknown model: {model_name}")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--model", required=True, choices=["qwen2-vl", "internvl2", "florence2", "donut"]
-    )
+    parser.add_argument("--model", required=True, choices=MODEL_CHOICES)
     parser.add_argument("--images", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--ground-truth", type=Path, default=None)
     parser.add_argument("--phase", default="baseline")
     args = parser.parse_args()
 
-    registry = _registry()
-    runner: ServerModelRunner = registry[args.model]()
+    runner = _load_runner(args.model)
 
     print(f"Loading {args.model}...")
     runner.load()
