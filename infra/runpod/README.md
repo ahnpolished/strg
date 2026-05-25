@@ -121,6 +121,8 @@ The `--all` mode temporarily removes the volume `prevent_destroy` lifecycle guar
 ./scripts/runpod_install_fast.sh
 ```
 
+The RunPod PyTorch image is `py3.11`, so the repo pins `.python-version` to `3.11` and the package metadata allows `>=3.11,<3.13`. Avoid Python 3.14: many ML/image wheels are not available there yet, causing slow source builds or failures such as Pillow missing zlib headers.
+
 For evaluation-only work, install even less:
 
 ```bash

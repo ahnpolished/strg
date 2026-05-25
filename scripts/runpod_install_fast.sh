@@ -15,7 +15,8 @@ set -euo pipefail
 #   ./scripts/runpod_install_fast.sh all          # full workspace, slow fallback
 
 MODE="${1:-server}"
-PYTHON_BIN="${PYTHON_BIN:-python3}"
+PYTHON_VERSION="${PYTHON_VERSION:-3.11}"
+PYTHON_BIN="${PYTHON_BIN:-python${PYTHON_VERSION}}"
 VENV_DIR="${VENV_DIR:-.venv}"
 
 case "$MODE" in
@@ -40,7 +41,13 @@ case "$MODE" in
     ;;
 esac
 
-echo "==> Checking base image torch/CUDA"
+echo "==> Ensuring Python $PYTHON_VERSION is available"
+if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
+  uv python install "$PYTHON_VERSION"
+  PYTHON_BIN="$(uv python find "$PYTHON_VERSION")"
+fi
+
+echo "==> Checking base image torch/CUDA with $PYTHON_BIN"
 if "$PYTHON_BIN" - <<'PY'
 try:
     import torch
