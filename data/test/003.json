@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "date": "2026-01-10",
+      "exercise": "Deadlift",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 120.0,
+      "notes": "PR!"
+    },
+    {
+      "date": "2026-01-10",
+      "exercise": "Row",
+      "sets": 4,
+      "reps": 8,
+      "weight_kg": 70.0,
+      "notes": null
+    },
+    {
+      "date": "2026-01-10",
+      "exercise": "Pull-ups",
+      "sets": 3,
+      "reps": 8,
+      "weight_kg": null,
+      "notes": null
+    }
+  ]
+}

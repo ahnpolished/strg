@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "date": "2026-01-15",
+      "exercise": "Bench Press",
+      "sets": 4,
+      "reps": 6,
+      "weight_kg": 85.0,
+      "notes": null
+    },
+    {
+      "date": "2026-01-15",
+      "exercise": "Curl",
+      "sets": 3,
+      "reps": 12,
+      "weight_kg": 15.0,
+      "notes": null
+    },
+    {
+      "date": "2026-01-15",
+      "exercise": "Cable Row",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 60.0,
+      "notes": "easy day"
+    }
+  ]
+}

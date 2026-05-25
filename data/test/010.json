@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "date": "2026-01-27",
+      "exercise": "Squat",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 105.0,
+      "notes": "PR!"
+    },
+    {
+      "date": "2026-01-27",
+      "exercise": "Leg Curl",
+      "sets": 3,
+      "reps": 12,
+      "weight_kg": 40.0,
+      "notes": null
+    },
+    {
+      "date": "2026-01-27",
+      "exercise": "Calf Raise",
+      "sets": 4,
+      "reps": 20,
+      "weight_kg": 60.0,
+      "notes": null
+    }
+  ]
+}

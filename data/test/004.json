@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "date": "2026-01-13",
+      "exercise": "OHP",
+      "sets": 4,
+      "reps": 6,
+      "weight_kg": 55.0,
+      "notes": "slow tempo"
+    },
+    {
+      "date": "2026-01-13",
+      "exercise": "Lateral Raise",
+      "sets": 3,
+      "reps": 15,
+      "weight_kg": 12.0,
+      "notes": null
+    },
+    {
+      "date": "2026-01-13",
+      "exercise": "Tricep Ext",
+      "sets": 3,
+      "reps": 12,
+      "weight_kg": 30.0,
+      "notes": null
+    }
+  ]
+}

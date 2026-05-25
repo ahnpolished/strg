@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "date": "2026-01-08",
+      "exercise": "Squat",
+      "sets": 5,
+      "reps": 5,
+      "weight_kg": 100.0,
+      "notes": "felt heavy"
+    },
+    {
+      "date": "2026-01-08",
+      "exercise": "Leg Press",
+      "sets": 3,
+      "reps": 15,
+      "weight_kg": 150.0,
+      "notes": null
+    },
+    {
+      "date": "2026-01-08",
+      "exercise": "RDL",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 70.0,
+      "notes": null
+    }
+  ]
+}

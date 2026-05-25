@@ -1,0 +1,20 @@
+{
+  "entries": [
+    {
+      "date": "2026-01-17",
+      "exercise": "Squat",
+      "sets": 4,
+      "reps": 8,
+      "weight_kg": 90.0,
+      "notes": null
+    },
+    {
+      "date": "2026-01-17",
+      "exercise": "Hip Thrust",
+      "sets": 3,
+      "reps": 12,
+      "weight_kg": 80.0,
+      "notes": null
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "date": "2026-01-20",
+      "exercise": "Deadlift",
+      "sets": 4,
+      "reps": 4,
+      "weight_kg": 130.0,
+      "notes": "PR!"
+    },
+    {
+      "date": "2026-01-20",
+      "exercise": "Lat Pulldown",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 65.0,
+      "notes": null
+    },
+    {
+      "date": "2026-01-20",
+      "exercise": "Face Pull",
+      "sets": 3,
+      "reps": 15,
+      "weight_kg": 20.0,
+      "notes": null
+    }
+  ]
+}

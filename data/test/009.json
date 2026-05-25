@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "date": "2026-01-24",
+      "exercise": "Bench Press",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 75.0,
+      "notes": "easy day"
+    },
+    {
+      "date": "2026-01-24",
+      "exercise": "Incline DB",
+      "sets": 3,
+      "reps": 12,
+      "weight_kg": 28.0,
+      "notes": null
+    },
+    {
+      "date": "2026-01-24",
+      "exercise": "Dips",
+      "sets": 3,
+      "reps": 15,
+      "weight_kg": null,
+      "notes": null
+    }
+  ]
+}
