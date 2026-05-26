@@ -1,4 +1,5 @@
 import time
+import traceback
 from abc import ABC, abstractmethod
 from pathlib import Path
 
@@ -28,6 +29,7 @@ class ServerModelRunner(ABC):
                 parse_error = False
             except Exception as e:
                 print(f"[ERROR] {img_path.stem}: {e}")
+                traceback.print_exc()
                 page = WorkoutPage()
                 parse_error = True
             latency = time.perf_counter() - t0

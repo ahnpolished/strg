@@ -9,6 +9,8 @@ dependencies = [
     "pillow>=10.0",
     "wandb>=0.16",
     "accelerate>=0.26",
+    "timm",
+    "einops",
 ]
 
 [build-system]

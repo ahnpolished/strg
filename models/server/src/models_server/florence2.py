@@ -26,9 +26,22 @@ class Florence2Runner(ServerModelRunner):
 
     def predict(self, image_path: Path) -> WorkoutPage:
         image = Image.open(image_path).convert("RGB")
-        inputs = self._processor(text=_OCR_TASK, images=image, return_tensors="pt").to(
-            self._model.device, torch.float16
-        )
+        inputs = self._processor(text=_OCR_TASK, images=image, return_tensors="pt")
+
+        print(f"DEBUG: inputs keys: {list(inputs.keys())}")
+        for k, v in inputs.items():
+            if torch.is_tensor(v):
+                print(f"DEBUG: inputs[{k}] shape: {v.shape}, dtype: {v.dtype}")
+
+        print(f"DEBUG: model device: {self._model.device}")
+
+        inputs = inputs.to(self._model.device, torch.float16)
+
+        for k, v in inputs.items():
+            if torch.is_tensor(v):
+                print(
+                    f"DEBUG: moved inputs[{k}] shape: {v.shape}, dtype: {v.dtype}, device: {v.device}"
+                )
 
         with torch.no_grad():
             output_ids = self._model.generate(
