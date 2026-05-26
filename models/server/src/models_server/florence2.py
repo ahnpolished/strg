@@ -21,6 +21,7 @@ class Florence2Runner(ServerModelRunner):
             torch_dtype=torch.float16,
             device_map="auto",
             trust_remote_code=True,
+            attn_implementation="eager",
         ).eval()
 
     def predict(self, image_path: Path) -> WorkoutPage:

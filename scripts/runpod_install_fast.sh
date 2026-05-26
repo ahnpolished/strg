@@ -86,6 +86,15 @@ for target in "${SYNC_TARGETS[@]}"; do
     "${SKIP_TORCH[@]}"
 done
 
+if [[ "$MODE" != "local" && "$MODE" != "models-local" && "$MODE" != "all" ]]; then
+  echo "==> Removing torchvision from the venv if present"
+  # A mismatched torchvision wheel can break Transformers imports with errors
+  # like `operator torchvision::nms does not exist`. Florence-2 and Qwen do not
+  # need torchvision for our baseline path, so prefer absent over broken. Install
+  # a matching torchvision later only if running InternVL/torchvision transforms.
+  uv pip uninstall --python "$VENV_DIR/bin/python" -y torchvision >/dev/null 2>&1 || true
+fi
+
 echo "==> Verifying environment"
 uv run python - <<'PY'
 import sys
@@ -95,6 +104,17 @@ try:
     print("torch:", torch.__version__)
     print("cuda available:", torch.cuda.is_available())
     print("device:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else None)
+    try:
+        from importlib.metadata import version
+
+        print("torchvision installed:", version("torchvision"))
+    except Exception:
+        print("torchvision installed: no")
+    try:
+        from transformers import AutoProcessor
+        print("transformers AutoProcessor: ok")
+    except Exception as processor_exc:
+        print("transformers AutoProcessor failed:", processor_exc)
 except Exception as exc:
     print("torch import failed:", exc)
 PY
