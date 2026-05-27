@@ -59,6 +59,21 @@ def _normalize_entries(data: dict) -> dict:
         ):
             entry["sets"] = 1
 
+        # --- resolve weight_kg + weight_lbs both set (model confusion) ---
+        # If weight_lbs ≈ weight_kg * 2.2, model put the lbs value in weight_kg
+        # and then auto-computed weight_lbs. Correct to weight_lbs=weight_kg, clear weight_kg.
+        # Otherwise (unrelated values), prefer weight_lbs and clear weight_kg.
+        wkg = entry.get("weight_kg")
+        wlbs = entry.get("weight_lbs")
+        if wkg is not None and wlbs is not None:
+            if abs(wlbs - wkg * 2.2046) < 0.06 * wkg:
+                # Detected kg→lbs auto-conversion: the real lbs value is weight_kg
+                entry["weight_lbs"] = wkg
+                entry["weight_kg"] = None
+            else:
+                # Unknown conflict — prefer weight_lbs, clear weight_kg
+                entry["weight_kg"] = None
+
         # --- strip brackets from notes: model wraps notes as "[PR!]" → "PR!" ---
         notes_val = entry.get("notes")
         if isinstance(notes_val, str):
