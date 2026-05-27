@@ -37,6 +37,16 @@ echo "==================================================================="
 
 cd "$WORKSPACE"
 
+# ── Cache dirs on persistent network volume ──────────────────────────────────
+# /workspace is the RunPod network volume — it persists across pod restarts.
+# Pinning HuggingFace and uv caches here means model weights and Python
+# packages are downloaded once and reused on every subsequent iteration.
+export HF_HOME="${HF_HOME:-/workspace/.hf-cache}"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-/workspace/.uv-cache}"
+mkdir -p "$HF_HOME" "$UV_CACHE_DIR"
+echo "HF_HOME:       $HF_HOME"
+echo "UV_CACHE_DIR:  $UV_CACHE_DIR"
+
 # ── 1. Install dependencies ─────────────────────────────────────────────────
 echo ""
 echo "--- [1/3] Installing dependencies ---"
@@ -47,6 +57,9 @@ if [[ ! -f scripts/runpod_install_fast.sh ]]; then
 fi
 
 bash scripts/runpod_install_fast.sh server
+
+# uv is installed to ~/.local/bin by runpod_install_fast.sh; propagate PATH
+export PATH="${HOME}/.local/bin:${HOME}/.cargo/bin:${PATH}"
 
 # Activate the venv created by runpod_install_fast.sh
 VENV_PYTHON=".venv/bin/python"
@@ -79,13 +92,13 @@ if [[ -z "${WANDB_API_KEY:-}" ]]; then
   echo "WANDB_API_KEY not set — W&B logging disabled."
 fi
 
-# Run model inference; --ground-truth triggers evaluation subprocess automatically
+# Run inference only (no --ground-truth here to avoid a double W&B run;
+# evaluation.run is called explicitly below for clean metric extraction).
 set +e
-uv run python -m models_server.run \
+"$VENV_PYTHON" -m models_server.run \
   --model "$MODEL" \
   --images "$IMAGES" \
   --output "$PREDICTIONS" \
-  --ground-truth "$GROUND_TRUTH" \
   --phase "runpod-test"
 INFERENCE_EXIT=$?
 set -e
@@ -96,24 +109,33 @@ if [[ $INFERENCE_EXIT -ne 0 ]]; then
   exit $INFERENCE_EXIT
 fi
 
-# ── 3. Parse and report metrics ──────────────────────────────────────────────
+# ── 3. Evaluate + parse metrics ──────────────────────────────────────────────
 echo ""
 echo "--- [3/3] Metric summary ---"
 
-# The evaluation.run subprocess prints a JSON summary to stdout; extract it.
-# Run evaluation standalone to get clean JSON for easy parsing.
 set +e
-EVAL_JSON=$(uv run python -m evaluation.run \
+# W&B prints "wandb: ..." lines to stdout which pollute the captured JSON.
+# Run with WANDB_SILENT=true so only our json.dumps() goes to stdout.
+EVAL_OUTPUT=$(WANDB_SILENT=true "$VENV_PYTHON" -m evaluation.run \
   --model "$MODEL" \
   --predictions "${PREDICTIONS}/${MODEL}" \
   --ground-truth "$GROUND_TRUTH" \
-  --phase "runpod-test" 2>/dev/null)
+  --phase "runpod-test")
 EVAL_EXIT=$?
 set -e
 
+# Extract just the JSON block (first '{' to last '}') in case any stray output leaked
+EVAL_JSON=$(echo "$EVAL_OUTPUT" | python3 -c "
+import sys
+t = sys.stdin.read()
+b = t.find('{')
+e = t.rfind('}')
+print(t[b:e+1] if b != -1 and e > b else '')
+")
+
 if [[ $EVAL_EXIT -ne 0 ]] || [[ -z "$EVAL_JSON" ]]; then
-  echo "WARNING: could not extract evaluation metrics (exit $EVAL_EXIT)." >&2
-  # Not fatal — inference may have already printed metrics
+  echo "WARNING: evaluation.run failed (exit $EVAL_EXIT)." >&2
+  exit 1
 else
   echo "$EVAL_JSON"
 
@@ -125,7 +147,7 @@ try:
     summary = json.loads(sys.argv[1])
 except Exception as e:
     print(f"Could not parse metric JSON: {e}", file=sys.stderr)
-    sys.exit(0)  # non-fatal
+    sys.exit(1)  # treat parse failure as FAIL, not silent pass
 
 cer   = summary.get("avg_cer", 1.0)
 acc   = summary.get("macro_field_accuracy", 0.0)
@@ -135,7 +157,10 @@ print(f"\n=== PASS/FAIL CHECK (n={n} photos) ===")
 print(f"  avg CER:              {cer:.3f}  (target <= 0.10)  {'PASS' if cer <= 0.10 else 'FAIL'}")
 print(f"  macro field accuracy: {acc:.3f}  (target >= 0.90)  {'PASS' if acc >= 0.90 else 'FAIL'}")
 
-if cer <= 0.10 and acc >= 0.90:
+if n == 0:
+    print("\nOVERALL: FAIL (0 photos evaluated)")
+    sys.exit(1)
+elif cer <= 0.10 and acc >= 0.90:
     print("\nOVERALL: PASS")
     sys.exit(0)
 else:
