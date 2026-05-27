@@ -86,23 +86,42 @@ def _extract_json(text: str) -> dict:
     """Extract JSON object from model output, handling markdown code blocks and truncation."""
     text = text.strip()
     # Strip markdown code fences (```json ... ``` or ``` ... ```)
-    fence_match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", text, re.DOTALL)
+    fence_match = re.search(r"```(?:json)?\s*(\{.*)", text, re.DOTALL)
     if fence_match:
-        text = fence_match.group(1)
-    # Find outermost { ... } in case there's preamble/postamble
+        text = fence_match.group(1).split("```")[0].strip()
+    # Find start of JSON object
     brace_start = text.find("{")
-    brace_end = text.rfind("}")
-    if brace_start != -1 and brace_end > brace_start:
-        text = text[brace_start : brace_end + 1]
+    if brace_start == -1:
+        raise json.JSONDecodeError("No JSON object found", text, 0)
+    # Track brace depth to find the matching closing brace (handles { } inside strings)
+    depth = 0
+    in_string = False
+    escape = False
+    brace_end = brace_start
+    for i, ch in enumerate(text[brace_start:], brace_start):
+        if escape:
+            escape = False
+        elif ch == "\\" and in_string:
+            escape = True
+        elif ch == '"':
+            in_string = not in_string
+        elif not in_string:
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    brace_end = i
+                    break
+    json_str = text[brace_start : brace_end + 1]
     # Try direct parse first
     try:
-        return json.loads(text)
+        return json.loads(json_str)
     except json.JSONDecodeError as exc:
-        # Recovery: truncated JSON — remove last incomplete entry object, close the list+dict
-        # Look for the last complete entry: "    }" followed by end of valid content
-        last_entry = text.rfind("\n    }")
+        # Recovery: truncated JSON — remove last incomplete entry, close list+dict
+        last_entry = json_str.rfind("\n    }")
         if last_entry != -1:
-            truncated = text[: last_entry + 6] + "\n  ]\n}"
+            truncated = json_str[: last_entry + 6] + "\n  ]\n}"
             try:
                 return json.loads(truncated)
             except json.JSONDecodeError:
