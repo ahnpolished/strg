@@ -3,11 +3,14 @@
 #
 # Each iteration:
 #   1. terraform apply (pod_count=1) with your SSH key injected
-#   2. Wait for pod IP assignment
-#   3. Wait for SSH to become reachable
+#   2. Wait for pod IP and SSH port via RunPod REST API (rest.runpod.io/v1/pods/<id>)
+#   3. Wait for SSH to be ready on the NAT-mapped port
 #   4. rsync repo to pod
 #   5. Run test script on pod
 #   6. terraform destroy pod (always, even on test failure)
+#
+# SSH connection: root@<publicIp> -p <portMappings['22']>
+# Port mapping is read from RunPod REST API — no proxy needed.
 #
 # Usage: scripts/test-loop.sh [OPTIONS]
 #
@@ -15,19 +18,19 @@
 #   --iterations N          Number of iterations (default: 1; 0 = loop forever)
 #   --ssh-key PATH          SSH private key (default: auto-detected from ~/.ssh/)
 #   --ssh-user USER         SSH user (default: root)
-#   --ssh-port PORT         SSH port (default: 22)
 #   --test-script PATH      Script to run on pod (default: scripts/pod-tests.sh)
 #   --remote-dir PATH       Remote working directory (default: /workspace/strg)
 #   --no-sync               Skip rsync step
-#   --ip-timeout SECS       Max wait for IP assignment (default: 180)
-#   --ssh-timeout SECS      Max wait for SSH readiness (default: 300)
+#   --ssh-timeout SECS      Max wait for IP+port assignment and SSH (default: 300)
 #   --iteration-timeout SECS  Hard wall-clock limit per full iteration (default: 0 = none)
 #                           On breach: forces pod teardown and exits with code 124.
 #   --log-file PATH         Tee all stderr output to this file as well
 #   --dry-run               Print what would run, no actual provisioning
 #   -h, --help              Show this help
 #
-# Prerequisite: export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
+# Prerequisites:
+#   export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
+#   export RUNPOD_API_KEY="<your-key>"   # also used by Terraform provider
 
 set -euo pipefail
 
@@ -44,12 +47,10 @@ for _k in "${HOME}/.ssh/id_ed25519" "${HOME}/.ssh/id_rsa" "${HOME}/.ssh/id_ecdsa
 done
 SSH_KEY="${SSH_KEY:-${HOME}/.ssh/id_rsa}"
 SSH_USER="root"
-SSH_PORT=22
 TEST_SCRIPT="$SCRIPT_DIR/pod-tests.sh"
 REMOTE_DIR="/workspace/strg"
 NO_SYNC=0
-IP_TIMEOUT=180
-SSH_TIMEOUT=300
+SSH_TIMEOUT=600
 ITERATION_TIMEOUT=0   # 0 = no hard limit
 LOG_FILE=""
 DRY_RUN=0
@@ -59,24 +60,26 @@ usage() {
   cat <<'USAGE'
 Usage: scripts/test-loop.sh [OPTIONS]
 
-Each iteration: terraform apply → wait for SSH → rsync repo → run test script → terraform destroy pod
+Each iteration: terraform apply → wait for IP+port (REST API) → SSH → rsync → run tests → terraform destroy pod
+
+SSH: root@<publicIp> -p <portMappings['22']>   (NAT port from RunPod REST API)
 
 Options:
   --iterations N          Iterations to run (default: 1; 0 = forever)
   --ssh-key PATH          SSH private key (default: auto-detected)
-  --ssh-user USER         SSH user (default: root)
-  --ssh-port PORT         SSH port (default: 22)
+  --ssh-user USER         SSH user on pod (default: root)
   --test-script PATH      Script to run on pod (default: scripts/pod-tests.sh)
   --remote-dir PATH       Remote working directory (default: /workspace/strg)
   --no-sync               Skip rsync step
-  --ip-timeout SECS       Max wait for IP assignment (default: 180)
-  --ssh-timeout SECS      Max wait for SSH readiness (default: 300)
+  --ssh-timeout SECS      Max wait for IP+port assignment and SSH (default: 300)
   --iteration-timeout SECS  Hard limit per iteration; forces teardown + exit 124 (default: 0 = none)
   --log-file PATH         Tee all output to this file
   --dry-run               Print steps without provisioning
   -h, --help              Show this help
 
-Prerequisite: export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
+Prerequisites:
+  export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
+  export RUNPOD_API_KEY="<your-key>"
 USAGE
 }
 
@@ -85,11 +88,9 @@ while [[ $# -gt 0 ]]; do
     --iterations)          ITERATIONS="$2"; shift 2 ;;
     --ssh-key)             SSH_KEY="$2"; shift 2 ;;
     --ssh-user)            SSH_USER="$2"; shift 2 ;;
-    --ssh-port)            SSH_PORT="$2"; shift 2 ;;
     --test-script)         TEST_SCRIPT="$2"; shift 2 ;;
     --remote-dir)          REMOTE_DIR="$2"; shift 2 ;;
     --no-sync)             NO_SYNC=1; shift ;;
-    --ip-timeout)          IP_TIMEOUT="$2"; shift 2 ;;
     --ssh-timeout)         SSH_TIMEOUT="$2"; shift 2 ;;
     --iteration-timeout)   ITERATION_TIMEOUT="$2"; shift 2 ;;
     --log-file)            LOG_FILE="$2"; shift 2 ;;
@@ -124,9 +125,10 @@ _start_watchdog() {
   (
     sleep "$ITERATION_TIMEOUT"
     echo "[$(date '+%H:%M:%S')] WARN  HARD TIMEOUT: iteration ${_ITER_LABEL} exceeded ${ITERATION_TIMEOUT}s. Forcing teardown." >&2
-    # Best-effort teardown from watchdog (may race with main, that's OK)
-    terraform -chdir="$TF_DIR" destroy -auto-approve -target=runpod_pod.trainer \
-      >/dev/null 2>&1 || true
+    # Best-effort teardown from watchdog. Use -lock=false so the main
+    # process teardown (if it runs after) won't collide on the state lock.
+    terraform -chdir="$TF_DIR" destroy -auto-approve -lock=false \
+      -target=runpod_pod.trainer >/dev/null 2>&1 || true
     # Signal main process to exit 124
     kill -TERM "$main_pid" 2>/dev/null || true
   ) &
@@ -153,7 +155,7 @@ trap '_handle_sigterm' TERM
 # ── Prerequisites ─────────────────────────────────────────────────────────────
 check_prereqs() {
   local missing=0
-  for cmd in terraform ssh rsync python3 nc; do
+  for cmd in terraform ssh rsync python3; do
     if ! command -v "$cmd" &>/dev/null; then
       err "Required command not found: $cmd"
       missing=1
@@ -184,6 +186,11 @@ check_prereqs() {
   else
     info "Using TF_VAR_ssh_public_key from environment."
   fi
+
+  if [[ -z "${RUNPOD_API_KEY:-}" ]]; then
+    err "RUNPOD_API_KEY is not set (required for Terraform provider and user ID lookup)."
+    exit 1
+  fi
 }
 
 # ── Terraform helpers ─────────────────────────────────────────────────────────
@@ -206,103 +213,128 @@ teardown_pod() {
     info "[dry-run] terraform destroy -auto-approve -target=runpod_pod.trainer"
     return 0
   fi
-  tf destroy -auto-approve -target=runpod_pod.trainer
+  # First attempt with locking; retry with -lock=false if the watchdog
+  # process is concurrently holding the state lock.
+  tf destroy -auto-approve -target=runpod_pod.trainer 2>&1 || \
+    tf destroy -auto-approve -lock=false -target=runpod_pod.trainer
 }
 
-get_pod_ip() {
-  tf output -json pod_public_ips 2>/dev/null \
+get_pod_id() {
+  tf output -json pod_ids 2>/dev/null \
     | python3 -c "
 import json, sys
 try:
-    ips = json.load(sys.stdin)
-    ip = ips[0] if ips else ''
-    print(ip if ip and ip != 'null' else '', end='')
+    ids = json.load(sys.stdin)
+    pid = ids[0] if ids else ''
+    print(pid if pid and pid != 'null' else '', end='')
 except Exception:
     print('', end='')
 "
 }
 
-refresh_state() {
-  tf apply -refresh-only -auto-approve -var "pod_count=1" >/dev/null 2>&1 || true
+# Query RunPod REST API for pod's publicIp and SSH port mapping.
+# REST API: GET https://rest.runpod.io/v1/pods/<id>
+# Returns two lines: <ip> <port>  (empty strings if not yet assigned)
+get_pod_connection() {
+  local pod_id="$1"
+  python3 - "$pod_id" "${RUNPOD_API_KEY}" <<'PY'
+import json, sys, urllib.request
+pod_id, api_key = sys.argv[1], sys.argv[2]
+try:
+    req = urllib.request.Request(
+        f"https://rest.runpod.io/v1/pods/{pod_id}",
+        headers={"Authorization": "Bearer " + api_key},
+    )
+    with urllib.request.urlopen(req, timeout=10) as resp:
+        pod = json.loads(resp.read())
+    ip = pod.get("publicIp") or ""
+    mappings = pod.get("portMappings") or {}
+    port = str(mappings.get("22") or "")
+    print(ip)
+    print(port)
+except Exception as e:
+    print(f"Pod connection lookup failed: {e}", file=sys.stderr)
+    print("")
+    print("")
+PY
 }
 
-wait_for_ip() {
-  if [[ $DRY_RUN -eq 1 ]]; then
-    info "[dry-run] wait for IP → returning 1.2.3.4"
-    echo "1.2.3.4"
-    return 0
-  fi
-  local elapsed=0
-  local ip=""
-  info "Waiting for pod IP assignment (timeout: ${IP_TIMEOUT}s)..."
-  while true; do
-    ip="$(get_pod_ip)"
-    if [[ -n "$ip" ]]; then
-      info "Pod IP assigned: $ip"
-      echo "$ip"
-      return 0
-    fi
-    if ((elapsed >= IP_TIMEOUT)); then
-      err "IP not assigned after ${IP_TIMEOUT}s."
-      return 1
-    fi
-    sleep 10
-    ((elapsed += 10))
-    info "  Still waiting for IP... (${elapsed}s elapsed)"
-    refresh_state
-  done
-}
-
+# Wait for pod to get a public IP and SSH port via REST API,
+# then wait for SSH to actually accept connections.
 wait_for_ssh() {
-  local ip="$1"
+  local pod_id="$1"
   if [[ $DRY_RUN -eq 1 ]]; then
-    info "[dry-run] wait for SSH on ${ip}:${SSH_PORT}"
+    info "[dry-run] wait for SSH on pod ${pod_id}"
+    # Export fake values for dry-run callers
+    POD_IP="1.2.3.4"
+    POD_SSH_PORT="22"
     return 0
   fi
+
   local elapsed=0
-  info "Waiting for SSH on ${ip}:${SSH_PORT} (timeout: ${SSH_TIMEOUT}s)..."
+  local ip="" port=""
+  info "Waiting for pod ${pod_id} to get public IP and SSH port (timeout: ${SSH_TIMEOUT}s)..."
+
   while true; do
-    if nc -zw5 "$ip" "$SSH_PORT" 2>/dev/null; then
+    local conn
+    conn="$(get_pod_connection "$pod_id")"
+    ip="$(echo "$conn" | head -1)"
+    port="$(echo "$conn" | tail -1)"
+
+    if [[ -n "$ip" && -n "$port" ]]; then
+      info "Pod reachable at ${ip}:${port}"
+      # Try actual SSH connection
       if ssh -q \
           -i "$SSH_KEY" \
           -o StrictHostKeyChecking=no \
           -o UserKnownHostsFile=/dev/null \
           -o ConnectTimeout=5 \
           -o BatchMode=yes \
-          -p "$SSH_PORT" \
+          -p "$port" \
           "${SSH_USER}@${ip}" \
           exit 2>/dev/null; then
-        info "SSH is ready."
+        info "SSH ready: ${SSH_USER}@${ip}:${port}"
+        export POD_IP="$ip"
+        export POD_SSH_PORT="$port"
         return 0
       fi
     fi
+
     if ((elapsed >= SSH_TIMEOUT)); then
-      err "SSH not ready after ${SSH_TIMEOUT}s."
+      err "SSH not ready after ${SSH_TIMEOUT}s (last: ${ip}:${port})"
       return 1
     fi
     sleep 15
     ((elapsed += 15))
-    info "  Still waiting for SSH... (${elapsed}s elapsed)"
+    info "  Waiting... ip=${ip:-?} port=${port:-?} (${elapsed}s elapsed)"
   done
+}
+
+# SSH options shared across sync/run calls
+_ssh_opts() {
+  local port="$1"
+  echo "-i ${SSH_KEY} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o BatchMode=yes -p ${port}"
 }
 
 # ── Code sync ─────────────────────────────────────────────────────────────────
 sync_code() {
-  local ip="$1"
-  info "rsyncing repo to ${SSH_USER}@${ip}:${REMOTE_DIR} ..."
+  local ip="$1" port="$2"
+  info "rsyncing repo to ${SSH_USER}@${ip}:${port}:${REMOTE_DIR} ..."
   if [[ $DRY_RUN -eq 1 ]]; then
-    info "[dry-run] rsync $REPO_ROOT/ ${SSH_USER}@${ip}:${REMOTE_DIR}/"
+    info "[dry-run] rsync ${REPO_ROOT}/ ${SSH_USER}@${POD_IP}:${REMOTE_DIR}/"
     return 0
   fi
-  ssh -q \
-    -i "$SSH_KEY" \
-    -o StrictHostKeyChecking=no \
-    -o UserKnownHostsFile=/dev/null \
-    -p "$SSH_PORT" \
-    "${SSH_USER}@${ip}" \
-    "mkdir -p ${REMOTE_DIR}"
-
-  rsync -az --progress \
+  local opts
+  opts="$(_ssh_opts "$port")"
+  # Ensure rsync is available on the pod (PyTorch images don't include it)
+  # shellcheck disable=SC2086
+  ssh -q $opts "${SSH_USER}@${ip}" \
+    "command -v rsync &>/dev/null || (apt-get update -qq && apt-get install -y -qq rsync)"
+  # shellcheck disable=SC2086
+  ssh -q $opts "${SSH_USER}@${ip}" "mkdir -p ${REMOTE_DIR}"
+  # shellcheck disable=SC2086
+  rsync -az --no-owner --no-group --progress \
+    --filter=':- .gitignore' \
     --exclude '.git' \
     --exclude '__pycache__' \
     --exclude '*.pyc' \
@@ -312,34 +344,39 @@ sync_code() {
     --exclude 'infra/runpod/terraform.tfstate*' \
     --exclude 'infra/runpod/tfplan' \
     --exclude 'data/train' \
-    -e "ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p ${SSH_PORT}" \
+    -e "ssh $opts" \
     "${REPO_ROOT}/" \
     "${SSH_USER}@${ip}:${REMOTE_DIR}/"
 }
 
 # ── Test execution ─────────────────────────────────────────────────────────────
 run_tests() {
-  local ip="$1"
-  info "Running test script on pod: $(basename "$TEST_SCRIPT")"
+  local ip="$1" port="$2"
+  info "Running test script on ${SSH_USER}@${ip}:${port}: $(basename "$TEST_SCRIPT")"
   if [[ $DRY_RUN -eq 1 ]]; then
-    info "[dry-run] ssh ${SSH_USER}@${ip} bash < $TEST_SCRIPT"
+    info "[dry-run] ssh ${SSH_USER}@${POD_IP}:${POD_SSH_PORT} bash < ${TEST_SCRIPT}"
     return 0
   fi
-  ssh -q \
-    -i "$SSH_KEY" \
-    -o StrictHostKeyChecking=no \
-    -o UserKnownHostsFile=/dev/null \
+  local opts
+  opts="$(_ssh_opts "$port")"
+  # shellcheck disable=SC2086
+  # Redirect stdout→stderr so all pod output lands in the log file
+  # (test-loop.sh captures stderr; stdout was discarded via launch redirect)
+  # Forward WANDB_API_KEY if set so W&B logging works on the pod.
+  local wandb_export=""
+  if [[ -n "${WANDB_API_KEY:-}" ]]; then
+    wandb_export="export WANDB_API_KEY='${WANDB_API_KEY}';"
+  fi
+  ssh -q $opts \
     -o ServerAliveInterval=30 \
     -o ServerAliveCountMax=120 \
-    -p "$SSH_PORT" \
     "${SSH_USER}@${ip}" \
-    "cd ${REMOTE_DIR} && bash -s" < "$TEST_SCRIPT"
+    "${wandb_export} cd ${REMOTE_DIR} && bash -s" < "$TEST_SCRIPT" >&2
 }
 
 # ── Single iteration ──────────────────────────────────────────────────────────
 run_once() {
   local iter="$1"
-  local pod_ip=""
   local test_exit=0
 
   info "━━━ Iteration ${iter} start $(date '+%Y-%m-%d %H:%M:%S') ━━━━━━━━━━━━━━━━━"
@@ -366,29 +403,40 @@ run_once() {
   }
   trap _teardown_on_exit EXIT
 
-  # 2. Wait for IP
-  if ! pod_ip="$(wait_for_ip)"; then
-    err "Could not get pod IP. Tearing down."
-    _stop_watchdog
-    teardown_pod || { err "Teardown also failed. Stopping loop."; cleanup_needed=0; return 2; }
-    cleanup_needed=0
-    trap - EXIT
-    return 1
+  # 2. Get pod ID from terraform output
+  local pod_id=""
+  POD_IP=""
+  POD_SSH_PORT=""
+  if [[ $DRY_RUN -eq 1 ]]; then
+    pod_id="dry-run-pod"
+    info "[dry-run] pod ID: ${pod_id}"
+  else
+    pod_id="$(get_pod_id)"
+    if [[ -z "$pod_id" ]]; then
+      err "Could not get pod ID from terraform output. Tearing down."
+      _stop_watchdog
+      teardown_pod || { err "Teardown also failed. Stopping loop."; cleanup_needed=0; return 2; }
+      cleanup_needed=0
+      trap - EXIT
+      return 1
+    fi
+    info "Pod ID: ${pod_id}"
   fi
 
-  # 3. Wait for SSH
-  if ! wait_for_ssh "$pod_ip"; then
-    err "SSH not reachable at $pod_ip. Tearing down."
+  # 3. Wait for SSH (polls REST API for ip+port, then tests connection)
+  if ! wait_for_ssh "$pod_id"; then
+    err "SSH not reachable for pod ${pod_id} — pod may lack public IP. Tearing down and reprovisioning."
     _stop_watchdog
     teardown_pod || { err "Teardown also failed. Stopping loop."; cleanup_needed=0; return 2; }
     cleanup_needed=0
     trap - EXIT
-    return 1
+    # Return 3 = infra/no-IP failure: caller should reprovision, not count as test iteration
+    return 3
   fi
 
   # 4. Sync code
   if [[ $NO_SYNC -eq 0 ]]; then
-    if ! sync_code "$pod_ip"; then
+    if ! sync_code "$POD_IP" "$POD_SSH_PORT"; then
       err "rsync failed. Tearing down."
       _stop_watchdog
       teardown_pod || { err "Teardown also failed. Stopping loop."; cleanup_needed=0; return 2; }
@@ -399,8 +447,8 @@ run_once() {
   fi
 
   # 5. Run tests (capture exit code; always proceed to teardown)
-  if ! run_tests "$pod_ip"; then
-    test_exit=$?
+  run_tests "$POD_IP" "$POD_SSH_PORT" || test_exit=$?
+  if [[ $test_exit -ne 0 ]]; then
     warn "Tests FAILED on iteration ${iter} (exit ${test_exit})."
   else
     info "Tests PASSED on iteration ${iter}."
@@ -408,7 +456,6 @@ run_once() {
 
   # 6. Stop watchdog + teardown
   _stop_watchdog
-  info "Tearing down pod..."
   if ! teardown_pod; then
     err "Teardown failed on iteration ${iter}. Stopping loop to avoid orphaned pods."
     cleanup_needed=0
@@ -438,6 +485,7 @@ main() {
   local last_exit=0
   local loop_exit=0
 
+  local reprovision_attempts=0
   while true; do
     run_once "$iter"
     last_exit=$?
@@ -454,6 +502,19 @@ main() {
       break
     fi
 
+    if [[ $last_exit -eq 3 ]]; then
+      reprovision_attempts=$((reprovision_attempts + 1))
+      if [[ $reprovision_attempts -ge 5 ]]; then
+        err "Failed to get a pod with public IP after ${reprovision_attempts} attempts. Stopping."
+        loop_exit=1
+        break
+      fi
+      warn "Pod had no public IP (attempt ${reprovision_attempts}/5). Reprovisioning..."
+      sleep 10
+      continue  # retry same iter without incrementing
+    fi
+
+    reprovision_attempts=0
     [[ $last_exit -ne 0 ]] && loop_exit=$last_exit
 
     if [[ $ITERATIONS -ne 0 ]] && [[ $iter -ge $ITERATIONS ]]; then
