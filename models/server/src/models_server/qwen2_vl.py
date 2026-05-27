@@ -114,14 +114,17 @@ def _extract_json(text: str) -> dict:
                     brace_end = i
                     break
     json_str = text[brace_start : brace_end + 1]
+    # If brace_end == brace_start, depth-tracking never found the closing brace
+    # (output was truncated mid-JSON). Use full remaining text for recovery.
+    recovery_text = text[brace_start:] if brace_end == brace_start else json_str
     # Try direct parse first
     try:
         return json.loads(json_str)
     except json.JSONDecodeError as exc:
         # Recovery: truncated JSON — remove last incomplete entry, close list+dict
-        last_entry = json_str.rfind("\n    }")
+        last_entry = recovery_text.rfind("\n    }")
         if last_entry != -1:
-            truncated = json_str[: last_entry + 6] + "\n  ]\n}"
+            truncated = recovery_text[: last_entry + 6] + "\n  ]\n}"
             try:
                 return json.loads(truncated)
             except json.JSONDecodeError:
