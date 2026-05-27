@@ -334,6 +334,9 @@ sync_code() {
   ssh -q $opts "${SSH_USER}@${ip}" "mkdir -p ${REMOTE_DIR}"
   # shellcheck disable=SC2086
   rsync -az --no-owner --no-group --progress \
+    --include='data/test/*.jpg' \
+    --include='data/test/*.jpeg' \
+    --include='data/test/*.png' \
     --filter=':- .gitignore' \
     --exclude '.git' \
     --exclude '__pycache__' \
