@@ -53,6 +53,7 @@ resource "runpod_pod" "trainer" {
       STRG_MODEL_DIR = local.model_volume_path
       WANDB_PROJECT  = var.wandb_project
     },
+    var.ssh_public_key != "" ? { PUBLIC_KEY = var.ssh_public_key } : {},
     var.env,
   )
 

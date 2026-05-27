@@ -6,3 +6,6 @@ terraform.tfstate.*
 terraform.tfvars
 crash.log
 crash.*.log
+
+# Test loop logs (keep directory, ignore log files)
+logs/*.log

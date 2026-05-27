@@ -225,3 +225,10 @@ variable "env" {
   type        = map(string)
   default     = {}
 }
+
+variable "ssh_public_key" {
+  description = "SSH public key injected as PUBLIC_KEY into trainer pods. RunPod's official images write this to /root/.ssh/authorized_keys on startup. Prefer setting TF_VAR_ssh_public_key in the environment rather than committing a key here."
+  type        = string
+  default     = ""
+  sensitive   = true
+}

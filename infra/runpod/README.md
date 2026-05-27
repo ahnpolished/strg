@@ -110,6 +110,61 @@ Only delete the network volume after backing up any checkpoints or model weights
 
 The `--all` mode temporarily removes the volume `prevent_destroy` lifecycle guard, prompts for confirmation, and restores the file afterward.
 
+## Automated test loop
+
+`scripts/test-loop.sh` runs a full provision → SSH test → teardown cycle and repeats it N times. Useful for regression testing code changes against a clean pod on each iteration.
+
+**First-time setup: SSH key injection**
+
+The loop injects your SSH public key into the pod via the `PUBLIC_KEY` env var (RunPod's official images write it to `/root/.ssh/authorized_keys` on startup). Export it before running:
+
+```bash
+export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_rsa.pub)"
+```
+
+Or add it permanently to your shell profile. Do not commit this to `terraform.tfvars`.
+
+**One-shot run** (provision, test, teardown once):
+
+```bash
+cd infra/runpod
+scripts/test-loop.sh
+```
+
+**Run N iterations** (fresh pod each time):
+
+```bash
+scripts/test-loop.sh --iterations 3
+```
+
+**Run forever** (until Ctrl-C or a teardown failure):
+
+```bash
+scripts/test-loop.sh --iterations 0
+```
+
+**Customize the test commands:**
+
+Edit `scripts/pod-tests.sh` — this is the script sent to the pod via SSH on each iteration.
+
+**Other options:**
+
+```
+--ssh-key PATH       Private key (default: ~/.ssh/id_rsa)
+--ssh-user USER      Pod user (default: root)
+--ssh-port PORT      SSH port (default: 22)
+--test-script PATH   Script to run on pod (default: scripts/pod-tests.sh)
+--remote-dir PATH    Remote working dir (default: /workspace/strg)
+--no-sync            Skip rsync (if code is baked into the pod image)
+--ip-timeout SECS    Max wait for IP (default: 180s)
+--ssh-timeout SECS   Max wait for SSH readiness (default: 300s)
+--dry-run            Print steps without provisioning
+```
+
+**Loop safety:** if teardown fails on any iteration, the loop stops immediately (exit 2) rather than piling up orphaned pods. Check the RunPod console if this happens.
+
+**SSH connectivity note:** with `support_public_ip = true` (the default in example tfvars), RunPod assigns a real public IP and port 22 is directly reachable. If SSH never becomes available after 300s, first check that `support_public_ip = true` and port `22/tcp` is in your `ports` list.
+
 ## Suggested training workflow
 
 1. Keep `pod_count = 0` while preparing code and datasets.
