@@ -21,8 +21,8 @@ Rules:
 - If a field is illegible or absent, use null
 - date: YYYY-MM-DD format only (e.g. 2026-01-06). Use null if not visible.
 - exercise: copy EXACTLY as written — do NOT expand abbreviations and do NOT shorten names (e.g. "OHP" stays "OHP"; "Overhead Press" stays "Overhead Press")
-- sets: 1 for a single-set entry; number of sets only if explicitly grouped (e.g. "3x10" → sets=3). NOT a list.
-- reps: reps as a single integer. NOT a list.
-- weight_kg: use ONLY when the unit is kg or no unit is written. Copy the number as-is. Use null if lbs.
-- weight_lbs: use ONLY when the unit is lbs. Copy the number as-is. Use null if kg. Do NOT convert.
-- notes: copy VERBATIM any explicit written note/comment (e.g. "PR!", "felt heavy", "slow tempo", "WU", "BW"). Do NOT add brackets or punctuation. Use null if no explicit note."""
+- sets: ALWAYS output a number, never null. Use 1 if this is a single set. Use N if the journal groups N sets (e.g. "3x10" → sets=3). NOT a list.
+- reps: reps as a single integer, never null if legible. NOT a list.
+- weight_kg: use ONLY when the unit is kg or no unit is written. Output the NUMBER ONLY (e.g. "80" not "80kg"). Use null if lbs.
+- weight_lbs: use ONLY when the unit is lbs. Output the NUMBER ONLY (e.g. "225" not "225lbs"). Use null if kg. Do NOT convert.
+- notes: copy VERBATIM any explicit written note/comment (e.g. "PR!", "felt heavy", "slow tempo", "WU", "BW"). Do NOT add brackets. Do NOT put weight values in notes. Use null if no explicit text note."""

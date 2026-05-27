@@ -34,15 +34,30 @@ def _normalize_entries(data: dict) -> dict:
             if m:
                 entry["date"] = f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}"
 
-        # --- scalar coercion: reps and weight_kg may come as lists ---
+        # --- scalar coercion: reps and sets may come as lists ---
         for field in ("reps", "sets"):
             val = entry.get(field)
             if isinstance(val, list) and val:
                 entry[field] = val[0]
+
+        # --- weight fields: coerce list→scalar, then non-numeric→null ---
         for field in ("weight_kg", "weight_lbs"):
             val = entry.get(field)
             if isinstance(val, list) and val:
-                entry[field] = val[0]
+                val = val[0]
+            if val is not None:
+                try:
+                    entry[field] = float(val)
+                except (ValueError, TypeError):
+                    entry[field] = None
+
+        # --- default sets=1 when entry has reps/weight but no explicit sets ---
+        if entry.get("sets") is None and (
+            entry.get("reps") is not None
+            or entry.get("weight_kg") is not None
+            or entry.get("weight_lbs") is not None
+        ):
+            entry["sets"] = 1
 
         # --- strip brackets from notes: model wraps notes as "[PR!]" → "PR!" ---
         notes_val = entry.get("notes")
