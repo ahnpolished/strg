@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 
 class WorkoutEntry(BaseModel):
-    date: datetime.date
+    date: datetime.date | None = None
     exercise: str
     sets: int | None = None
     reps: int | None = None
@@ -38,7 +38,7 @@ def entries_to_text(entry: WorkoutEntry) -> str:
     else:
         weight_str = ""
     parts = [
-        str(entry.date),
+        str(entry.date) if entry.date is not None else "",
         entry.exercise,
         str(entry.sets) if entry.sets is not None else "",
         str(entry.reps) if entry.reps is not None else "",

@@ -356,25 +356,31 @@ sync_code() {
 run_tests() {
   local ip="$1" port="$2"
   info "Running test script on ${SSH_USER}@${ip}:${port}: $(basename "$TEST_SCRIPT")"
-  if [[ $DRY_RUN -eq 1 ]]; then
-    info "[dry-run] ssh ${SSH_USER}@${POD_IP}:${POD_SSH_PORT} bash < ${TEST_SCRIPT}"
-    return 0
-  fi
   local opts
   opts="$(_ssh_opts "$port")"
   # shellcheck disable=SC2086
   # Redirect stdout→stderr so all pod output lands in the log file
   # (test-loop.sh captures stderr; stdout was discarded via launch redirect)
-  # Forward WANDB_API_KEY if set so W&B logging works on the pod.
-  local wandb_export=""
-  if [[ -n "${WANDB_API_KEY:-}" ]]; then
-    wandb_export="export WANDB_API_KEY='${WANDB_API_KEY}';"
+  # Forward selected run-time env vars so callers can choose the model/dataset
+  # without changing Terraform vars or editing the remote script.
+  local remote_exports=""
+  local env_name env_value
+  for env_name in WANDB_API_KEY STRG_TEST_MODEL STRG_TEST_IMAGES STRG_GROUND_TRUTH STRG_PREDICTIONS STRG_QWEN_MIN_VISUAL_TOKENS STRG_QWEN_MAX_VISUAL_TOKENS STRG_QWEN_MAX_NEW_TOKENS; do
+    env_value="${!env_name:-}"
+    if [[ -n "$env_value" ]]; then
+      printf -v remote_exports "%s export %s=%q;" "$remote_exports" "$env_name" "$env_value"
+    fi
+  done
+  if [[ $DRY_RUN -eq 1 ]]; then
+    [[ -n "$remote_exports" ]] && info "[dry-run] remote env:${remote_exports}"
+    info "[dry-run] ssh ${SSH_USER}@${POD_IP}:${POD_SSH_PORT} ${remote_exports} bash < ${TEST_SCRIPT}"
+    return 0
   fi
   ssh -q $opts \
     -o ServerAliveInterval=30 \
     -o ServerAliveCountMax=120 \
     "${SSH_USER}@${ip}" \
-    "${wandb_export} cd ${REMOTE_DIR} && bash -s" < "$TEST_SCRIPT" >&2
+    "${remote_exports} cd ${REMOTE_DIR} && bash -s" < "$TEST_SCRIPT" >&2
 }
 
 # ── Single iteration ──────────────────────────────────────────────────────────

@@ -23,6 +23,32 @@ def field_match(pred: WorkoutEntry, ref: WorkoutEntry) -> dict[str, bool]:
 FIELDS = ["date", "exercise", "sets", "reps", "weight_kg", "weight_lbs", "notes"]
 
 
+def _append_field_rows(
+    rows: list[dict],
+    per_field_matches: dict[str, list[bool]],
+    *,
+    photo_id: str,
+    pred_entry: WorkoutEntry | None,
+    ref_entry: WorkoutEntry | None,
+) -> None:
+    if pred_entry is not None and ref_entry is not None:
+        matches = field_match(pred_entry, ref_entry)
+    else:
+        matches = {field: False for field in FIELDS}
+
+    for field, match in matches.items():
+        per_field_matches[field].append(match)
+        rows.append(
+            {
+                "photo_id": photo_id,
+                "field": field,
+                "predicted": "" if pred_entry is None else str(getattr(pred_entry, field)),
+                "ground_truth": "" if ref_entry is None else str(getattr(ref_entry, field)),
+                "match": match,
+            }
+        )
+
+
 def evaluate_pages(
     photo_id: str,
     predicted: WorkoutPage,
@@ -32,23 +58,45 @@ def evaluate_pages(
     per_field_matches: dict[str, list[bool]] = {f: [] for f in FIELDS}
     cer_scores: list[float] = []
 
+    predicted_entry_count = len(predicted.entries)
+    reference_entry_count = len(reference.entries)
+    aligned_entry_count = min(predicted_entry_count, reference_entry_count)
+    missing_entry_count = max(0, reference_entry_count - predicted_entry_count)
+    extra_entry_count = max(0, predicted_entry_count - reference_entry_count)
+
     for pred_entry, ref_entry in zip(predicted.entries, reference.entries):
         pred_text = entries_to_text(pred_entry)
         ref_text = entries_to_text(ref_entry)
         cer_scores.append(cer(pred_text, ref_text))
+        _append_field_rows(
+            rows,
+            per_field_matches,
+            photo_id=photo_id,
+            pred_entry=pred_entry,
+            ref_entry=ref_entry,
+        )
 
-        matches = field_match(pred_entry, ref_entry)
-        for field, match in matches.items():
-            per_field_matches[field].append(match)
-            rows.append(
-                {
-                    "photo_id": photo_id,
-                    "field": field,
-                    "predicted": str(getattr(pred_entry, field)),
-                    "ground_truth": str(getattr(ref_entry, field)),
-                    "match": match,
-                }
-            )
+    for ref_entry in reference.entries[aligned_entry_count:]:
+        ref_text = entries_to_text(ref_entry)
+        cer_scores.append(cer("", ref_text))
+        _append_field_rows(
+            rows,
+            per_field_matches,
+            photo_id=photo_id,
+            pred_entry=None,
+            ref_entry=ref_entry,
+        )
+
+    for pred_entry in predicted.entries[aligned_entry_count:]:
+        pred_text = entries_to_text(pred_entry)
+        cer_scores.append(cer(pred_text, ""))
+        _append_field_rows(
+            rows,
+            per_field_matches,
+            photo_id=photo_id,
+            pred_entry=pred_entry,
+            ref_entry=None,
+        )
 
     entry_count = len(cer_scores)
     avg_cer = sum(cer_scores) / entry_count if entry_count else 0.0
@@ -61,4 +109,8 @@ def evaluate_pages(
         "field_accuracy": field_accuracy,
         "macro_field_accuracy": macro_field_accuracy,
         "entry_count": entry_count,
+        "predicted_entry_count": predicted_entry_count,
+        "reference_entry_count": reference_entry_count,
+        "missing_entry_count": missing_entry_count,
+        "extra_entry_count": extra_entry_count,
     }

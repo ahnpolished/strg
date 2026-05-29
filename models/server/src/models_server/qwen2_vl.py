@@ -1,4 +1,5 @@
 import json
+import os
 import re
 from pathlib import Path
 
@@ -34,11 +35,14 @@ def _normalize_entries(data: dict) -> dict:
             if m:
                 entry["date"] = f"{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}"
 
-        # --- scalar coercion: reps and sets may come as lists ---
+        # --- scalar coercion: reps and sets may come as lists/floats ---
         for field in ("reps", "sets"):
             val = entry.get(field)
             if isinstance(val, list) and val:
-                entry[field] = val[0]
+                val = val[0]
+            if isinstance(val, float):
+                val = int(val) if val.is_integer() else None
+            entry[field] = val
 
         # --- weight fields: coerce list→scalar, then non-numeric→null ---
         for field in ("weight_kg", "weight_lbs"):
@@ -50,6 +54,20 @@ def _normalize_entries(data: dict) -> dict:
                     entry[field] = float(val)
                 except (ValueError, TypeError):
                     entry[field] = None
+
+        # --- repair common table-layout confusion ---
+        # For rows like "Deadlift 130kg 4", Qwen sometimes emits
+        # sets=4, reps=null. If the only count is plausible as reps and a
+        # weight is present, treat it as reps for one physical row.
+        sets_val = entry.get("sets")
+        if (
+            entry.get("reps") is None
+            and isinstance(sets_val, int | float)
+            and 3 <= sets_val <= 20
+            and (entry.get("weight_kg") is not None or entry.get("weight_lbs") is not None)
+        ):
+            entry["reps"] = int(sets_val)
+            entry["sets"] = 1
 
         # --- default sets=1 when entry has reps/weight but no explicit sets ---
         if entry.get("sets") is None and (
@@ -86,9 +104,29 @@ def _extract_json(text: str) -> dict:
     """Extract JSON object from model output, handling markdown code blocks and truncation."""
     text = text.strip()
     # Strip markdown code fences (```json ... ``` or ``` ... ```)
-    fence_match = re.search(r"```(?:json)?\s*(\{.*)", text, re.DOTALL)
+    fence_match = re.search(r"```(?:json)?\s*([\[{].*)", text, re.DOTALL)
     if fence_match:
         text = fence_match.group(1).split("```")[0].strip()
+    # If model returned a bare array [...] instead of {"entries": [...]}, wrap it
+    if text.lstrip().startswith("["):
+        bracket_start = text.find("[")
+        arr_text = text[bracket_start:]
+        try:
+            entries = json.loads(arr_text)
+            if isinstance(entries, list):
+                return {"entries": entries}
+        except json.JSONDecodeError:
+            # Truncated array — find last complete entry and close the array
+            last_entry = arr_text.rfind("\n  }")
+            if last_entry != -1:
+                truncated = arr_text[: last_entry + 4] + "\n]"
+                try:
+                    entries = json.loads(truncated)
+                    if isinstance(entries, list):
+                        return {"entries": entries}
+                except json.JSONDecodeError:
+                    pass
+            # fall through to brace-based extraction
     # Find start of JSON object
     brace_start = text.find("{")
     if brace_start == -1:
@@ -136,7 +174,16 @@ class Qwen2VLRunner(ServerModelRunner):
     model_id = "Qwen/Qwen2-VL-7B-Instruct"
 
     def load(self) -> None:
-        self._processor = AutoProcessor.from_pretrained(self.model_id)
+        # Cap visual tokens so large handwritten pages fit on cheaper GPUs.
+        # Qwen2-VL expects these as pixel counts in multiples of 28x28 tokens.
+        min_visual_tokens = int(os.environ.get("STRG_QWEN_MIN_VISUAL_TOKENS", "256"))
+        max_visual_tokens = int(os.environ.get("STRG_QWEN_MAX_VISUAL_TOKENS", "1280"))
+        self._max_new_tokens = int(os.environ.get("STRG_QWEN_MAX_NEW_TOKENS", "1536"))
+        self._processor = AutoProcessor.from_pretrained(
+            self.model_id,
+            min_pixels=min_visual_tokens * 28 * 28,
+            max_pixels=max_visual_tokens * 28 * 28,
+        )
         self._model = Qwen2VLForConditionalGeneration.from_pretrained(
             self.model_id,
             torch_dtype=torch.bfloat16,
@@ -161,7 +208,11 @@ class Qwen2VLRunner(ServerModelRunner):
             self._model.device
         )
         with torch.no_grad():
-            output_ids = self._model.generate(**inputs, max_new_tokens=2048)
+            output_ids = self._model.generate(
+                **inputs,
+                max_new_tokens=self._max_new_tokens,
+                do_sample=False,
+            )
         generated = self._processor.batch_decode(
             output_ids[:, inputs["input_ids"].shape[1] :],
             skip_special_tokens=True,

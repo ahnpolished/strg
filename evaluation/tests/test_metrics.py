@@ -88,3 +88,31 @@ def test_evaluate_pages_empty_entries():
     result = evaluate_pages("photo1", empty, empty)
     assert result["avg_cer"] == 0.0
     assert result["entry_count"] == 0
+
+
+def test_evaluate_pages_penalizes_missing_reference_entries():
+    predicted = WorkoutPage(entries=[entry(exercise="bench")])
+    reference = WorkoutPage(entries=[entry(exercise="bench"), entry(exercise="squat")])
+
+    result = evaluate_pages("photo1", predicted, reference)
+
+    assert result["reference_entry_count"] == 2
+    assert result["predicted_entry_count"] == 1
+    assert result["missing_entry_count"] == 1
+    assert result["extra_entry_count"] == 0
+    assert result["macro_field_accuracy"] < 1.0
+    assert result["avg_cer"] > 0.0
+
+
+def test_evaluate_pages_penalizes_extra_predicted_entries():
+    predicted = WorkoutPage(entries=[entry(exercise="bench"), entry(exercise="curl")])
+    reference = WorkoutPage(entries=[entry(exercise="bench")])
+
+    result = evaluate_pages("photo1", predicted, reference)
+
+    assert result["reference_entry_count"] == 1
+    assert result["predicted_entry_count"] == 2
+    assert result["missing_entry_count"] == 0
+    assert result["extra_entry_count"] == 1
+    assert result["macro_field_accuracy"] < 1.0
+    assert result["avg_cer"] > 0.0

@@ -41,6 +41,22 @@ case "$MODE" in
     ;;
 esac
 
+echo "==> Ensuring uv is installed"
+if ! command -v uv >/dev/null 2>&1; then
+  # Install uv via the official installer (fastest; adds ~/.local/bin/uv)
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  # Make uv available in this shell session
+  export PATH="${HOME}/.local/bin:${HOME}/.cargo/bin:${PATH}"
+fi
+echo "uv: $(uv --version)"
+
+# Cache uv packages on the persistent network volume (/workspace) so
+# repeated iterations reuse downloads rather than re-fetching 1GB+ of
+# CUDA packages every pod start.
+export UV_CACHE_DIR="${UV_CACHE_DIR:-/workspace/.uv-cache}"
+mkdir -p "$UV_CACHE_DIR"
+echo "uv cache: $UV_CACHE_DIR"
+
 echo "==> Ensuring Python $PYTHON_VERSION is available"
 if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
   uv python install "$PYTHON_VERSION"
@@ -58,7 +74,33 @@ except Exception as exc:
     raise SystemExit(f"torch check failed: {exc}")
 PY
 then
-  SKIP_TORCH=(--no-install-package torch)
+  # Skip torch itself AND all its heavy CUDA sub-packages that the RunPod
+  # PyTorch base image already provides via system site-packages.
+  # Names match exactly what's in uv.lock (verified via `grep "^name = " uv.lock`).
+  SKIP_TORCH=(
+    --no-install-package torch
+    --no-install-package torchvision
+    --no-install-package torchaudio
+    --no-install-package triton
+    --no-install-package nvidia-cublas
+    --no-install-package nvidia-cuda-cupti
+    --no-install-package nvidia-cuda-nvrtc
+    --no-install-package nvidia-cuda-runtime
+    --no-install-package nvidia-cudnn-cu13
+    --no-install-package nvidia-cufft
+    --no-install-package nvidia-cufile
+    --no-install-package nvidia-curand
+    --no-install-package nvidia-cusolver
+    --no-install-package nvidia-cusparse
+    --no-install-package nvidia-cusparselt-cu13
+    --no-install-package nvidia-nccl-cu13
+    --no-install-package nvidia-nvjitlink
+    --no-install-package nvidia-nvshmem-cu13
+    --no-install-package nvidia-nvtx
+    --no-install-package cuda-bindings
+    --no-install-package cuda-pathfinder
+    --no-install-package cuda-toolkit
+  )
 else
   echo "Base image torch was not importable; uv will install torch from the lockfile." >&2
   SKIP_TORCH=()
@@ -96,7 +138,9 @@ if [[ "$MODE" != "local" && "$MODE" != "models-local" && "$MODE" != "all" ]]; th
 fi
 
 echo "==> Verifying environment"
-uv run python - <<'PY'
+# Use the venv python directly — 'uv run python' re-syncs the full workspace
+# which pulls in models-local and re-downloads CUDA packages we just skipped.
+"$VENV_DIR/bin/python" - <<'PY'
 import sys
 print("python:", sys.executable)
 try:

@@ -22,10 +22,10 @@ import argparse
 import json
 from pathlib import Path
 
-import wandb
 from common.schema import WorkoutPage, load_page
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 
+import wandb
 from evaluation.metrics import FIELDS, evaluate_pages
 
 TARGET_FIELD_ACC = 0.90

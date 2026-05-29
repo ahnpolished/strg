@@ -149,23 +149,41 @@ except Exception as e:
     print(f"Could not parse metric JSON: {e}", file=sys.stderr)
     sys.exit(1)  # treat parse failure as FAIL, not silent pass
 
-cer   = summary.get("avg_cer", 1.0)
-acc   = summary.get("macro_field_accuracy", 0.0)
-n     = summary.get("evaluated_photos", 0)
+cer = summary.get("avg_cer", 1.0)
+acc = summary.get("macro_field_accuracy", 0.0)
+n = summary.get("evaluated_photos", 0)
+gt_n = summary.get("ground_truth_photos", n)
+missing_predictions = summary.get("missing_prediction_count", 0)
+empty_predictions = summary.get("empty_prediction_count", 0)
+reference_entries = summary.get("total_reference_entries", 0)
+predicted_entries = summary.get("total_predicted_entries", 0)
+missing_entries = summary.get("missing_entry_count", 0)
+extra_entries = summary.get("extra_entry_count", 0)
 
-print(f"\n=== PASS/FAIL CHECK (n={n} photos) ===")
+print(f"\n=== PASS/FAIL CHECK (n={n}/{gt_n} photos) ===")
 print(f"  avg CER:              {cer:.3f}  (target <= 0.10)  {'PASS' if cer <= 0.10 else 'FAIL'}")
 print(f"  macro field accuracy: {acc:.3f}  (target >= 0.90)  {'PASS' if acc >= 0.90 else 'FAIL'}")
+print(f"  missing predictions:  {missing_predictions}  (target 0)  {'PASS' if missing_predictions == 0 else 'FAIL'}")
+print(f"  empty predictions:    {empty_predictions}  (target 0)  {'PASS' if empty_predictions == 0 else 'FAIL'}")
+print(f"  entries pred/ref:     {predicted_entries}/{reference_entries}  (missing={missing_entries}, extra={extra_entries})")
 
 if n == 0:
     print("\nOVERALL: FAIL (0 photos evaluated)")
     sys.exit(1)
-elif cer <= 0.10 and acc >= 0.90:
+if missing_predictions:
+    print("\nOVERALL: FAIL (missing prediction files)")
+    sys.exit(1)
+if empty_predictions:
+    print("\nOVERALL: FAIL (empty prediction pages)")
+    sys.exit(1)
+if reference_entries == 0:
+    print("\nOVERALL: FAIL (0 reference entries)")
+    sys.exit(1)
+if cer <= 0.10 and acc >= 0.90:
     print("\nOVERALL: PASS")
     sys.exit(0)
-else:
-    print("\nOVERALL: FAIL")
-    sys.exit(1)
+print("\nOVERALL: FAIL")
+sys.exit(1)
 PY
 fi
 

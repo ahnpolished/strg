@@ -171,8 +171,9 @@ def cmd_stats() -> None:
 
 
 def cmd_push(version: str) -> None:
-    import wandb
     from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
+
+    import wandb
 
     _load_dotenv()
 

@@ -21,6 +21,7 @@ quote-style = "double"
 
 [tool.ty.rules]
 unresolved-import = "ignore"
+unresolved-attribute = "ignore"
 
 [dependency-groups]
 dev = [

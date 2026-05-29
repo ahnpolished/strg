@@ -41,3 +41,6 @@ data/predictions/
 .idea/
 .vscode/
 .claude/worktrees/
+infra/runpod/logs
+infra/runpod/tfplan
+.claude/worktrees

@@ -16,13 +16,17 @@ class Florence2Runner(ServerModelRunner):
 
     def load(self) -> None:
         self._processor = AutoProcessor.from_pretrained(self.model_id, trust_remote_code=True)
-        self._model = AutoModelForCausalLM.from_pretrained(
-            self.model_id,
-            torch_dtype=torch.float16,
-            device_map="auto",
-            trust_remote_code=True,
-            attn_implementation="eager",
-        ).eval()
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        self._model = (
+            AutoModelForCausalLM.from_pretrained(
+                self.model_id,
+                torch_dtype=torch.float16,
+                trust_remote_code=True,
+                attn_implementation="eager",
+            )
+            .to(device)
+            .eval()
+        )
 
     def predict(self, image_path: Path) -> WorkoutPage:
         image = Image.open(image_path).convert("RGB")
@@ -40,7 +44,7 @@ class Florence2Runner(ServerModelRunner):
         for k, v in inputs.items():
             if torch.is_tensor(v):
                 print(
-                    f"DEBUG: moved inputs[{k}] shape: {v.shape}, dtype: {v.dtype}, device: {v.device}"
+                    f"DEBUG: moved inputs[{k}] shape: {v.shape}, dtype: {v.dtype}, device: {v.device}"  # noqa: E501
                 )
 
         with torch.no_grad():
@@ -69,8 +73,9 @@ def _parse_ocr_text_to_page(text: str) -> WorkoutPage:
     entries = []
     date = None
     date_pat = re.compile(r"(\d{4}[-/]\d{1,2}[-/]\d{1,2}|\d{1,2}[-/]\d{1,2}[-/]\d{2,4})")
-    weight_pat = re.compile(r"([\d.]+)\s*(kg|lbs?)", re.IGNORECASE)
-    sets_reps_pat = re.compile(r"(\d+)\s*[xX×]\s*(\d+)")
+    weight_pat = re.compile(r"(?<!\d)(\d+(?:\.\d+)?)[.,]*\s*(kg|lbs?)\b", re.IGNORECASE)
+    sets_reps_pat = re.compile(r"(\d+)\s*(?:[xX×]|sets?\s*(?:of|x)?\s*)\s*(\d+)")
+    reps_pat = re.compile(r"(?:^|\s)(?:x|×|reps?\s*)\s*(\d+)(?:\s|$)", re.IGNORECASE)
 
     for line in text.splitlines():
         line = line.strip()
@@ -85,27 +90,47 @@ def _parse_ocr_text_to_page(text: str) -> WorkoutPage:
                 pass
 
         sr_match = sets_reps_pat.search(line)
+        reps_match = reps_pat.search(line)
         wm = weight_pat.search(line)
+
+        # Avoid turning arbitrary OCR fragments into workout entries. A useful
+        # row should contain at least a rep/set pattern or a weight token.
+        if not (sr_match or reps_match or wm):
+            continue
+
         exercise = sets_reps_pat.sub("", line)
-        exercise = weight_pat.sub("", exercise).strip(" -:,")
+        exercise = reps_pat.sub(" ", exercise)
+        exercise = weight_pat.sub("", exercise).strip(" -:,.•|[]()")
 
         if not exercise:
             continue
 
-        sets = int(sr_match.group(1)) if sr_match else None
-        reps = int(sr_match.group(2)) if sr_match else None
+        sets = int(sr_match.group(1)) if sr_match else 1
+        reps = (
+            int(sr_match.group(2))
+            if sr_match
+            else (int(reps_match.group(1)) if reps_match else None)
+        )
         weight_kg = None
+        weight_lbs = None
         if wm:
-            val = float(wm.group(1))
-            weight_kg = val * 0.4536 if wm.group(2).lower().startswith("lb") else val
+            try:
+                val = float(wm.group(1).rstrip("."))
+            except ValueError:
+                continue
+            if wm.group(2).lower().startswith("lb"):
+                weight_lbs = val
+            else:
+                weight_kg = val
 
         entries.append(
             WorkoutEntry(
-                date=date or datetime.date.today(),
+                date=date,
                 exercise=exercise,
                 sets=sets,
                 reps=reps,
                 weight_kg=weight_kg,
+                weight_lbs=weight_lbs,
             )
         )
 

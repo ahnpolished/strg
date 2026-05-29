@@ -19,12 +19,14 @@ Parse `$ARGUMENTS` to extract `--model MODEL` (default: qwen2-vl) and `--iterati
 
 Before the first iteration:
 
-1. Verify `TF_VAR_ssh_public_key` is exported:
+1. Verify required env vars are set:
    ```bash
-   echo "${TF_VAR_ssh_public_key:0:20}..."
+   echo "RUNPOD_API_KEY=${RUNPOD_API_KEY:0:8}..."
+   echo "TF_VAR_ssh_public_key=${TF_VAR_ssh_public_key:0:20}..."
    ```
-   If empty, export it:
+   If missing:
    ```bash
+   # RUNPOD_API_KEY must already be set (used by Terraform provider too)
    export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub 2>/dev/null || cat ~/.ssh/id_rsa.pub)"
    ```
 
@@ -33,11 +35,11 @@ Before the first iteration:
    mkdir -p infra/runpod/logs
    ```
 
-3. Set the model in pod-tests.sh env or pass via pod environment. The easiest way: check if `STRG_TEST_MODEL` needs to be set based on `$ARGUMENTS`. If a model was specified, add it to the test env by prepending `STRG_TEST_MODEL=<model>` in front of the test script call, or pass via terraform `env` var.
-
-   To set the model without modifying files, update the test-loop invocation to pass `--test-script` pointing to an inline override, OR set it in the pod env via terraform `-var 'env={STRG_TEST_MODEL="qwen2-vl"}'`. The simplest: just export it and have pod-tests.sh pick it up since it's passed via `env` in main.tf.
-
-   Actually, the cleanest way: the `STRG_TEST_MODEL` env var is passed to the pod via `terraform.tfvars` `env` map. You can override it per-run by setting `TF_VAR_env='{"STRG_TEST_MODEL":"qwen2-vl"}'`. Set this before each iteration if a model arg was given.
+3. If a model was specified in `$ARGUMENTS`, export it so the pod picks it up:
+   ```bash
+   export TF_VAR_env='{"STRG_TEST_MODEL":"<model>"}'
+   ```
+   This merges into the pod's env via `main.tf`'s `env = merge(...)`.
 
 ## Iteration loop
 
@@ -45,17 +47,17 @@ For each iteration N (starting at 1):
 
 ### Step 1 — Run one test iteration
 
-Set up iteration log file:
+Set up iteration log file (use absolute path from repo root):
 ```bash
-LOG_FILE="infra/runpod/logs/iter-$(date '+%Y%m%d-%H%M%S')-N${ITER}.log"
+LOG_FILE="$(pwd)/infra/runpod/logs/iter-$(date '+%Y%m%d-%H%M%S')-N${ITER}.log"
 ```
 
-Run the loop with 30-minute hard timeout:
+Run the loop (from repo root) with 20-minute hard timeout:
 ```bash
-cd infra/runpod && bash scripts/test-loop.sh \
+bash infra/runpod/scripts/test-loop.sh \
   --iterations 1 \
-  --iteration-timeout 1800 \
-  --log-file "../../$LOG_FILE" \
+  --iteration-timeout 1200 \
+  --log-file "$LOG_FILE" \
   [--dry-run if applicable]
 ```
 

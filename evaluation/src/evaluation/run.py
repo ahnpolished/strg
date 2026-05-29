@@ -28,22 +28,36 @@ def main() -> None:
     per_field_matches: dict[str, list[bool]] = {f: [] for f in FIELDS}
     all_cer: list[float] = []
     latencies: list[float] = []
+    missing_prediction_count = 0
+    empty_prediction_count = 0
+    total_reference_entries = 0
+    total_predicted_entries = 0
+    missing_entry_count = 0
+    extra_entry_count = 0
 
     for gt_path in gt_files:
         photo_id = gt_path.stem
         pred_path = pred_dir / gt_path.name
+        reference = load_page(gt_path)
+        total_reference_entries += len(reference.entries)
         if not pred_path.exists():
             print(f"[WARN] No prediction found for {photo_id}, skipping")
+            missing_prediction_count += 1
+            missing_entry_count += len(reference.entries)
             continue
 
         t0 = time.perf_counter()
         predicted = load_page(pred_path)
-        reference = load_page(gt_path)
         latencies.append(time.perf_counter() - t0)
+        total_predicted_entries += len(predicted.entries)
+        if not predicted.entries and reference.entries:
+            empty_prediction_count += 1
 
         result = evaluate_pages(photo_id, predicted, reference)
         all_rows.extend(result["rows"])
         all_cer.append(result["avg_cer"])
+        missing_entry_count += result["missing_entry_count"]
+        extra_entry_count += result["extra_entry_count"]
         for f in FIELDS:
             per_field_matches[f].extend([r["match"] for r in result["rows"] if r["field"] == f])
 
@@ -60,6 +74,13 @@ def main() -> None:
         "latency_p50": p50_lat,
         "latency_p95": p95_lat,
         "evaluated_photos": len(all_cer),
+        "ground_truth_photos": len(gt_files),
+        "missing_prediction_count": missing_prediction_count,
+        "empty_prediction_count": empty_prediction_count,
+        "total_reference_entries": total_reference_entries,
+        "total_predicted_entries": total_predicted_entries,
+        "missing_entry_count": missing_entry_count,
+        "extra_entry_count": extra_entry_count,
     }
 
     print(json.dumps(summary, indent=2))
