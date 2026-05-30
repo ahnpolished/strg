@@ -36,16 +36,20 @@ uv run python -m evaluation.run --model <name> --predictions data/predictions/<p
 - Local model export: CoreML for iOS
 - Experiment tracking: W&B project `strg-model`
 
-## Current best results (as of 2026-05-28)
+## Autoresearch loop history (W&B tracked)
 
-| Model      | CER   | Field Accuracy | Status          |
-|------------|-------|----------------|-----------------|
-| qwen2-vl   | 0.116 | 0.804          | FAIL — closest  |
-| internvl2  | 0.198 | 0.570          | FAIL — second   |
-| florence2  | 0.678 | 0.224          | FAIL — skip     |
-| donut      | 1.000 | 0.000          | FAIL — skip     |
+| Date     | Run ID               | Model     | CER   | Field Acc | Change vs prev        |
+|----------|----------------------|-----------|-------|-----------|-----------------------|
+| 20260528 | matrix-070837        | qwen2-vl  | 0.116 | 0.804     | baseline (best known) |
+| 20260528 | matrix-071913        | qwen2-vl  | 0.177 | 0.766     | regression (GPU diff) |
+| 20260530 | matrix-085608        | qwen2-vl  | 0.172 | 0.776     | +prompt rules (DO NOT aggregate, seq-of-reps) |
+| 20260530 | TBD (internvl2)      | internvl2 | TBD   | TBD       | in progress           |
 
-**Primary blocker for qwen2-vl**: photo 019 (table layout with per-set rows). Model outputs 5 summarized entries; GT has 18 per-set rows. Fix requires fine-tuning or layout-specific prompt additions.
+**Gap to close**: CER needs to drop from 0.172 → 0.10 (−0.07), accuracy needs to rise from 0.776 → 0.90 (+0.12).
+
+**Primary blocker for qwen2-vl**: photo 019 (table layout with per-set rows). Model outputs 5 summarized entries; GT has 18 per-set rows. Prompt rules helped photo-011 (15→11 entries) but not photo-019. Fine-tuning on compact-layout training data is the next lever.
+
+**Budget used**: ~$0.44 × (11/60) ≈ $0.08 for qwen2-vl debug run + ~$0.44 × (internvl2 run TBD)
 
 ## Autoresearch loop (Karpathy-style)
 
