@@ -203,6 +203,48 @@ tmux send-keys -t strg-finetune "cd /Users/taeahn/devs/personal/2026/strg && cla
 **Key files:**
 - `infra/runpod/scripts/pod-finetune.sh` — runs on pod (install + generate data + fine-tune + eval)
 - `models/server/src/models_server/finetune_qwen2_vl.py` — QLoRA training script (all bugs fixed)
-- `models/server/src/models_server/qwen2_vl.py` — supports `STRG_QWEN_LORA_CHECKPOINT` for eval
+- `models/server/src/models_server/serve.py` — FastAPI serving API for mobile app backend
+- `models/server/docker/Dockerfile` — Docker image for deployment
+- `models/server/src/models_server/qwen2_vl.py` — inference runner with `STRG_QWEN_LORA_CHECKPOINT` support
 - `data/train/` — 100 synthetic training images (compact + tabular layouts)
 - `data/val/` — 20 synthetic val images
+
+## Serving API (for mobile app backend)
+
+### Quick start (local)
+```bash
+uv sync --package models-server
+STRG_QWEN_LORA_CHECKPOINT=/path/to/lora uv run python -m models_server.serve
+```
+Then `curl -X POST -F "image=@photo.jpg" http://localhost:8000/predict`.
+
+### Endpoints
+- `POST /predict` — Upload image (multipart), returns `{"entries": [...], "latency_s": 3.2, "entry_count": 12}`
+- `GET /health` — Returns model status and loaded LoRA checkpoint path
+
+### Deployment options (by cost)
+
+| Option | Cost/hr | Setup Time | Notes |
+|--------|---------|------------|-------|
+| **RunPod Serverless** | ~$0.50-1.50 | Minutes | Best for production: auto-scaling, no cold-start if kept warm |
+| **Self-hosted GPU VPS** (Vast.ai, Lambda) | ~$0.50-1.00 | Hours | Cheaper, needs Docker + Nginx |
+| **AWS SageMaker** | ~$1.50+ | Days | Most robust, highest overhead |
+
+### Re-running fine-tuning for checkpoint
+Since the checkpoint was lost with the pod, re-run with:
+```bash
+set -a; source .env; set +a
+export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
+export STRG_FINETUNE_MODEL=qwen2-vl STRG_EPOCHS=3
+export STRG_INTERRUPTIBLE=true  # or false for on-demand
+bash infra/runpod/scripts/model-matrix-loop.sh \
+  --models qwen2-vl --max-parallel 1 --cloud-type SECURE \
+  --max-cost-per-hour 2.00 --batch-timeout 18000 \
+  --test-script infra/runpod/scripts/pod-finetune.sh
+
+# After training completes, fetch checkpoint:
+# The predict/ directory and eval results are saved locally.
+# For the LoRA checkpoint itself, either:
+# 1. SSH into the pod and copy checkpoints/qwen2-vl/best/ before teardown, or
+# 2. Modify finetune_qwen2_vl.py to upload to W&B artifact properly (fix disk space)
+```
