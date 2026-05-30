@@ -104,3 +104,55 @@ echo "strg fine-tune complete — $(date '+%Y-%m-%d %H:%M:%S')"
 echo "  checkpoint: $OUTPUT_DIR/best"
 ls -lh "${OUTPUT_DIR}/best" 2>/dev/null || echo "  (no best checkpoint saved)"
 echo "==================================================================="
+
+# ── 4. Evaluate fine-tuned model on test set ─────────────────────────────────
+CKPT="${OUTPUT_DIR}/best"
+if [[ -d "$CKPT" ]]; then
+  echo ""
+  echo "--- [4/4] Evaluating fine-tuned model ---"
+  TEST_IMAGES="${STRG_TEST_IMAGES:-${WORKSPACE}/data/test}"
+  GROUND_TRUTH="${STRG_GROUND_TRUTH:-${WORKSPACE}/data/test}"
+  PREDICTIONS="${STRG_PREDICTIONS:-${WORKSPACE}/data/predictions}"
+  mkdir -p "$PREDICTIONS"
+
+  PYTHONUNBUFFERED=1 STRG_QWEN_LORA_CHECKPOINT="$CKPT" "$VENV_PYTHON" -m models_server.run \
+    --model "$MODEL" \
+    --images "$TEST_IMAGES" \
+    --output "$PREDICTIONS" \
+    --phase "finetune-eval"
+
+  set +e
+  EVAL_OUTPUT=$(WANDB_SILENT=true STRG_QWEN_LORA_CHECKPOINT="$CKPT" "$VENV_PYTHON" -m evaluation.run \
+    --model "$MODEL" \
+    --predictions "${PREDICTIONS}/${MODEL}" \
+    --ground-truth "$GROUND_TRUTH" \
+    --phase "finetune-eval")
+  EVAL_EXIT=$?
+  set -e
+
+  EVAL_JSON=$(echo "$EVAL_OUTPUT" | python3 -c "
+import sys
+t = sys.stdin.read()
+b = t.find('{')
+e = t.rfind('}')
+print(t[b:e+1] if b != -1 and e > b else '')
+")
+
+  if [[ -n "$EVAL_JSON" ]]; then
+    echo "$EVAL_JSON"
+    "$VENV_PYTHON" - "$EVAL_JSON" <<'PY'
+import json, sys
+s = json.loads(sys.argv[1])
+cer = s.get("avg_cer", 1.0); acc = s.get("macro_field_accuracy", 0.0)
+n = s.get("evaluated_photos", 0)
+print(f"\n=== FINE-TUNE EVAL (n={n}) ===")
+print(f"  CER={cer:.3f}  {'PASS' if cer <= 0.10 else 'FAIL'}")
+print(f"  ACC={acc:.3f}  {'PASS' if acc >= 0.90 else 'FAIL'}")
+if cer <= 0.10 and acc >= 0.90:
+    print("\nOVERALL: PASS")
+    sys.exit(0)
+print("\nOVERALL: FAIL")
+sys.exit(1)
+PY
+  fi
+fi
