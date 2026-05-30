@@ -54,6 +54,7 @@ PYTHONUNBUFFERED=1 "$VENV_PYTHON" -m pip install bitsandbytes peft 2>&1 | tail -
 # ── 2. Generate training data if missing ─────────────────────────────────────
 echo ""
 echo "--- [2/3] Checking training data ---"
+mkdir -p "${TRAIN_DIR}" "${VAL_DIR}"
 N_TRAIN=$(find "${TRAIN_DIR}" -maxdepth 1 -name "*.jpg" 2>/dev/null | wc -l | tr -d ' ')
 N_VAL=$(find "${VAL_DIR}" -maxdepth 1 -name "*.jpg" 2>/dev/null | wc -l | tr -d ' ')
 echo "  train images: $N_TRAIN"
