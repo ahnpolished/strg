@@ -74,7 +74,7 @@ Classify the result into one of these categories:
 **A. INFRASTRUCTURE FAILURE** (provision/SSH failed)
 - Signs: `terraform apply` errors, "no instances available", SSH timeout
 - Fix actions:
-  - If "no instances available": in `infra/runpod/terraform.tfvars`, try adding more GPU fallbacks to `gpu_type_ids`, set `attach_network_volume = false`, set `interruptible = false`
+  - If "no instances available": first check `cloud_type = "COMMUNITY"` (SECURE has much lower capacity); also try `attach_network_volume = false` and add more GPU fallbacks to `gpu_type_ids`
   - If SSH timeout: check `support_public_ip = true` and `"22/tcp"` in ports
 
 **B. INSTALL FAILURE** (dependency install crashed)
