@@ -21,6 +21,8 @@ Rules:
   - A row with "3x10" notation: 1 entry, sets=3, reps=10
   - Three separate rows each reading "Squat x10": 3 entries, each sets=1, reps=10
   - Identical rows (same exercise, same weight) appearing N times = N separate entries
+  - DO NOT aggregate: if you see 4 rows of "Deadlift 4 reps", output FOUR entries, NOT one entry with sets=4
+  - If a sequence like "4,4,4,4" or "10,10,9,8" appears next to one exercise name, each number is a separate entry with sets=1 and reps=<that number>
 - sets: default is 1 for a single-set row. Only use sets>1 when BOTH a set count AND a rep count appear together (e.g. "3x10", "4x8", "4 sets x 8 reps"). If a row shows ONLY one number besides the weight, that number is REPS (sets=1). Examples:
   - "Squat 4x8 100kg" → sets=4, reps=8, weight_kg=100
   - "Squat 100x4" or "Squat 100kg x4" or "Squat 4 100kg" → sets=1, reps=4, weight_kg=100

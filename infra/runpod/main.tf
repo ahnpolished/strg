@@ -7,15 +7,11 @@ locals {
 }
 
 resource "runpod_network_volume" "model_weights" {
+  count = var.attach_network_volume ? 1 : 0
+
   name           = "${local.name_prefix}-models"
   size           = var.network_volume_size_gb
   data_center_id = var.data_center_id
-
-  lifecycle {
-    # Model checkpoints and downloaded weights are expensive to recreate. Remove
-    # this intentionally before destroying the volume.
-    prevent_destroy = true
-  }
 }
 
 resource "runpod_pod" "trainer" {
@@ -39,7 +35,7 @@ resource "runpod_pod" "trainer" {
   container_disk_in_gb       = var.container_disk_in_gb
   volume_in_gb               = var.pod_volume_size_gb
   volume_mount_path          = local.model_volume_path
-  network_volume_id          = var.attach_network_volume ? runpod_network_volume.model_weights.id : null
+  network_volume_id          = var.attach_network_volume ? runpod_network_volume.model_weights[0].id : null
   min_vcpu_per_gpu           = var.min_vcpu_per_gpu
   min_ram_per_gpu            = var.min_ram_per_gpu
   allowed_cuda_versions      = var.allowed_cuda_versions

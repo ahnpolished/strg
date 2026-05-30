@@ -1,6 +1,6 @@
 output "network_volume_id" {
   description = "Persistent RunPod network volume ID for model weights and checkpoints."
-  value       = runpod_network_volume.model_weights.id
+  value       = var.attach_network_volume ? runpod_network_volume.model_weights[0].id : null
 }
 
 output "network_volume_mount_path" {
