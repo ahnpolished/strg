@@ -43,13 +43,18 @@ uv run python -m evaluation.run --model <name> --predictions data/predictions/<p
 | 20260528 | matrix-070837        | qwen2-vl  | 0.116 | 0.804     | baseline (best known) |
 | 20260528 | matrix-071913        | qwen2-vl  | 0.177 | 0.766     | regression (GPU diff) |
 | 20260530 | matrix-085608        | qwen2-vl  | 0.172 | 0.776     | +prompt rules (DO NOT aggregate, seq-of-reps) |
-| 20260530 | TBD (internvl2)      | internvl2 | TBD   | TBD       | in progress           |
+| 20260530 | matrix-090904        | internvl2 | 0.210 | 0.508     | +57 extra entries (over-predicts complex layouts) |
 
-**Gap to close**: CER needs to drop from 0.172 → 0.10 (−0.07), accuracy needs to rise from 0.776 → 0.90 (+0.12).
+**Gap to close for fine-tuning target**: qwen2-vl CER 0.172 → 0.10 (−0.07), accuracy 0.776 → 0.90 (+0.12).
 
-**Primary blocker for qwen2-vl**: photo 019 (table layout with per-set rows). Model outputs 5 summarized entries; GT has 18 per-set rows. Prompt rules helped photo-011 (15→11 entries) but not photo-019. Fine-tuning on compact-layout training data is the next lever.
+**Two best models confirmed**: qwen2-vl (#1) and internvl2 (#2). Debugging phase COMPLETE.
 
-**Budget used**: ~$0.44 × (11/60) ≈ $0.08 for qwen2-vl debug run + ~$0.44 × (internvl2 run TBD)
+**Key failure analysis**:
+- qwen2-vl: under-predicts on table layouts (photo-019: 5 pred vs 18 GT). Total: 141/156 entries.
+- internvl2: over-predicts on set-countdown + grouped layouts (photos 011,014,021). Total: 202/156 entries (+57 extra!).
+- internvl2 handles landscape-column layout well (photo-019: 17/18) — complementary to qwen2-vl.
+
+**Next action**: Fine-tune qwen2-vl on compact-layout training images (data/train/). Budget spent: ~$0.23 of $10.
 
 ## Autoresearch loop (Karpathy-style)
 
@@ -86,9 +91,10 @@ Never fix randomly. Measure → identify the single biggest delta → make the m
 
 ### Budget tracking ($10 total)
 
-- Debug/eval runs: ~$0.35/pod-hour (COMMUNITY interruptible)
-- Fine-tuning run: ~$1.50-2.00 for 2-3hr QLoRA on A40 (20GB adapter, ~90 training images)
-- Reserved: $5 debug (≈14 eval runs), $5 fine-tune (≈2-3 fine-tune runs)
+- Debug/eval runs: ~$0.44/pod-hour (SECURE on-demand — COMMUNITY was unavailable 2026-05-30)
+- Fine-tuning run: ~$1.32 for ~3hr QLoRA on A40
+- Spent so far (2026-05-30): ~$0.23 ($0.08 qwen2-vl + $0.15 internvl2)
+- Remaining: ~$9.77
 - Watch: `terraform destroy` must run after every session — one orphaned overnight pod = whole budget
 
 ### Running the matrix
