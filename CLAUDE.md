@@ -44,8 +44,17 @@ uv run python -m evaluation.run --model <name> --predictions data/predictions/<p
 | 20260528 | matrix-071913        | qwen2-vl  | 0.177 | 0.766     | regression (GPU diff) |
 | 20260530 | matrix-085608        | qwen2-vl  | 0.172 | 0.776     | +prompt rules (DO NOT aggregate, seq-of-reps) |
 | 20260530 | matrix-090904        | internvl2 | 0.210 | 0.508     | +57 extra entries (over-predicts complex layouts) |
+| 20260530 | finetune-eval-4wtagw2i | qwen2-vl (fine-tuned) | **0.051** | **0.882** | 3 epochs QLoRA, 100 train + 20 val images, A40 |
 
-**Gap to close for fine-tuning target**: qwen2-vl CER 0.172 → 0.10 (−0.07), accuracy 0.776 → 0.90 (+0.12).
+**Fine-tuning result**: CER 0.172→0.051 (−70%), ACC 0.776→0.882 (+13.6%). CER target (≤0.10) achieved. ACC target (≥0.90) missed by 1.8%.
+
+**Val set performance**: CER 0.066, ACC 0.989 — model excels on synthetic val data.
+
+**Key bugs fixed during fine-tuning**:
+- `eval_steps=50→100` (eval too slow on val set, generate() takes ~20min per run)
+- Label masking was wrong: `prompt_ids` computed WITHOUT image tokens, causing mid-prompt label leakage
+- Evaluate function rebuilt to use proper inference pipeline (`add_generation_prompt=True`)
+- Disabled PyTorch torch.compile workers (32+ processes eating CPU)
 
 **Two best models confirmed**: qwen2-vl (#1) and internvl2 (#2). Debugging phase COMPLETE.
 
@@ -167,63 +176,33 @@ tmux new-session -d -s strg-finetune
 tmux send-keys -t strg-finetune "cd /Users/taeahn/devs/personal/2026/strg && claude" Enter
 ```
 
-### Current state (as of 2026-05-30 ~12:00)
+### Current state (as of 2026-05-30 ~18:00)
 
 **What's done:**
-- Debugging complete: qwen2-vl (CER=0.172/ACC=0.776) and internvl2 (CER=0.210/ACC=0.508) evaluated and W&B-logged
-- Two best models confirmed: qwen2-vl #1, internvl2 #2
-- **Bugs fixed in fine-tuning pipeline:**
-  - `eval_steps=50→10` so eval fires during training (needed ~39 steps, eval was at 50)
-  - Fixed eval leaking ground-truth answer to `generate()` — now uses prompt-only tokens
-  - Added final eval + fallback checkpoint save at end of training
-  - Training images now tracked in git (removed from `.gitignore`) with rsync include rules
-  - Fixed bash comments breaking rsync multiline command
-  - Added `STRG_INTERRUPTIBLE` env var to control spot/on-demand via matrix loop
-- Fine-tuning infrastructure ready: pod-finetune.sh, finetune_qwen2_vl.py, 100 training images in data/train/, 20 val images in data/val/
+- ✅ **Fine-tuning complete!** qwen2-vl QLoRA 3 epochs on 100 synthetic training images
+- Test set: CER **0.051** (target ≤0.10 ✅), Field Acc **0.882** (target ≥0.90 ❌ miss by 1.8%)
+- Val set: CER **0.066** (✅), Field Acc **0.989** (✅ — synthetic val data)
+- W&B logged: training run (h5gpxcle) + finetune-eval (4wtagw2i)
+- Improvement vs baseline: CER 0.172→0.051 (−70%), ACC 0.776→0.882 (+13.6%)
 
-**What's blocked:**
-- RunPod GPU capacity crunch across all cloud types (SECURE + COMMUNITY):
-  - On-demand (COMMUNITY/SECURE): "no capacity" since ~10:33
-  - Spot/SECURE: provisions but SSH fails to connect (ERROR::SSH timeout after 600s)
-  - Spot/SECURE (earlier): A40s worked but got evicted mid-training (~1-2min or ~10min)
-- Budget spent: ~$1.34 on failed spot attempts
-  - Remaining: ~$8.66
+**All bugs found and fixed:**
+1. `eval_steps=50` too high (never fired). Fixed to 100 (avoid slow val generation)
+2. Eval leaked ground-truth answer to `generate()`. Fixed: proper prompt construction
+3. Label masking broke: `prompt_ids` computed WITHOUT image tokens → mask ended mid-prompt
+4. Final checkpoint never saved. Fixed: fallback save at end of training
+5. Training images not synced (gitignore + rsync exclude). Fixed both.
+6. PyTorch torch.compile workers (32+ processes) eating CPU. Disabled.
+7. Rsync command broken by bash comments in multiline continuation.
 
-**How to launch fine-tuning once capacity returns:**
-```bash
-set -a; source .env; set +a
-export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
-export STRG_FINETUNE_MODEL=qwen2-vl STRG_EPOCHS=3
-
-# Try on-demand first (fails if no capacity):
-unset STRG_INTERRUPTIBLE
-bash infra/runpod/scripts/model-matrix-loop.sh \
-  --models qwen2-vl --max-parallel 1 --cloud-type SECURE \
-  --max-cost-per-hour 2.00 --batch-timeout 18000 \
-  --test-script infra/runpod/scripts/pod-finetune.sh
-
-# On-demand fallback to COMMUNITY (cheaper):
-bash infra/runpod/scripts/model-matrix-loop.sh \
-  --models qwen2-vl --max-parallel 1 --cloud-type COMMUNITY \
-  --max-cost-per-hour 2.00 --batch-timeout 18000 \
-  --test-script infra/runpod/scripts/pod-finetune.sh
-
-# Spot fallback (if on-demand persistently unavailable):
-export STRG_INTERRUPTIBLE=true
-bash infra/runpod/scripts/model-matrix-loop.sh \
-  --models qwen2-vl --max-parallel 1 --cloud-type SECURE \
-  --max-cost-per-hour 2.00 --batch-timeout 18000 \
-  --test-script infra/runpod/scripts/pod-finetune.sh
-```
-
-**After training completes:**
-1. Monitor the job log: `infra/runpod/logs/matrix-<timestamp>-qwen2-vl.log`
-2. Check W&B for the `finetune-eval` run has real CER/ACC values
-3. Update the autoresearch loop table in this file with the fine-tuning results
+**What to do next for ACC improvement (88.2%→90%+):**
+1. **More training data** (200+ images instead of 100)
+2. **More epochs** (5-10 instead of 3)
+3. **Better synthetic data** — include more table-layout examples (current weakness)
+4. Focus on improving `date` (84.1%) and `reps` (84.1%) fields — model struggles with date formats and rep countdown patterns
 
 **Key files:**
 - `infra/runpod/scripts/pod-finetune.sh` — runs on pod (install + generate data + fine-tune + eval)
-- `models/server/src/models_server/finetune_qwen2_vl.py` — QLoRA training script (bug fixes applied)
+- `models/server/src/models_server/finetune_qwen2_vl.py` — QLoRA training script (all bugs fixed)
 - `models/server/src/models_server/qwen2_vl.py` — supports `STRG_QWEN_LORA_CHECKPOINT` for eval
 - `data/train/` — 100 synthetic training images (compact + tabular layouts)
 - `data/val/` — 20 synthetic val images
