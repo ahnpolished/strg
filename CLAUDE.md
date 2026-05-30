@@ -108,7 +108,9 @@ bash infra/runpod/scripts/model-matrix-loop.sh \
 
 ### Known failure patterns (do not re-investigate)
 
-- **SECURE cloud + 3 pods = all fail**: RunPod SECURE has low capacity. Always use `--cloud-type COMMUNITY` or set `cloud_type = "COMMUNITY"` in `terraform.tfvars`.
+- **SECURE cloud + 3 pods = all fail**: RunPod SECURE has low capacity for multi-pod batches.
+- **COMMUNITY cloud + 1 pod = capacity error (2026-05-30)**: All COMMUNITY GPU types showed "no instances available" on this date. SECURE + 1 pod at $0.44/hr succeeded. Use `--cloud-type SECURE --max-cost-per-hour 2.00` when COMMUNITY is unavailable.
+- **Network volume 404**: After credit renewal, the old volume `atf6dcg14t` was deleted. Fixed by making `runpod_network_volume` conditional (`count = var.attach_network_volume ? 1 : 0`) and removing from state with `terraform state rm runpod_network_volume.model_weights`.
 - **photo 019 table layout**: qwen2-vl outputs 5 entries vs 18 GT. Model sees summary rows, not individual set rows. Prompt rule for "column of rep values" is partially implemented but incomplete.
 - **photo 011 set countdown**: model treats set-number countdown (5,4,3,2,1) as separate rows; GT uses per-set reps rows. Partially a data-convention mismatch.
 
