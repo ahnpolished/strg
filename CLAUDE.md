@@ -158,3 +158,43 @@ Do NOT fine-tune on images in `data/test/` — that's the eval set.
 
 - **Safe to parallelize**: read-only tasks (error analysis per model, code review, metric inspection)
 - **Never parallelize**: terraform operations — shared `terraform.tfstate` will race and corrupt
+
+## Handoff protocol (for usage-limit continuations)
+
+When Claude hits a usage limit, open a new tmux pane and continue:
+```bash
+tmux new-session -d -s strg-finetune
+tmux send-keys -t strg-finetune "cd /Users/taeahn/devs/personal/2026/strg && claude" Enter
+```
+
+### Current state (as of 2026-05-30 ~09:45)
+
+**What's done:**
+- Debugging complete: qwen2-vl (CER=0.172/ACC=0.776) and internvl2 (CER=0.210/ACC=0.508) evaluated and W&B-logged
+- Two best models confirmed: qwen2-vl #1, internvl2 #2
+- Fine-tuning infrastructure ready: pod-finetune.sh, finetune_qwen2_vl.py, 100 training images in data/train/, 20 val images in data/val/
+
+**What's blocked:**
+- SECURE cloud hit transient capacity crunch (H2) at ~09:37. All GPU types unavailable. Wait 15-30 minutes then retry.
+
+**What to do next:**
+1. Source env vars: `set -a; source .env; set +a && export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"`
+2. Export fine-tune settings: `export STRG_FINETUNE_MODEL=qwen2-vl STRG_EPOCHS=3`
+3. Launch fine-tuning (20GB volume, HF_HOME on container disk):
+   ```bash
+   bash infra/runpod/scripts/model-matrix-loop.sh \
+     --models qwen2-vl --max-parallel 1 --cloud-type SECURE \
+     --max-cost-per-hour 2.00 --batch-timeout 18000 \
+     --test-script infra/runpod/scripts/pod-finetune.sh
+   ```
+4. If SECURE still fails after 3 attempts, try `--cloud-type COMMUNITY`
+5. Monitor the job log in `infra/runpod/logs/matrix-<timestamp>-qwen2-vl.log`
+6. After training completes, verify the `finetune-eval` W&B run has real CER/ACC values
+7. Update the autoresearch loop table in this file with the fine-tuning results
+
+**Key files:**
+- `infra/runpod/scripts/pod-finetune.sh` — runs on pod (install + generate data + fine-tune + eval)
+- `models/server/src/models_server/finetune_qwen2_vl.py` — QLoRA training script
+- `models/server/src/models_server/qwen2_vl.py` — supports `STRG_QWEN_LORA_CHECKPOINT` for eval
+- `data/train/` — 100 synthetic training images (compact + tabular layouts)
+- `data/val/` — 20 synthetic val images
