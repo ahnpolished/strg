@@ -182,8 +182,10 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--grad-accum", type=int, default=8)
     # With 100 images, batch_size=1, grad_accum=8 → ~13 gradient updates/epoch
-    # eval_steps=10 fires ~3-4 times across 3 epochs
-    parser.add_argument("--eval-steps", type=int, default=10)
+    # eval_steps=100 means eval never fires during short training runs (<39 steps),
+    # avoiding the slow val-set generation (20 images × ~1min each on A40).
+    # The final eval at end-of-training (see main()) handles checkpoint saving.
+    parser.add_argument("--eval-steps", type=int, default=100)
     parser.add_argument("--patience", type=int, default=5)
     args = parser.parse_args()
 
