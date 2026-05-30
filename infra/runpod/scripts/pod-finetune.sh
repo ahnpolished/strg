@@ -52,15 +52,15 @@ PYTHONUNBUFFERED=1 "$VENV_PYTHON" -m pip install bitsandbytes peft 2>&1 | tail -
 # ── 2. Generate training data if missing ─────────────────────────────────────
 echo ""
 echo "--- [2/3] Checking training data ---"
-N_TRAIN=$(ls "${TRAIN_DIR}"/*.jpg 2>/dev/null | wc -l || echo 0)
-N_VAL=$(ls "${VAL_DIR}"/*.jpg 2>/dev/null | wc -l || echo 0)
+N_TRAIN=$(find "${TRAIN_DIR}" -maxdepth 1 -name "*.jpg" 2>/dev/null | wc -l | tr -d ' ')
+N_VAL=$(find "${VAL_DIR}" -maxdepth 1 -name "*.jpg" 2>/dev/null | wc -l | tr -d ' ')
 echo "  train images: $N_TRAIN"
 echo "  val images:   $N_VAL"
 
 if [[ "$N_TRAIN" -eq 0 ]]; then
   echo "No training data found — generating 100 synthetic images..."
   PYTHONUNBUFFERED=1 "$VENV_PYTHON" data/generate_train_data.py --count 100 --seed 42 --out "$TRAIN_DIR"
-  N_TRAIN=$(ls "${TRAIN_DIR}"/*.jpg 2>/dev/null | wc -l || echo 0)
+  N_TRAIN=$(find "${TRAIN_DIR}" -maxdepth 1 -name "*.jpg" 2>/dev/null | wc -l | tr -d ' ')
   echo "  generated: $N_TRAIN training images"
 fi
 
