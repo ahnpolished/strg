@@ -30,7 +30,9 @@ echo "==================================================================="
 
 cd "$WORKSPACE"
 
-export HF_HOME="${HF_HOME:-/workspace/.hf-cache}"
+# HuggingFace weights go to container disk (/root) to avoid filling the
+# 20GB pod volume (/workspace). Model download is ~14GB; uv+venv is ~6GB.
+export HF_HOME="${HF_HOME:-/root/.hf-cache}"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-/workspace/.uv-cache}"
 mkdir -p "$HF_HOME" "$UV_CACHE_DIR"
 
