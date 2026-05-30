@@ -233,6 +233,9 @@ provision_batch() {
   if [[ -n "$CLOUD_TYPE" ]]; then
     tf_args+=(-var "cloud_type=${CLOUD_TYPE}")
   fi
+  if [[ -n "${STRG_INTERRUPTIBLE:-}" ]]; then
+    tf_args+=(-var "interruptible=${STRG_INTERRUPTIBLE}")
+  fi
   tf apply "${tf_args[@]}"
 }
 
@@ -385,8 +388,6 @@ sync_code() {
     --exclude 'infra/runpod/.terraform' \
     --exclude 'infra/runpod/terraform.tfstate*' \
     --exclude 'infra/runpod/tfplan' \
-    # train images are synced; generation script also available as fallback
-    # --exclude 'data/train' \
     -e "ssh $opts" \
     "${REPO_ROOT}/" \
     "${SSH_USER}@${ip}:${remote_dir}/"
@@ -425,7 +426,7 @@ run_remote_tests() {
   printf -v quoted_workspace '%q' "$remote_dir"
   remote_exports="export STRG_TEST_MODEL=${quoted_model}; export WORKSPACE=${quoted_workspace};"
 
-  for env_name in WANDB_API_KEY STRG_TEST_IMAGES STRG_GROUND_TRUTH STRG_PREDICTIONS STRG_QWEN_MIN_VISUAL_TOKENS STRG_QWEN_MAX_VISUAL_TOKENS STRG_QWEN_MAX_NEW_TOKENS STRG_FINETUNE_MODEL STRG_EPOCHS STRG_TRAIN_DIR STRG_VAL_DIR STRG_OUTPUT_DIR; do
+  for env_name in WANDB_API_KEY STRG_TEST_IMAGES STRG_GROUND_TRUTH STRG_PREDICTIONS STRG_QWEN_MIN_VISUAL_TOKENS STRG_QWEN_MAX_VISUAL_TOKENS STRG_QWEN_MAX_NEW_TOKENS STRG_FINETUNE_MODEL STRG_EPOCHS STRG_TRAIN_DIR STRG_VAL_DIR STRG_OUTPUT_DIR STRG_INTERRUPTIBLE; do
     env_value="${!env_name:-}"
     if [[ -n "$env_value" ]]; then
       printf -v remote_exports "%s export %s=%q;" "$remote_exports" "$env_name" "$env_value"
