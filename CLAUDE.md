@@ -54,7 +54,9 @@ uv run python -m evaluation.run --model <name> --predictions data/predictions/<p
 - internvl2: over-predicts on set-countdown + grouped layouts (photos 011,014,021). Total: 202/156 entries (+57 extra!).
 - internvl2 handles landscape-column layout well (photo-019: 17/18) — complementary to qwen2-vl.
 
-**Next action**: Fine-tune qwen2-vl on compact-layout training images (data/train/). Budget spent: ~$0.23 of $10.
+**Next action**: Fine-tune qwen2-vl. Infrastructure fixed (HF_HOME on container disk, 20GB volume). Waiting for SECURE capacity (H2 transient crunch since 09:37). Budget spent: ~$0.40 of $10.
+
+**Fine-tuning deliverable**: A measured delta logged to W&B (run phase=finetune-eval) compared to baseline (matrix-085608). Crossing CER≤0.10/ACC≥0.90 in one pass is aspirational. The loop iteration — train, measure, document — is the required output. After fine-tuning completes, confirm the finetune-eval W&B run has real CER/ACC values before declaring success.
 
 ## Autoresearch loop (Karpathy-style)
 
@@ -119,7 +121,9 @@ bash infra/runpod/scripts/model-matrix-loop.sh \
 ### Known failure patterns (do not re-investigate)
 
 - **SECURE cloud + 3 pods = all fail**: RunPod SECURE has low capacity for multi-pod batches.
-- **COMMUNITY cloud + 1 pod = capacity error (2026-05-30)**: All COMMUNITY GPU types showed "no instances available" on this date. SECURE + 1 pod at $0.44/hr succeeded. Use `--cloud-type SECURE --max-cost-per-hour 2.00` when COMMUNITY is unavailable.
+- **COMMUNITY cloud + 1 pod = capacity error (2026-05-30 09:00)**: All COMMUNITY GPU types showed "no instances available". SECURE + 1 pod at $0.44/hr succeeded. Use `--cloud-type SECURE --max-cost-per-hour 2.00` when COMMUNITY is unavailable.
+- **SECURE cloud transient crunch (2026-05-30 09:37+)**: After internvl2 teardown, SECURE capacity became unavailable for ~1hr — 20GB and 30GB pods both failed identically. This is H2 (transient crunch), not H1 (size filter). Stop retrying with short delays; wait 15-20 min.
+- **Fine-tuning disk quota (20GB pod volume)**: Model weights (~14GB) + uv cache (~6GB) fills the 20GB /workspace. Fix: set `HF_HOME=/root/.hf-cache` in pod-finetune.sh to use the separate 20GB container disk instead. Do NOT increase pod_volume_size_gb to 50+ (hurts scheduling).
 - **Network volume 404**: After credit renewal, the old volume `atf6dcg14t` was deleted. Fixed by making `runpod_network_volume` conditional (`count = var.attach_network_volume ? 1 : 0`) and removing from state with `terraform state rm runpod_network_volume.model_weights`.
 - **photo 019 table layout**: qwen2-vl outputs 5 entries vs 18 GT. Model sees summary rows, not individual set rows. Prompt rule for "column of rep values" is partially implemented but incomplete.
 - **photo 011 set countdown**: model treats set-number countdown (5,4,3,2,1) as separate rows; GT uses per-set reps rows. Partially a data-convention mismatch.
