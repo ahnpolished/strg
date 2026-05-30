@@ -167,34 +167,63 @@ tmux new-session -d -s strg-finetune
 tmux send-keys -t strg-finetune "cd /Users/taeahn/devs/personal/2026/strg && claude" Enter
 ```
 
-### Current state (as of 2026-05-30 ~09:45)
+### Current state (as of 2026-05-30 ~12:00)
 
 **What's done:**
 - Debugging complete: qwen2-vl (CER=0.172/ACC=0.776) and internvl2 (CER=0.210/ACC=0.508) evaluated and W&B-logged
 - Two best models confirmed: qwen2-vl #1, internvl2 #2
+- **Bugs fixed in fine-tuning pipeline:**
+  - `eval_steps=50→10` so eval fires during training (needed ~39 steps, eval was at 50)
+  - Fixed eval leaking ground-truth answer to `generate()` — now uses prompt-only tokens
+  - Added final eval + fallback checkpoint save at end of training
+  - Training images now tracked in git (removed from `.gitignore`) with rsync include rules
+  - Fixed bash comments breaking rsync multiline command
+  - Added `STRG_INTERRUPTIBLE` env var to control spot/on-demand via matrix loop
 - Fine-tuning infrastructure ready: pod-finetune.sh, finetune_qwen2_vl.py, 100 training images in data/train/, 20 val images in data/val/
 
 **What's blocked:**
-- SECURE cloud hit transient capacity crunch (H2) at ~09:37. All GPU types unavailable. Wait 15-30 minutes then retry.
+- RunPod GPU capacity crunch across all cloud types (SECURE + COMMUNITY):
+  - On-demand (COMMUNITY/SECURE): "no capacity" since ~10:33
+  - Spot/SECURE: provisions but SSH fails to connect (ERROR::SSH timeout after 600s)
+  - Spot/SECURE (earlier): A40s worked but got evicted mid-training (~1-2min or ~10min)
+- Budget spent: ~$1.34 on failed spot attempts
+  - Remaining: ~$8.66
 
-**What to do next:**
-1. Source env vars: `set -a; source .env; set +a && export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"`
-2. Export fine-tune settings: `export STRG_FINETUNE_MODEL=qwen2-vl STRG_EPOCHS=3`
-3. Launch fine-tuning (20GB volume, HF_HOME on container disk):
-   ```bash
-   bash infra/runpod/scripts/model-matrix-loop.sh \
-     --models qwen2-vl --max-parallel 1 --cloud-type SECURE \
-     --max-cost-per-hour 2.00 --batch-timeout 18000 \
-     --test-script infra/runpod/scripts/pod-finetune.sh
-   ```
-4. If SECURE still fails after 3 attempts, try `--cloud-type COMMUNITY`
-5. Monitor the job log in `infra/runpod/logs/matrix-<timestamp>-qwen2-vl.log`
-6. After training completes, verify the `finetune-eval` W&B run has real CER/ACC values
-7. Update the autoresearch loop table in this file with the fine-tuning results
+**How to launch fine-tuning once capacity returns:**
+```bash
+set -a; source .env; set +a
+export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"
+export STRG_FINETUNE_MODEL=qwen2-vl STRG_EPOCHS=3
+
+# Try on-demand first (fails if no capacity):
+unset STRG_INTERRUPTIBLE
+bash infra/runpod/scripts/model-matrix-loop.sh \
+  --models qwen2-vl --max-parallel 1 --cloud-type SECURE \
+  --max-cost-per-hour 2.00 --batch-timeout 18000 \
+  --test-script infra/runpod/scripts/pod-finetune.sh
+
+# On-demand fallback to COMMUNITY (cheaper):
+bash infra/runpod/scripts/model-matrix-loop.sh \
+  --models qwen2-vl --max-parallel 1 --cloud-type COMMUNITY \
+  --max-cost-per-hour 2.00 --batch-timeout 18000 \
+  --test-script infra/runpod/scripts/pod-finetune.sh
+
+# Spot fallback (if on-demand persistently unavailable):
+export STRG_INTERRUPTIBLE=true
+bash infra/runpod/scripts/model-matrix-loop.sh \
+  --models qwen2-vl --max-parallel 1 --cloud-type SECURE \
+  --max-cost-per-hour 2.00 --batch-timeout 18000 \
+  --test-script infra/runpod/scripts/pod-finetune.sh
+```
+
+**After training completes:**
+1. Monitor the job log: `infra/runpod/logs/matrix-<timestamp>-qwen2-vl.log`
+2. Check W&B for the `finetune-eval` run has real CER/ACC values
+3. Update the autoresearch loop table in this file with the fine-tuning results
 
 **Key files:**
 - `infra/runpod/scripts/pod-finetune.sh` — runs on pod (install + generate data + fine-tune + eval)
-- `models/server/src/models_server/finetune_qwen2_vl.py` — QLoRA training script
+- `models/server/src/models_server/finetune_qwen2_vl.py` — QLoRA training script (bug fixes applied)
 - `models/server/src/models_server/qwen2_vl.py` — supports `STRG_QWEN_LORA_CHECKPOINT` for eval
 - `data/train/` — 100 synthetic training images (compact + tabular layouts)
 - `data/val/` — 20 synthetic val images
