@@ -47,7 +47,7 @@ fi
 
 # Install bitsandbytes and peft for QLoRA
 echo "Installing QLoRA dependencies..."
-PYTHONUNBUFFERED=1 .venv/bin/uv pip install bitsandbytes peft 2>&1 | tail -5
+PYTHONUNBUFFERED=1 "$VENV_PYTHON" -m pip install bitsandbytes peft 2>&1 | tail -5
 
 # ── 2. Generate training data if missing ─────────────────────────────────────
 echo ""
