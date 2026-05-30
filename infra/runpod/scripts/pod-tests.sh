@@ -95,7 +95,7 @@ fi
 # Run inference only (no --ground-truth here to avoid a double W&B run;
 # evaluation.run is called explicitly below for clean metric extraction).
 set +e
-"$VENV_PYTHON" -m models_server.run \
+PYTHONUNBUFFERED=1 "$VENV_PYTHON" -m models_server.run \
   --model "$MODEL" \
   --images "$IMAGES" \
   --output "$PREDICTIONS" \
