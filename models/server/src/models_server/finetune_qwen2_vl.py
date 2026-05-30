@@ -46,6 +46,7 @@ LORA_CONFIG = LoraConfig(
 
 class WorkoutDataset(Dataset):
     def __init__(self, data_dir: Path, processor) -> None:
+        self.data_dir = data_dir
         self.samples = []
         for img_path in sorted(data_dir.glob("*.jpg")):
             json_path = img_path.with_suffix(".json")
@@ -78,13 +79,14 @@ class WorkoutDataset(Dataset):
         inputs = self._processor(text=[text], images=[image], return_tensors="pt", padding=True)
         input_ids = inputs["input_ids"].squeeze(0)
         labels = input_ids.clone()
-        # Mask the prompt tokens so loss is only on the assistant answer
+        # Mask the prompt tokens so loss is only on the assistant answer.
+        # IMPORTANT: compute prompt_ids WITH the image, so image-token placeholders
+        # are correctly counted and labels mask the ENTIRE prompt.
         prompt_only = self._processor.apply_chat_template(
             messages[:1], tokenize=False, add_generation_prompt=True
         )
-        prompt_ids = self._processor(text=[prompt_only], return_tensors="pt")["input_ids"].squeeze(
-            0
-        )
+        prompt_inputs = self._processor(text=[prompt_only], images=[image], return_tensors="pt")
+        prompt_ids = prompt_inputs["input_ids"].squeeze(0)
         labels[: len(prompt_ids)] = -100
         return {
             "input_ids": input_ids,
@@ -92,6 +94,7 @@ class WorkoutDataset(Dataset):
             "pixel_values": inputs["pixel_values"],
             "image_grid_thw": inputs.get("image_grid_thw"),
             "labels": labels,
+            "img_path": str(img_path),  # for eval
         }
 
 
@@ -115,10 +118,20 @@ def collate_fn(batch):
         "pixel_values": pixel_values,
         "image_grid_thw": image_grid_thw,
         "labels": labels,
+        "img_path": [b["img_path"] for b in batch],
     }
 
 
 def evaluate(model, processor, val_loader, device) -> dict:
+    """Evaluate model on validation set.
+
+    Builds a proper generation prompt (with add_generation_prompt=True so the
+    model sees the assistant header) using the same inference pipeline as
+    qwen2_vl.py. Avoids label-based prompt slicing which can mismatch image
+    token counts.
+    """
+    from PIL import Image
+
     from evaluation.metrics import FIELDS, evaluate_pages
     from models_server.qwen2_vl import _extract_json, _normalize_entries
 
@@ -126,33 +139,38 @@ def evaluate(model, processor, val_loader, device) -> dict:
     all_cer, per_field = [], {f: [] for f in FIELDS}
     with torch.no_grad():
         for batch in val_loader:
-            pixel_values = batch["pixel_values"].to(device, torch.bfloat16)
-            image_grid_thw = batch["image_grid_thw"]
-            if image_grid_thw is not None:
-                image_grid_thw = image_grid_thw.to(device)
-            # labels==-100 marks prompt tokens; slice only the prompt for generation
-            # so we don't leak the ground-truth answer to the model
-            labels = batch["labels"]
-            prompt_mask = labels[0] == -100
-            prompt_len = prompt_mask.sum().item()
-            prompt_ids = batch["input_ids"][0, :prompt_len].unsqueeze(0).to(device)
-            prompt_attn = batch["attention_mask"][0, :prompt_len].unsqueeze(0).to(device)
             try:
+                img_path = batch["img_path"][0]
+                image = Image.open(img_path).convert("RGB")
+                # Build prompt like inference does
+                messages = [
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "image", "image": image},
+                            {"type": "text", "text": EXTRACTION_PROMPT},
+                        ],
+                    }
+                ]
+                text = processor.apply_chat_template(
+                    messages, tokenize=False, add_generation_prompt=True
+                )
+                inputs = processor(text=[text], images=[image], return_tensors="pt")
+                inputs = {k: v.to(device) for k, v in inputs.items()}
                 output_ids = model.generate(
-                    input_ids=prompt_ids,
-                    attention_mask=prompt_attn,
-                    pixel_values=pixel_values,
-                    image_grid_thw=image_grid_thw,
+                    **inputs,
                     max_new_tokens=1024,
                     do_sample=False,
                 )
                 generated = processor.batch_decode(
-                    output_ids[:, prompt_ids.shape[1] :], skip_special_tokens=True
+                    output_ids[:, inputs["input_ids"].shape[1] :],
+                    skip_special_tokens=True,
                 )[0]
                 data = _extract_json(generated)
                 data = _normalize_entries(data)
                 predicted = WorkoutPage.model_validate(data)
-                # Reference: decode only the label tokens (the ground-truth answer)
+                # Reference from batch labels (correct ground truth)
+                labels = batch["labels"]
                 label_ids = labels[0][labels[0] != -100]
                 reference_json = processor.decode(label_ids, skip_special_tokens=True)
                 reference = WorkoutPage.model_validate_json(reference_json)
