@@ -11,6 +11,15 @@ Usage:
 Requirements: GPU with >=20GB VRAM; bitsandbytes, peft.
 """
 
+import os
+
+# Disable PyTorch compile/inductor to avoid background workers eating CPU.
+os.environ.setdefault("TORCH_COMPILE", "0")
+os.environ.setdefault("TORCHDYNAMO_ASYNC_COMPILATION", "0")
+os.environ.setdefault("TORCHINDUCTOR_COMPILE_ONCE", "0")
+os.environ.setdefault("PYTORCH_JIT", "0")
+os.environ.setdefault("TORCH_COMPILE_DEBUG", "0")
+
 import argparse
 from pathlib import Path
 

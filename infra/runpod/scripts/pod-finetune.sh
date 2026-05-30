@@ -87,6 +87,12 @@ if [[ -z "${WANDB_API_KEY:-}" ]]; then
   echo "WANDB_API_KEY not set — W&B logging disabled."
 fi
 
+# Disable PyTorch compile/inductor background workers that eat CPU on first run
+export TORCH_COMPILE=0
+export TORCHDYNAMO_ASYNC_COMPILATION=0
+export TORCHINDUCTOR_COMPILE_ONCE=0
+export PYTORCH_JIT=0
+
 FINETUNE_MODULE="models_server.finetune_${MODEL//-/_}"
 echo "Running: python -m $FINETUNE_MODULE"
 PYTHONUNBUFFERED=1 "$VENV_PYTHON" -m "$FINETUNE_MODULE" \
