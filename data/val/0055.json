@@ -1,0 +1,148 @@
+{
+  "entries": [
+    {
+      "date": "2025-11-18",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": null,
+      "notes": "grip",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": 315,
+      "notes": "WU",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 315,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 315,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": 315,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 315,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "Leg Press",
+      "sets": 1,
+      "reps": 6,
+      "weight_lbs": 135,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "Leg Press",
+      "sets": 1,
+      "reps": 7,
+      "weight_lbs": 135,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "Leg Press",
+      "sets": 1,
+      "reps": 7,
+      "weight_lbs": 135,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 95,
+      "notes": "felt heavy",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 95,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 95,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 245,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 245,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-18",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 6,
+      "weight_lbs": 245,
+      "notes": null,
+      "weight_kg": null
+    }
+  ]
+}

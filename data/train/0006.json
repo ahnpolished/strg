@@ -1,0 +1,31 @@
+{
+  "entries": [
+    {
+      "date": "2025-09-01",
+      "exercise": "Push-ups",
+      "sets": 2,
+      "reps": 10,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-09-01",
+      "exercise": "Chin-ups",
+      "sets": 2,
+      "reps": 3,
+      "weight_lbs": null,
+      "notes": "felt heavy",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-09-01",
+      "exercise": "Bench Press",
+      "sets": 3,
+      "reps": 6,
+      "weight_lbs": 245,
+      "notes": null,
+      "weight_kg": null
+    }
+  ]
+}

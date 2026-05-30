@@ -1,0 +1,94 @@
+{
+  "entries": [
+    {
+      "date": "2025-04-06",
+      "exercise": "Hack Squat",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 60,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-06",
+      "exercise": "Hack Squat",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-06",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 130,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-06",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-06",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-06",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-06",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-06",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-06",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-06",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

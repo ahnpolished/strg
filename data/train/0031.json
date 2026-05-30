@@ -1,0 +1,40 @@
+{
+  "entries": [
+    {
+      "date": "2025-10-05",
+      "exercise": "Incline Bench",
+      "sets": 5,
+      "reps": 8,
+      "weight_kg": 60,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-10-05",
+      "exercise": "Squat",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-10-05",
+      "exercise": "OHP",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-10-05",
+      "exercise": "Hip Thrust",
+      "sets": 5,
+      "reps": 10,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "date": "2025-06-04",
+      "exercise": "Pull-ups",
+      "sets": 4,
+      "reps": 10,
+      "weight_kg": null,
+      "notes": "easy day",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-04",
+      "exercise": "Hip Thrust",
+      "sets": 2,
+      "reps": 5,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-04",
+      "exercise": "Hack Squat",
+      "sets": 3,
+      "reps": 3,
+      "weight_kg": 120,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-04",
+      "exercise": "Close Grip Bench",
+      "sets": 5,
+      "reps": 5,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-04",
+      "exercise": "Push-ups",
+      "sets": 5,
+      "reps": 5,
+      "weight_kg": null,
+      "notes": "easy day",
+      "weight_lbs": null
+    }
+  ]
+}

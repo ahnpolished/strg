@@ -1,0 +1,130 @@
+{
+  "entries": [
+    {
+      "date": "2025-03-02",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 13,
+      "weight_lbs": 275,
+      "notes": "WU",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 11,
+      "weight_lbs": 275,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Chin-ups",
+      "sets": 1,
+      "reps": 7,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Chin-ups",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Chin-ups",
+      "sets": 1,
+      "reps": 7,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Chin-ups",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Leg Press",
+      "sets": 1,
+      "reps": 12,
+      "weight_lbs": 365,
+      "notes": "BW",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Leg Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_lbs": 365,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Leg Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_lbs": 365,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 13,
+      "weight_lbs": 155,
+      "notes": "BW",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 13,
+      "weight_lbs": 155,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 11,
+      "weight_lbs": 155,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 11,
+      "weight_lbs": 155,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 12,
+      "weight_lbs": 155,
+      "notes": null,
+      "weight_kg": null
+    }
+  ]
+}

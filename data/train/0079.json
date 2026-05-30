@@ -1,0 +1,238 @@
+{
+  "entries": [
+    {
+      "date": "2025-12-12",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": 140,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 130,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 150,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 130,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 80,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": 130,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-12",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

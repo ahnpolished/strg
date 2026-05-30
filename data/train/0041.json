@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "date": "2025-02-03",
+      "exercise": "Bench Press",
+      "sets": 3,
+      "reps": 4,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-03",
+      "exercise": "Dips",
+      "sets": 3,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-03",
+      "exercise": "Sumo Deadlift",
+      "sets": 3,
+      "reps": 3,
+      "weight_kg": 50,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-03",
+      "exercise": "OHP",
+      "sets": 5,
+      "reps": 8,
+      "weight_kg": 100,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-03",
+      "exercise": "Hip Thrust",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 150,
+      "notes": "easy day",
+      "weight_lbs": null
+    }
+  ]
+}

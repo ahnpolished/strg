@@ -1,0 +1,166 @@
+{
+  "entries": [
+    {
+      "date": "2025-11-05",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 60,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Chin-ups",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": null,
+      "notes": "easy day",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Chin-ups",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Chin-ups",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Chin-ups",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Chin-ups",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 80,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 100,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-05",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

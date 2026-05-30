@@ -1,0 +1,139 @@
+{
+  "entries": [
+    {
+      "date": "2025-02-01",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 70,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 70,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 70,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 140,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-01",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

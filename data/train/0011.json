@@ -1,0 +1,121 @@
+{
+  "entries": [
+    {
+      "date": "2025-11-25",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 205,
+      "notes": "slow tempo",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 205,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 205,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 205,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 8,
+      "weight_lbs": 95,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 7,
+      "weight_lbs": 95,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 8,
+      "weight_lbs": 95,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Face Pull",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 365,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Face Pull",
+      "sets": 1,
+      "reps": 6,
+      "weight_lbs": 365,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Face Pull",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 365,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 9,
+      "weight_lbs": 205,
+      "notes": "PR!",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 8,
+      "weight_lbs": 205,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Tricep Pushdown",
+      "sets": 1,
+      "reps": 9,
+      "weight_lbs": 205,
+      "notes": null,
+      "weight_kg": null
+    }
+  ]
+}

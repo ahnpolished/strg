@@ -1,0 +1,58 @@
+{
+  "entries": [
+    {
+      "date": "2025-12-20",
+      "exercise": "Incline Bench",
+      "sets": 2,
+      "reps": 10,
+      "weight_kg": 60,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-20",
+      "exercise": "Good Morning",
+      "sets": 5,
+      "reps": 4,
+      "weight_kg": 140,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-20",
+      "exercise": "OHP",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 140,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-20",
+      "exercise": "RDL",
+      "sets": 2,
+      "reps": 12,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-20",
+      "exercise": "Sumo Deadlift",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": 70,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-12-20",
+      "exercise": "Hack Squat",
+      "sets": 2,
+      "reps": 6,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

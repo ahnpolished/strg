@@ -1,0 +1,184 @@
+{
+  "entries": [
+    {
+      "date": "2025-06-11",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 150,
+      "notes": "easy day",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 100,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 140,
+      "notes": "easy day",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 40,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-11",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

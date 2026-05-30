@@ -1,0 +1,256 @@
+{
+  "entries": [
+    {
+      "date": "2025-09-24",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 120,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 120,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 120,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 120,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 120,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 70,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 70,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 70,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-09-24",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

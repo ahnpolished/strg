@@ -1,0 +1,166 @@
+{
+  "entries": [
+    {
+      "date": "2025-03-16",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": null,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 80,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": null,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 60,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-16",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "entries": [
+    {
+      "date": "2025-04-24",
+      "exercise": "Incline Bench",
+      "sets": 4,
+      "reps": 3,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-24",
+      "exercise": "Dips",
+      "sets": 3,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-24",
+      "exercise": "Push-ups",
+      "sets": 3,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-24",
+      "exercise": "Barbell Row",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "entries": [
+    {
+      "date": "2025-06-14",
+      "exercise": "Deadlift",
+      "sets": 4,
+      "reps": 12,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-14",
+      "exercise": "Incline Bench",
+      "sets": 5,
+      "reps": 3,
+      "weight_kg": 140,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-14",
+      "exercise": "Bench Press",
+      "sets": 4,
+      "reps": 5,
+      "weight_kg": 70,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-14",
+      "exercise": "Squat",
+      "sets": 5,
+      "reps": 3,
+      "weight_kg": 120,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-14",
+      "exercise": "Chin-ups",
+      "sets": 2,
+      "reps": 6,
+      "weight_kg": null,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-14",
+      "exercise": "Push-ups",
+      "sets": 3,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    }
+  ]
+}

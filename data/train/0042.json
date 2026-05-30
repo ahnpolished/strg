@@ -1,0 +1,130 @@
+{
+  "entries": [
+    {
+      "date": "2025-03-02",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": 100,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 90,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 150,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-02",
+      "exercise": "Pull-ups",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

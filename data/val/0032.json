@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "date": "2025-04-21",
+      "exercise": "Chin-ups",
+      "sets": 3,
+      "reps": 6,
+      "weight_kg": null,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-21",
+      "exercise": "Pull-ups",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": null,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-21",
+      "exercise": "Bench Press",
+      "sets": 5,
+      "reps": 5,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-21",
+      "exercise": "Front Squat",
+      "sets": 5,
+      "reps": 12,
+      "weight_kg": 100,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-21",
+      "exercise": "Barbell Row",
+      "sets": 5,
+      "reps": 4,
+      "weight_kg": 150,
+      "notes": "easy day",
+      "weight_lbs": null
+    }
+  ]
+}

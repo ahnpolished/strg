@@ -373,6 +373,9 @@ sync_code() {
     --include='data/test/*.jpg' \
     --include='data/test/*.jpeg' \
     --include='data/test/*.png' \
+    --include='data/train/*.jpg' \
+    --include='data/train/*.jpeg' \
+    --include='data/train/*.png' \
     --filter=':- .gitignore' \
     --exclude '.git' \
     --exclude '__pycache__' \
@@ -382,7 +385,8 @@ sync_code() {
     --exclude 'infra/runpod/.terraform' \
     --exclude 'infra/runpod/terraform.tfstate*' \
     --exclude 'infra/runpod/tfplan' \
-    --exclude 'data/train' \
+    # train images are synced; generation script also available as fallback
+    # --exclude 'data/train' \
     -e "ssh $opts" \
     "${REPO_ROOT}/" \
     "${SSH_USER}@${ip}:${remote_dir}/"

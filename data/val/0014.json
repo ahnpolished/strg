@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "date": "2025-01-18",
+      "exercise": "Overhead Press",
+      "sets": 5,
+      "reps": 10,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "OHP",
+      "sets": 2,
+      "reps": 12,
+      "weight_kg": 140,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "Sumo Deadlift",
+      "sets": 5,
+      "reps": 10,
+      "weight_kg": 140,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "RDL",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "Push-ups",
+      "sets": 5,
+      "reps": 10,
+      "weight_kg": null,
+      "notes": "BW",
+      "weight_lbs": null
+    }
+  ]
+}

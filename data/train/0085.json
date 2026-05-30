@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "date": "2025-08-26",
+      "exercise": "Bench Press",
+      "sets": 2,
+      "reps": 3,
+      "weight_kg": 60,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-26",
+      "exercise": "Squat",
+      "sets": 4,
+      "reps": 6,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-26",
+      "exercise": "Incline Bench",
+      "sets": 5,
+      "reps": 4,
+      "weight_kg": 150,
+      "notes": "pause reps",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-26",
+      "exercise": "Sumo Deadlift",
+      "sets": 4,
+      "reps": 10,
+      "weight_kg": 140,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-26",
+      "exercise": "Overhead Press",
+      "sets": 4,
+      "reps": 5,
+      "weight_kg": 110,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

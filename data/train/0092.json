@@ -1,0 +1,76 @@
+{
+  "entries": [
+    {
+      "date": "2025-07-26",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 9,
+      "weight_lbs": 245,
+      "notes": "PR!",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-07-26",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 9,
+      "weight_lbs": 245,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-07-26",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 95,
+      "notes": "felt heavy",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-07-26",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 95,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-07-26",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": 95,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-07-26",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": null,
+      "notes": "pause reps",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-07-26",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-07-26",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    }
+  ]
+}

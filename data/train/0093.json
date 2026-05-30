@@ -1,0 +1,58 @@
+{
+  "entries": [
+    {
+      "date": "2025-06-12",
+      "exercise": "RDL",
+      "sets": 5,
+      "reps": 12,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-12",
+      "exercise": "Incline Bench",
+      "sets": 2,
+      "reps": 5,
+      "weight_kg": 150,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-12",
+      "exercise": "Overhead Press",
+      "sets": 5,
+      "reps": 6,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-12",
+      "exercise": "Front Squat",
+      "sets": 4,
+      "reps": 8,
+      "weight_kg": 130,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-12",
+      "exercise": "Dips",
+      "sets": 5,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-06-12",
+      "exercise": "Pull-ups",
+      "sets": 2,
+      "reps": 12,
+      "weight_kg": null,
+      "notes": "grip",
+      "weight_lbs": null
+    }
+  ]
+}

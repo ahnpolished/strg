@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "date": "2025-09-13",
+      "exercise": "Deadlift",
+      "sets": 4,
+      "reps": 10,
+      "weight_lbs": 205,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-09-13",
+      "exercise": "Incline Bench",
+      "sets": 2,
+      "reps": 5,
+      "weight_lbs": 155,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-09-13",
+      "exercise": "Face Pull",
+      "sets": 2,
+      "reps": 12,
+      "weight_lbs": 365,
+      "notes": "pause reps",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-09-13",
+      "exercise": "Leg Curl",
+      "sets": 3,
+      "reps": 12,
+      "weight_lbs": 115,
+      "notes": "grip",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-09-13",
+      "exercise": "Chest Fly",
+      "sets": 3,
+      "reps": 5,
+      "weight_lbs": 135,
+      "notes": "WU",
+      "weight_kg": null
+    }
+  ]
+}

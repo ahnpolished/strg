@@ -1,0 +1,31 @@
+{
+  "entries": [
+    {
+      "date": "2025-03-05",
+      "exercise": "Push-ups",
+      "sets": 3,
+      "reps": 8,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-05",
+      "exercise": "Seated Row",
+      "sets": 3,
+      "reps": 12,
+      "weight_lbs": 225,
+      "notes": "felt heavy",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-05",
+      "exercise": "Lat Pulldown",
+      "sets": 4,
+      "reps": 5,
+      "weight_lbs": 185,
+      "notes": "easy day",
+      "weight_kg": null
+    }
+  ]
+}

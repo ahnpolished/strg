@@ -12,13 +12,12 @@ build/
 # W&B
 wandb/
 
-# Data (track structure, not content)
+# Data (track structure, not content) — test photos are large/hand-written, exclude
 data/test/*.jpg
 data/test/*.jpeg
 data/test/*.png
-data/train/*.jpg
-data/train/*.jpeg
-data/train/*.png
+data/test/*.HEIC
+data/test/*.heic
 data/predictions/
 
 # Model weights

@@ -1,0 +1,112 @@
+{
+  "entries": [
+    {
+      "date": "2025-11-25",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-25",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

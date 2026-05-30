@@ -1,0 +1,31 @@
+{
+  "entries": [
+    {
+      "date": "2025-04-18",
+      "exercise": "Sumo Deadlift",
+      "sets": 4,
+      "reps": 5,
+      "weight_kg": 100,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-18",
+      "exercise": "Barbell Row",
+      "sets": 2,
+      "reps": 4,
+      "weight_kg": 150,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-04-18",
+      "exercise": "RDL",
+      "sets": 3,
+      "reps": 6,
+      "weight_kg": 70,
+      "notes": "PR!",
+      "weight_lbs": null
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "entries": [
+    {
+      "date": "2025-08-10",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-10",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-10",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-10",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": null,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-10",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-10",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 70,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-10",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 70,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-10",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 70,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

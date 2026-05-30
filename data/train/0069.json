@@ -1,0 +1,40 @@
+{
+  "entries": [
+    {
+      "date": "2025-10-16",
+      "exercise": "Chin-ups",
+      "sets": 3,
+      "reps": 12,
+      "weight_lbs": null,
+      "notes": "felt heavy",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-10-16",
+      "exercise": "Seated Row",
+      "sets": 2,
+      "reps": 12,
+      "weight_lbs": 185,
+      "notes": "PR!",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-10-16",
+      "exercise": "Pull-ups",
+      "sets": 2,
+      "reps": 3,
+      "weight_lbs": null,
+      "notes": "PR!",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-10-16",
+      "exercise": "Chest Fly",
+      "sets": 4,
+      "reps": 6,
+      "weight_lbs": 205,
+      "notes": "BW",
+      "weight_kg": null
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "entries": [
+    {
+      "date": "2025-05-23",
+      "exercise": "Overhead Press",
+      "sets": 4,
+      "reps": 4,
+      "weight_kg": 50,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-23",
+      "exercise": "Incline Bench",
+      "sets": 2,
+      "reps": 8,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-23",
+      "exercise": "Hack Squat",
+      "sets": 2,
+      "reps": 3,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-23",
+      "exercise": "Close Grip Bench",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-23",
+      "exercise": "Good Morning",
+      "sets": 5,
+      "reps": 12,
+      "weight_kg": 120,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-23",
+      "exercise": "Squat",
+      "sets": 5,
+      "reps": 5,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

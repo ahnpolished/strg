@@ -1,0 +1,58 @@
+{
+  "entries": [
+    {
+      "date": "2025-05-25",
+      "exercise": "Good Morning",
+      "sets": 4,
+      "reps": 8,
+      "weight_kg": 90,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-25",
+      "exercise": "Dips",
+      "sets": 2,
+      "reps": 12,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-25",
+      "exercise": "Chin-ups",
+      "sets": 2,
+      "reps": 12,
+      "weight_kg": null,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-25",
+      "exercise": "Incline Bench",
+      "sets": 2,
+      "reps": 6,
+      "weight_kg": 140,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-25",
+      "exercise": "Hip Thrust",
+      "sets": 4,
+      "reps": 3,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-25",
+      "exercise": "Deadlift",
+      "sets": 4,
+      "reps": 10,
+      "weight_kg": 120,
+      "notes": "PR!",
+      "weight_lbs": null
+    }
+  ]
+}

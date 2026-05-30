@@ -1,0 +1,103 @@
+{
+  "entries": [
+    {
+      "date": "2025-02-20",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 100,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-20",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-20",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-20",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-20",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-20",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 150,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-20",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-20",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-20",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-20",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-20",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

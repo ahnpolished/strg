@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "date": "2025-03-17",
+      "exercise": "Incline Bench",
+      "sets": 2,
+      "reps": 3,
+      "weight_lbs": 245,
+      "notes": "BW",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-17",
+      "exercise": "Leg Press",
+      "sets": 2,
+      "reps": 10,
+      "weight_lbs": 205,
+      "notes": "easy day",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-17",
+      "exercise": "Cable Row",
+      "sets": 5,
+      "reps": 10,
+      "weight_lbs": 225,
+      "notes": "PR!",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-17",
+      "exercise": "Chin-ups",
+      "sets": 4,
+      "reps": 3,
+      "weight_lbs": null,
+      "notes": "grip",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-03-17",
+      "exercise": "Preacher Curl",
+      "sets": 5,
+      "reps": 10,
+      "weight_lbs": 45,
+      "notes": null,
+      "weight_kg": null
+    }
+  ]
+}

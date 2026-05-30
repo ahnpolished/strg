@@ -1,0 +1,40 @@
+{
+  "entries": [
+    {
+      "date": "2025-11-19",
+      "exercise": "Face Pull",
+      "sets": 4,
+      "reps": 4,
+      "weight_lbs": 225,
+      "notes": "WU",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-19",
+      "exercise": "Preacher Curl",
+      "sets": 5,
+      "reps": 3,
+      "weight_lbs": 315,
+      "notes": "BW",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-19",
+      "exercise": "Seated Row",
+      "sets": 3,
+      "reps": 4,
+      "weight_lbs": 45,
+      "notes": "BW",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-11-19",
+      "exercise": "Pull-ups",
+      "sets": 3,
+      "reps": 3,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    }
+  ]
+}

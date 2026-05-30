@@ -1,0 +1,166 @@
+{
+  "entries": [
+    {
+      "date": "2025-12-01",
+      "exercise": "Cable Row",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 365,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Cable Row",
+      "sets": 1,
+      "reps": 6,
+      "weight_lbs": 365,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Cable Row",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 365,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Cable Row",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 365,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Cable Row",
+      "sets": 1,
+      "reps": 6,
+      "weight_lbs": 365,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 9,
+      "weight_lbs": 225,
+      "notes": "felt heavy",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 7,
+      "weight_lbs": 225,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 8,
+      "weight_lbs": 225,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 7,
+      "weight_lbs": 225,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 7,
+      "weight_lbs": 225,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Leg Press",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 115,
+      "notes": "WU",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Leg Press",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": 115,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Leg Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 115,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Leg Press",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": 115,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Lat Pulldown",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 275,
+      "notes": "WU",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Lat Pulldown",
+      "sets": 1,
+      "reps": 3,
+      "weight_lbs": 275,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Lat Pulldown",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 275,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-12-01",
+      "exercise": "Lat Pulldown",
+      "sets": 1,
+      "reps": 4,
+      "weight_lbs": 275,
+      "notes": null,
+      "weight_kg": null
+    }
+  ]
+}

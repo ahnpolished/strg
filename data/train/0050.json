@@ -1,0 +1,58 @@
+{
+  "entries": [
+    {
+      "date": "2025-01-17",
+      "exercise": "Pull-ups",
+      "sets": 4,
+      "reps": 4,
+      "weight_lbs": null,
+      "notes": "easy day",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-17",
+      "exercise": "Leg Curl",
+      "sets": 5,
+      "reps": 3,
+      "weight_lbs": 185,
+      "notes": "felt heavy",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-17",
+      "exercise": "Preacher Curl",
+      "sets": 4,
+      "reps": 12,
+      "weight_lbs": 155,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-17",
+      "exercise": "Lat Pulldown",
+      "sets": 5,
+      "reps": 4,
+      "weight_lbs": 275,
+      "notes": "easy day",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-17",
+      "exercise": "Dips",
+      "sets": 5,
+      "reps": 6,
+      "weight_lbs": null,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-17",
+      "exercise": "Tricep Pushdown",
+      "sets": 3,
+      "reps": 4,
+      "weight_lbs": 365,
+      "notes": "WU",
+      "weight_kg": null
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "date": "2025-08-21",
+      "exercise": "Incline Bench",
+      "sets": 3,
+      "reps": 8,
+      "weight_kg": 80,
+      "notes": "pause reps",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-21",
+      "exercise": "Front Squat",
+      "sets": 3,
+      "reps": 3,
+      "weight_kg": 120,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-21",
+      "exercise": "Good Morning",
+      "sets": 4,
+      "reps": 10,
+      "weight_kg": 90,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-21",
+      "exercise": "Hack Squat",
+      "sets": 3,
+      "reps": 8,
+      "weight_kg": 70,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-21",
+      "exercise": "Dips",
+      "sets": 5,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

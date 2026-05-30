@@ -1,0 +1,58 @@
+{
+  "entries": [
+    {
+      "date": "2025-05-23",
+      "exercise": "Dips",
+      "sets": 3,
+      "reps": 8,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-23",
+      "exercise": "Front Squat",
+      "sets": 5,
+      "reps": 10,
+      "weight_kg": 60,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-23",
+      "exercise": "Deadlift",
+      "sets": 2,
+      "reps": 8,
+      "weight_kg": 110,
+      "notes": "easy day",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-23",
+      "exercise": "Push-ups",
+      "sets": 3,
+      "reps": 8,
+      "weight_kg": null,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-23",
+      "exercise": "Barbell Row",
+      "sets": 5,
+      "reps": 5,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-23",
+      "exercise": "Pull-ups",
+      "sets": 3,
+      "reps": 10,
+      "weight_kg": null,
+      "notes": "grip",
+      "weight_lbs": null
+    }
+  ]
+}

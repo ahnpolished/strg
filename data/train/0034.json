@@ -1,0 +1,175 @@
+{
+  "entries": [
+    {
+      "date": "2025-11-09",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 100,
+      "notes": "easy day",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 130,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 80,
+      "notes": "easy day",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 40,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-09",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 40,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

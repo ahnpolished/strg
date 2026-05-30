@@ -121,25 +121,30 @@ def evaluate(model, processor, val_loader, device) -> dict:
             image_grid_thw = batch["image_grid_thw"]
             if image_grid_thw is not None:
                 image_grid_thw = image_grid_thw.to(device)
-            input_ids_ref = batch["input_ids"].to(device)
-            attention_mask = batch["attention_mask"].to(device)
+            # labels==-100 marks prompt tokens; slice only the prompt for generation
+            # so we don't leak the ground-truth answer to the model
+            labels = batch["labels"]
+            prompt_mask = labels[0] == -100
+            prompt_len = prompt_mask.sum().item()
+            prompt_ids = batch["input_ids"][0, :prompt_len].unsqueeze(0).to(device)
+            prompt_attn = batch["attention_mask"][0, :prompt_len].unsqueeze(0).to(device)
             try:
                 output_ids = model.generate(
-                    input_ids=input_ids_ref,
-                    attention_mask=attention_mask,
+                    input_ids=prompt_ids,
+                    attention_mask=prompt_attn,
                     pixel_values=pixel_values,
                     image_grid_thw=image_grid_thw,
                     max_new_tokens=1024,
                     do_sample=False,
                 )
                 generated = processor.batch_decode(
-                    output_ids[:, input_ids_ref.shape[1] :], skip_special_tokens=True
+                    output_ids[:, prompt_ids.shape[1] :], skip_special_tokens=True
                 )[0]
                 data = _extract_json(generated)
                 data = _normalize_entries(data)
                 predicted = WorkoutPage.model_validate(data)
-                label_ids = batch["labels"][0]
-                label_ids = label_ids[label_ids != -100]
+                # Reference: decode only the label tokens (the ground-truth answer)
+                label_ids = labels[0][labels[0] != -100]
                 reference_json = processor.decode(label_ids, skip_special_tokens=True)
                 reference = WorkoutPage.model_validate_json(reference_json)
                 result = evaluate_pages("val", predicted, reference)
@@ -167,8 +172,10 @@ def main() -> None:
     parser.add_argument("--lr", type=float, default=2e-4)
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--grad-accum", type=int, default=8)
-    parser.add_argument("--eval-steps", type=int, default=50)
-    parser.add_argument("--patience", type=int, default=3)
+    # With 100 images, batch_size=1, grad_accum=8 → ~13 gradient updates/epoch
+    # eval_steps=10 fires ~3-4 times across 3 epochs
+    parser.add_argument("--eval-steps", type=int, default=10)
+    parser.add_argument("--patience", type=int, default=5)
     args = parser.parse_args()
 
     _load_dotenv()
@@ -280,6 +287,29 @@ def main() -> None:
                         return
 
         print(f"Epoch {epoch + 1}/{args.epochs} loss={epoch_loss / len(train_loader):.4f}")
+
+    # Final eval + save at end of training (safety net if eval_steps never aligned)
+    if global_step > 0 and (global_step % args.eval_steps != 0 or best_field_acc == 0.0):
+        metrics = evaluate(model, processor, val_loader, device)
+        run.log({f"val/{k}": v for k, v in metrics.items()}, step=global_step)
+        print(
+            f"Final eval: val CER={metrics['avg_cer']:.4f} FieldAcc={metrics['macro_field_acc']:.4f}"
+        )
+        if metrics["macro_field_acc"] > best_field_acc:
+            best_field_acc = metrics["macro_field_acc"]
+            ckpt_dir = args.output_dir / "best"
+            model.save_pretrained(ckpt_dir)
+            processor.save_pretrained(ckpt_dir)
+            art = wandb.Artifact("qwen2-vl-checkpoint", type="model")
+            art.add_dir(str(ckpt_dir))
+            run.log_artifact(art)
+            print(f"Final best: {best_field_acc:.4f} → saved to {ckpt_dir}")
+        elif not (args.output_dir / "best").exists():
+            # Still save something even if eval failed
+            ckpt_dir = args.output_dir / "best"
+            model.save_pretrained(ckpt_dir)
+            processor.save_pretrained(ckpt_dir)
+            print(f"No best checkpoint from eval — saving fallback to {ckpt_dir}")
 
     run.finish()
     print(f"Training complete. Best field accuracy: {best_field_acc:.4f}")

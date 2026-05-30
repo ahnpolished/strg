@@ -1,0 +1,112 @@
+{
+  "entries": [
+    {
+      "date": "2025-03-12",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 90,
+      "notes": "pause reps",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 130,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-03-12",
+      "exercise": "Barbell Row",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

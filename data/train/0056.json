@@ -1,0 +1,112 @@
+{
+  "entries": [
+    {
+      "date": "2025-01-18",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 9,
+      "weight_lbs": 185,
+      "notes": "PR!",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 8,
+      "weight_lbs": 185,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "Leg Curl",
+      "sets": 1,
+      "reps": 9,
+      "weight_lbs": 115,
+      "notes": "easy day",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "Leg Curl",
+      "sets": 1,
+      "reps": 10,
+      "weight_lbs": 115,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "Leg Curl",
+      "sets": 1,
+      "reps": 9,
+      "weight_lbs": 115,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "Leg Curl",
+      "sets": 1,
+      "reps": 9,
+      "weight_lbs": 115,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 6,
+      "weight_lbs": 275,
+      "notes": "WU",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 275,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 5,
+      "weight_lbs": 275,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 6,
+      "weight_lbs": 275,
+      "notes": null,
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 7,
+      "weight_lbs": 315,
+      "notes": "easy day",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-01-18",
+      "exercise": "Deadlift",
+      "sets": 1,
+      "reps": 7,
+      "weight_lbs": 315,
+      "notes": null,
+      "weight_kg": null
+    }
+  ]
+}

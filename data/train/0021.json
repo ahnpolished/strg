@@ -1,0 +1,85 @@
+{
+  "entries": [
+    {
+      "date": "2025-07-08",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 150,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-08",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-08",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 90,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-08",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-08",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-08",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-08",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-08",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": 90,
+      "notes": "easy day",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-08",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

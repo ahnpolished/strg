@@ -1,0 +1,130 @@
+{
+  "entries": [
+    {
+      "date": "2025-07-02",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Front Squat",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 50,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Sumo Deadlift",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": 90,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-07-02",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

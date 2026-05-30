@@ -1,0 +1,49 @@
+{
+  "entries": [
+    {
+      "date": "2025-05-26",
+      "exercise": "Front Squat",
+      "sets": 4,
+      "reps": 4,
+      "weight_kg": 90,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-26",
+      "exercise": "Sumo Deadlift",
+      "sets": 5,
+      "reps": 12,
+      "weight_kg": 110,
+      "notes": "easy day",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-26",
+      "exercise": "RDL",
+      "sets": 4,
+      "reps": 4,
+      "weight_kg": 120,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-26",
+      "exercise": "Chin-ups",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": null,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-26",
+      "exercise": "Bench Press",
+      "sets": 3,
+      "reps": 5,
+      "weight_kg": 110,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "entries": [
+    {
+      "date": "2025-11-06",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 100,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Squat",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 100,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 8,
+      "weight_kg": null,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 110,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 110,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 110,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 7,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-11-06",
+      "exercise": "Hip Thrust",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 90,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

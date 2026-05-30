@@ -1,0 +1,112 @@
+{
+  "entries": [
+    {
+      "date": "2025-08-01",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "OHP",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 80,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": null,
+      "notes": "slow tempo",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "Dips",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 50,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 6,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "Good Morning",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": 50,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-08-01",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

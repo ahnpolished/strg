@@ -1,0 +1,31 @@
+{
+  "entries": [
+    {
+      "date": "2025-02-02",
+      "exercise": "Squat",
+      "sets": 5,
+      "reps": 12,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-02",
+      "exercise": "Front Squat",
+      "sets": 5,
+      "reps": 10,
+      "weight_kg": 70,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-02-02",
+      "exercise": "Sumo Deadlift",
+      "sets": 5,
+      "reps": 3,
+      "weight_kg": 130,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    }
+  ]
+}

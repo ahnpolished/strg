@@ -1,0 +1,220 @@
+{
+  "entries": [
+    {
+      "date": "2025-05-06",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": 150,
+      "notes": "grip",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Close Grip Bench",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 150,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 110,
+      "notes": "PR!",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 110,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 10,
+      "weight_kg": 110,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Bench Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 110,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 140,
+      "notes": "felt heavy",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Overhead Press",
+      "sets": 1,
+      "reps": 9,
+      "weight_kg": 140,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": "WU",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Push-ups",
+      "sets": 1,
+      "reps": 5,
+      "weight_kg": null,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 2,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 3,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "RDL",
+      "sets": 1,
+      "reps": 4,
+      "weight_kg": 60,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": 130,
+      "notes": "BW",
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 12,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 13,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    },
+    {
+      "date": "2025-05-06",
+      "exercise": "Incline Bench",
+      "sets": 1,
+      "reps": 11,
+      "weight_kg": 130,
+      "notes": null,
+      "weight_lbs": null
+    }
+  ]
+}

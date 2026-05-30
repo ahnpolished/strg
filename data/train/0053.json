@@ -1,0 +1,31 @@
+{
+  "entries": [
+    {
+      "date": "2025-04-02",
+      "exercise": "Lat Pulldown",
+      "sets": 3,
+      "reps": 4,
+      "weight_lbs": 275,
+      "notes": "WU",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-04-02",
+      "exercise": "Bench Press",
+      "sets": 4,
+      "reps": 12,
+      "weight_lbs": 275,
+      "notes": "BW",
+      "weight_kg": null
+    },
+    {
+      "date": "2025-04-02",
+      "exercise": "Push-ups",
+      "sets": 2,
+      "reps": 10,
+      "weight_lbs": null,
+      "notes": "slow tempo",
+      "weight_kg": null
+    }
+  ]
+}
