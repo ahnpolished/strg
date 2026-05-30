@@ -179,16 +179,24 @@ class Qwen2VLRunner(ServerModelRunner):
         min_visual_tokens = int(os.environ.get("STRG_QWEN_MIN_VISUAL_TOKENS", "256"))
         max_visual_tokens = int(os.environ.get("STRG_QWEN_MAX_VISUAL_TOKENS", "1280"))
         self._max_new_tokens = int(os.environ.get("STRG_QWEN_MAX_NEW_TOKENS", "1536"))
+        lora_checkpoint = os.environ.get("STRG_QWEN_LORA_CHECKPOINT", "")
         self._processor = AutoProcessor.from_pretrained(
             self.model_id,
             min_pixels=min_visual_tokens * 28 * 28,
             max_pixels=max_visual_tokens * 28 * 28,
         )
-        self._model = Qwen2VLForConditionalGeneration.from_pretrained(
+        base = Qwen2VLForConditionalGeneration.from_pretrained(
             self.model_id,
             torch_dtype=torch.bfloat16,
             device_map="auto",
         )
+        if lora_checkpoint:
+            from peft import PeftModel  # noqa: PLC0415
+
+            print(f"Loading LoRA adapter from {lora_checkpoint}")
+            self._model = PeftModel.from_pretrained(base, lora_checkpoint)
+        else:
+            self._model = base
 
     def predict(self, image_path: Path) -> WorkoutPage:
         image = Image.open(image_path).convert("RGB")
