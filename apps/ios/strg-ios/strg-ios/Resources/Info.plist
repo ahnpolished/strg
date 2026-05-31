@@ -33,5 +33,10 @@
     </array>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Select workout journal photos to analyze</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>

@@ -44,6 +44,7 @@ terraform apply -auto-approve \
   -var "pod_count=1" \
   -var "cloud_type=$CLOUD_TYPE" \
   -var "interruptible=false" \
+  -var "ports=[\"22/tcp\", \"8888/http\", \"6006/http\", \"8000/http\"]" \
   -var "gpu_type_ids=[$(echo "$GPU_TYPES" | sed 's/,/","/g; s/^/"/; s/$/"/')]" \
   -target=runpod_pod.trainer 2>&1 | tail -5
 

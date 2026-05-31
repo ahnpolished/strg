@@ -18,6 +18,9 @@ struct ContentView: View {
                         .textFieldStyle(.roundedBorder)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
+                        .onChange(of: serverURL) { _, newURL in
+                            apiClient.setServerURL(newURL)
+                        }
                 }
                 .padding(.horizontal)
 

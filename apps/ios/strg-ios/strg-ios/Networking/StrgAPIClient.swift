@@ -5,20 +5,26 @@ import Observation
 /// Client for the strg-model workout extraction API.
 @Observable
 public final class StrgAPIClient {
-    private let baseURL: URL
-    private let session: URLSession
+    private var baseURL: URL
+    private var session: URLSession
     private let decoder: JSONDecoder
 
     public init(baseURL: URL = URL(string: "http://localhost:8000")!) {
         self.baseURL = baseURL
-
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 120
         config.timeoutIntervalForResource = 300
         self.session = URLSession(configuration: config)
-
         self.decoder = JSONDecoder()
     }
+
+    /// Update the server URL (e.g. when user types a new address).
+    public func setServerURL(_ urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        baseURL = url
+    }
+
+
 
     // MARK: - Health Check
 
