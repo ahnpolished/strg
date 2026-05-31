@@ -1,7 +1,9 @@
 import Foundation
 import UIKit
+import Observation
 
 /// Client for the strg-model workout extraction API.
+@Observable
 public final class StrgAPIClient {
     private let baseURL: URL
     private let session: URLSession

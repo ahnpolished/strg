@@ -18,11 +18,6 @@ struct ContentView: View {
                         .textFieldStyle(.roundedBorder)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
-                        .onChange(of: serverURL) { _, newURL in
-                            if let url = URL(string: newURL) {
-                                apiClient = StrgAPIClient(baseURL: url)
-                            }
-                        }
                 }
                 .padding(.horizontal)
 
