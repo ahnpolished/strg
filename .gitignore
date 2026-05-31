@@ -54,3 +54,5 @@ apps/ios/**/DerivedData/
 
 # Ruff cache
 .ruff_cache/
+*.tfstate
+*.tfstate.*
