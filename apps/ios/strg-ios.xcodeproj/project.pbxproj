@@ -1,0 +1,209 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A8B7BC48D5834EA99BD73789 /* WorkoutSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981E1258F6AC493A834D03B7; };
+		F7A30E78918746DCACD8A6EE /* StrgAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E1CD54EF7C4A4D8F501409; };
+		B3067B1091FE41F7903B985C /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = 3DA23D459C774EF9BF90390A; };
+		63303971E97B4F00A4A55662 /* StrgApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3317233F6D469DB6EE097A; };
+		F765F8EC8684461DBC65F605 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBEA1FFCD964867888F7771; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		981E1258F6AC493A834D03B7 /* WorkoutSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSchema.swift; sourceTree = "<group>"; };
+		15E1CD54EF7C4A4D8F501409 /* StrgAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrgAPIClient.swift; sourceTree = "<group>"; };
+		3DA23D459C774EF9BF90390A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BF3317233F6D469DB6EE097A /* StrgApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrgApp.swift; sourceTree = "<group>"; };
+		9EBEA1FFCD964867888F7771 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6DC16B22EB004D04AE1997FA /* strg-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = strg-ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		307727E687B04B0CAA75FDFF = {
+			isa = PBXGroup;
+			children = (
+				A8C534DC96604573AF806A18,
+				F0106EBE5F8C4B32BFCC88E3,
+			);
+			sourceTree = "<group>";
+		};
+		A8C534DC96604573AF806A18 /* strg-ios */ = {
+			isa = PBXGroup;
+			children = (
+				981E1258F6AC493A834D03B7 /* WorkoutSchema.swift */,
+				15E1CD54EF7C4A4D8F501409 /* StrgAPIClient.swift */,
+				3DA23D459C774EF9BF90390A /* Info.plist */,
+				BF3317233F6D469DB6EE097A /* StrgApp.swift */,
+				9EBEA1FFCD964867888F7771 /* ContentView.swift */,
+			);
+			path = "strg-ios";
+			sourceTree = "<group>";
+		};
+		F0106EBE5F8C4B32BFCC88E3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6DC16B22EB004D04AE1997FA /* strg-ios.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EF5D48C29C70479E9ADEAB57 /* strg-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ED4D0E79D3114D3AAFD46870;
+			buildPhases = (
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "strg-ios";
+			productName = strg-ios;
+			productReference = 6DC16B22EB004D04AE1997FA;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D8662493AFC8411D83471DD1 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 080D686CCA3C4235857DAC6D;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (en, Base);
+			mainGroup = 307727E687B04B0CAA75FDFF;
+			productRefGroup = F0106EBE5F8C4B32BFCC88E3;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EF5D48C29C70479E9ADEAB57,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		64B8714AA5704EB0A8D11164 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.humphreyahn.strg;
+				PRODUCT_NAME = "strg-ios";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug";
+		};
+		A7D5069AACFF4456A4AA1607 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.humphreyahn.strg;
+				PRODUCT_NAME = "strg-ios";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Release";
+		};
+		92F3BE617D5A4398883B562F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.humphreyahn.strg;
+				PRODUCT_NAME = "strg-ios";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug";
+		};
+		E32D8AE69FE944E8BDF97224 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.humphreyahn.strg;
+				PRODUCT_NAME = "strg-ios";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Release";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		080D686CCA3C4235857DAC6D /* Build configuration list for PBXProject */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64B8714AA5704EB0A8D11164,
+				A7D5069AACFF4456A4AA1607,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ED4D0E79D3114D3AAFD46870 /* Build configuration list for PBXNativeTarget */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92F3BE617D5A4398883B562F,
+				E32D8AE69FE944E8BDF97224,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = D8662493AFC8411D83471DD1;
+}
