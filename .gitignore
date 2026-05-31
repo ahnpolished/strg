@@ -43,3 +43,4 @@ data/predictions/
 infra/runpod/logs
 infra/runpod/tfplan
 .claude/worktrees
+models/server/checkpoints/
