@@ -412,6 +412,34 @@ fetch_remote_predictions() {
     "${local_dir}/" || echo "WARNING: prediction fetch failed for model=${model}"
 }
 
+fetch_remote_checkpoint() {
+  local model="$1" ip="$2" port="$3" remote_dir="$4"
+  local safe_model local_dir opts
+  safe_model="$(sanitize_name "$model")"
+  local_dir="${LOG_DIR}/checkpoints/${RUN_ID}/${safe_model}"
+  echo "Fetching LoRA checkpoint for model=${model} to ${local_dir}"
+  if [[ $DRY_RUN -eq 1 ]]; then
+    echo "[dry-run] rsync ${SSH_USER}@${ip}:${remote_dir}/checkpoints/${model}/best/ ${local_dir}/"
+    return 0
+  fi
+  # First check if checkpoint exists on the pod
+  opts="$(_ssh_opts "$port")"
+  # shellcheck disable=SC2086
+  local ckpt_exists
+  ckpt_exists=$(ssh -q $opts "${SSH_USER}@${ip}" "test -d ${remote_dir}/checkpoints/${model}/best && echo yes || echo no")
+  if [[ "$ckpt_exists" == "yes" ]]; then
+    mkdir -p "$local_dir"
+    # shellcheck disable=SC2086
+    rsync -az --no-owner --no-group --delete \
+      -e "ssh $opts" \
+      "${SSH_USER}@${ip}:${remote_dir}/checkpoints/${model}/best/" \
+      "${local_dir}/" || echo "WARNING: checkpoint fetch failed for model=${model}"
+    echo "Checkpoint saved to ${local_dir}"
+  else
+    echo "WARNING: no checkpoint found for model=${model} at ${remote_dir}/checkpoints/${model}/best"
+  fi
+}
+
 run_remote_tests() {
   local model="$1" ip="$2" port="$3" remote_dir="$4"
   echo "Running $(basename "$TEST_SCRIPT") for model=${model} on ${SSH_USER}@${ip}:${port}"
@@ -470,6 +498,7 @@ run_model_job() {
     run_remote_tests "$model" "$ip" "$port" "$remote_dir"
     status=$?
     fetch_remote_predictions "$model" "$ip" "$port" "$remote_dir"
+    fetch_remote_checkpoint "$model" "$ip" "$port" "$remote_dir"
     echo "==================================================================="
     echo "strg matrix model job complete — $(date '+%Y-%m-%d %H:%M:%S') — exit=${status}"
     echo "==================================================================="
