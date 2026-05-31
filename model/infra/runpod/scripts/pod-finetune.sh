@@ -14,9 +14,12 @@ set -euo pipefail
 
 WORKSPACE="${WORKSPACE:-/workspace/strg}"
 MODEL="${STRG_FINETUNE_MODEL:-qwen2-vl}"
-TRAIN_DIR="${STRG_TRAIN_DIR:-${WORKSPACE}/data/train}"
-VAL_DIR="${STRG_VAL_DIR:-${WORKSPACE}/data/val}"
-OUTPUT_DIR="${STRG_OUTPUT_DIR:-${WORKSPACE}/checkpoints/${MODEL}}"
+
+# After repo restructure (model/ + apps/), pyproject.toml and data live under model/.
+MODEL_DIR="${WORKSPACE}/model"
+TRAIN_DIR="${STRG_TRAIN_DIR:-${MODEL_DIR}/data/train}"
+VAL_DIR="${STRG_VAL_DIR:-${MODEL_DIR}/data/val}"
+OUTPUT_DIR="${STRG_OUTPUT_DIR:-${MODEL_DIR}/checkpoints/${MODEL}}"
 EPOCHS="${STRG_EPOCHS:-3}"
 
 echo "==================================================================="
@@ -28,7 +31,7 @@ echo "  output:     $OUTPUT_DIR"
 echo "  epochs:     $EPOCHS"
 echo "==================================================================="
 
-cd "$WORKSPACE"
+cd "$MODEL_DIR"
 
 # HuggingFace weights go to container disk (/root) to avoid filling the
 # 20GB pod volume (/workspace). Model download is ~14GB; uv+venv is ~6GB.

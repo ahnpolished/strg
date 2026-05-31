@@ -12,13 +12,13 @@ build/
 # W&B
 wandb/
 
-# Data (track structure, not content) — test photos are large/hand-written, exclude
-data/test/*.jpg
-data/test/*.jpeg
-data/test/*.png
-data/test/*.HEIC
-data/test/*.heic
-data/predictions/
+# Data
+model/data/test/*.jpg
+model/data/test/*.jpeg
+model/data/test/*.png
+model/data/test/*.HEIC
+model/data/test/*.heic
+model/data/predictions/
 
 # Model weights
 *.bin
@@ -40,7 +40,17 @@ data/predictions/
 .idea/
 .vscode/
 .claude/worktrees/
-infra/runpod/logs
-infra/runpod/tfplan
-.claude/worktrees
-models/server/checkpoints/
+
+# RunPod infra
+model/infra/runpod/logs
+model/infra/runpod/tfplan
+
+# Model checkpoints
+model/models/server/checkpoints/
+
+# Xcode
+apps/ios/**/xcuserdata/
+apps/ios/**/DerivedData/
+
+# Ruff cache
+.ruff_cache/

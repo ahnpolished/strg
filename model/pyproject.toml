@@ -6,6 +6,9 @@ members = [
     "evaluation",
 ]
 
+[tool.uv.sources]
+common = { workspace = true }
+
 [tool.ruff]
 line-length = 100
 target-version = "py312"

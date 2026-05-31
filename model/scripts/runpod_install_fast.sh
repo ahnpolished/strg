@@ -14,6 +14,12 @@ set -euo pipefail
 #   ./scripts/runpod_install_fast.sh evaluation   # evaluation-only workflow
 #   ./scripts/runpod_install_fast.sh all          # full workspace, slow fallback
 
+# The workspace root may have moved under model/ (restructured repo).
+# Auto-detect the directory containing pyproject.toml.
+if [[ -f "model/pyproject.toml" ]]; then
+  cd model
+fi
+
 MODE="${1:-server}"
 PYTHON_VERSION="${PYTHON_VERSION:-3.11}"
 PYTHON_BIN="${PYTHON_BIN:-python${PYTHON_VERSION}}"

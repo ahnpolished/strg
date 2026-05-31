@@ -16,6 +16,7 @@
 set -euo pipefail
 
 WORKSPACE="${WORKSPACE:-/workspace/strg}"
+MODEL_DIR="${WORKSPACE}/model"
 MODEL="${STRG_TEST_MODEL:-qwen2-vl}"
 WANDB_ARTIFACT="${STRG_WANDB_ARTIFACT:-qwen2-vl-lora:latest}"
 
@@ -26,7 +27,7 @@ echo "  workspace:  $WORKSPACE"
 echo "  artifact:   $WANDB_ARTIFACT"
 echo "==================================================================="
 
-cd "$WORKSPACE"
+cd "$MODEL_DIR"
 
 # HuggingFace weights go to container disk
 export HF_HOME="${HF_HOME:-/root/.hf-cache}"
@@ -52,7 +53,7 @@ export PYTORCH_JIT=0
 # ── 2. Download LoRA checkpoint from W&B ────────────────────────────────────
 echo ""
 echo "--- [2/4] Downloading LoRA checkpoint from W&B ---"
-CKPT_DIR="${WORKSPACE}/checkpoints/${MODEL}"
+CKPT_DIR="${MODEL_DIR}/checkpoints/${MODEL}"
 mkdir -p "$CKPT_DIR"
 
 if [[ -z "${WANDB_API_KEY:-}" ]]; then

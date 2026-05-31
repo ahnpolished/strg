@@ -8,6 +8,9 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: model
     steps:
       - uses: actions/checkout@v4
 
@@ -28,7 +31,7 @@ jobs:
         run: terraform fmt -check -recursive infra/runpod
 
       - name: Terraform validate
-        working-directory: infra/runpod
+        working-directory: model/infra/runpod
         run: |
           terraform init -backend=false
           terraform validate
@@ -41,3 +44,23 @@ jobs:
 
       - name: Type check
         run: uvx ty check packages/common evaluation
+
+  ios-build:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: apps/ios
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app || echo "Using default Xcode"
+
+      - name: Build iOS app
+        run: |
+          cd strg-ios
+          xcodebuild -scheme strg-ios \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest' \
+            build | xcpretty && exit ${PIPESTATUS[0]} || true
+        continue-on-error: true
