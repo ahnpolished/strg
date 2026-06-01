@@ -80,7 +80,7 @@ TEMPLATE_ID=$($RCTL template create \
     --serverless \
     --container-disk-in-gb 20 \
     --ports "8000/http" \
-    --env '{"HF_TOKEN":"'"${HF_TOKEN:-}"'","TORCH_COMPILE":"0","STRG_QWEN_LORA_CHECKPOINT":""}' \
+    --env '{"HF_TOKEN":"'"${HF_TOKEN:-}"'","TORCH_COMPILE":"0","PYTHONPATH":"/app/model/models/server/src:/app/model/packages/common/src","HF_HOME":"/tmp/hf-cache"}' \
     -o json 2>&1 | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('id',''))" 2>/dev/null || true)
 
 if [[ -z "$TEMPLATE_ID" ]]; then
