@@ -74,20 +74,27 @@ def get_runner() -> Qwen2VLRunner:
 
 @app.on_event("startup")
 async def startup():
-    """Warm up the model on server start."""
-    _ = get_runner()
+    """Warm up the model on server start (non-blocking)."""
+    import asyncio
+    asyncio.create_task(_warm_model())
+
+
+async def _warm_model():
+    """Background model loading."""
+    get_runner()
 
 
 @app.get("/health")
 async def health():
-    runner = get_runner()
-    model_name = runner.model_id
+    global _runner
+    status = "ready" if _runner is not None and hasattr(_runner, "_model") else "warmup"
     lora = os.environ.get("STRG_QWEN_LORA_CHECKPOINT", "")
+    device = str(_runner._model.device) if _runner is not None and hasattr(_runner, "_model") else "loading"
     return {
-        "status": "ok",
-        "model": model_name,
+        "status": status,
+        "model": "Qwen2-VL-7B-Instruct",
         "lora_checkpoint": lora or None,
-        "device": str(runner._model.device) if hasattr(runner, "_model") else "unknown",
+        "device": device,
     }
 
 
