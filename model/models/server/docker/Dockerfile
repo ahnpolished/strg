@@ -61,4 +61,5 @@ EXPOSE 8000
 
 # Default: RunPod Serverless worker
 # For FastAPI, override CMD in the RunPod template
-CMD ["uv", "run", "--package", "models-server", "--directory", "/app/model", "python", "-m", "models_server.serverless_worker"]
+# Use venv python directly (uv not always in PATH at runtime)
+CMD ["/app/model/.venv/bin/python", "-m", "models_server.serverless_worker"]
