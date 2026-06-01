@@ -73,7 +73,6 @@ echo ""
 echo "--- [3/5] Creating serverless template ---"
 
 TEMPLATE_NAME="strg-model-$(date +%s)"
-CMD="python3 -m models_server.serverless_worker"
 
 TEMPLATE_ID=$($RCTL template create \
     --name "$TEMPLATE_NAME" \
@@ -81,7 +80,6 @@ TEMPLATE_ID=$($RCTL template create \
     --serverless \
     --container-disk-in-gb 20 \
     --ports "8000/http" \
-    --docker-start-cmd "$CMD" \
     --env '{"HF_TOKEN":"'"${HF_TOKEN:-}"'","TORCH_COMPILE":"0","STRG_QWEN_LORA_CHECKPOINT":""}' \
     -o json 2>&1 | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('id',''))" 2>/dev/null || true)
 
@@ -114,7 +112,7 @@ else
     echo "     https://www.runpod.io/console/serverless"
     echo ""
     echo "     Image: $IMAGE"
-    echo "     Cmd:   $CMD"
+    echo "     Cmd:   (set in Dockerfile)"
     exit 1
 fi
 
