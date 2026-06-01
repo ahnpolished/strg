@@ -8,19 +8,31 @@ struct ContentView: View {
     @State private var isLoading = false
     @State private var errorMessage: String?
     @State private var serverURL: String = "http://localhost:8000"
+    @State private var apiKey: String = ""
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
+            VStack(spacing: 12) {
                 // Server URL config
-                HStack {
-                    TextField("Server URL", text: $serverURL)
-                        .textFieldStyle(.roundedBorder)
-                        .autocapitalization(.none)
-                        .disableAutocorrection(true)
-                        .onChange(of: serverURL) { _, newURL in
-                            apiClient.setServerURL(newURL)
-                        }
+                VStack(spacing: 8) {
+                    HStack {
+                        TextField("Server URL", text: $serverURL)
+                            .textFieldStyle(.roundedBorder)
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
+                            .onChange(of: serverURL) { _, newURL in
+                                apiClient.setServerURL(newURL)
+                            }
+                    }
+                    HStack {
+                        TextField("API Key (for RunPod Serverless)", text: $apiKey)
+                            .textFieldStyle(.roundedBorder)
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
+                            .onChange(of: apiKey) { _, newKey in
+                                apiClient.setAPIKey(newKey)
+                            }
+                    }
                 }
                 .padding(.horizontal)
 

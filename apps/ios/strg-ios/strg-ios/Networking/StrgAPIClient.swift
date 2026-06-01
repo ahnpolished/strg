@@ -6,6 +6,7 @@ import Observation
 @Observable
 public final class StrgAPIClient {
     private var baseURL: URL
+    private var apiKey: String = ""
     private var session: URLSession
     private let decoder: JSONDecoder
 
@@ -24,14 +25,33 @@ public final class StrgAPIClient {
         baseURL = url
     }
 
+    /// Set the API key for RunPod Serverless authentication.
+    /// Sent as "Authorization: Bearer <key>" on every request.
+    public func setAPIKey(_ key: String) {
+        apiKey = key
+    }
+
+    // MARK: - Request Builder
+
+    private func buildRequest(url: URL, method: String = "GET") -> URLRequest {
+        var req = URLRequest(url: url)
+        req.httpMethod = method
+        req.timeoutInterval = 120
+        if !apiKey.isEmpty {
+            req.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        }
+        return req
+    }
+
 
 
     // MARK: - Health Check
 
     /// Check if the API server is reachable and healthy.
     public func health() async throws -> HealthResponse {
-        let url = baseURL.appendingPathComponent("health")
-        let (data, _) = try await session.data(from: url)
+        let url = appendPath(url: baseURL, path: "health")
+        var request = buildRequest(url: url)
+        let (data, _) = try await session.data(for: request)
         return try decoder.decode(HealthResponse.self, from: data)
     }
 
@@ -41,34 +61,53 @@ public final class StrgAPIClient {
     /// - Parameter image: The photo to analyze (JPEG preferred).
     /// - Returns: Extracted workout entries with latency info.
     public func predict(image: UIImage) async throws -> PredictionResponse {
-        let url = baseURL.appendingPathComponent("predict")
-
-        // Convert image to JPEG data
         guard let imageData = image.jpegData(compressionQuality: 0.85) else {
             throw StrgAPIError.imageConversionFailed
         }
 
-        // Build multipart form request
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        let isServerless = baseURL.absoluteString.contains("runpod.ai")
+        let url: URL
+        var request: URLRequest
 
-        let boundary = UUID().uuidString
-        request.setValue(
-            "multipart/form-data; boundary=\(boundary)",
-            forHTTPHeaderField: "Content-Type"
-        )
-
-        var body = Data()
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append(
-            "Content-Disposition: form-data; name=\"image\"; filename=\"photo.jpg\"\r\n".data(using: .utf8)!
-        )
-        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-        body.append(imageData)
-        body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
-        request.httpBody = body
+        if isServerless {
+            // RunPod Serverless: POST JSON with base64 image
+            url = appendPath(url: baseURL, path: "runsync")
+            request = buildRequest(url: url, method: "POST")
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            let base64 = imageData.base64EncodedString()
+            let body: [String: Any] = [
+                "input": [
+                    "image": base64,
+                    "filename": "photo.jpg"
+                ]
+            ]
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        } else {
+            // Direct pod: multipart form upload
+            url = appendPath(url: baseURL, path: "predict")
+            request = buildRequest(url: url, method: "POST")
+            let boundary = UUID().uuidString
+            request.setValue(
+                "multipart/form-data; boundary=\(boundary)",
+                forHTTPHeaderField: "Content-Type"
+            )
+            var body = Data()
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"image\"; filename=\"photo.jpg\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            body.append(imageData)
+            body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+            request.httpBody = body
+        }
 
         let (data, _) = try await session.data(for: request)
+
+        // Parse response — serverless wraps in "output" key
+        let raw = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        if let output = raw?["output"] as? [String: Any] {
+            let outputData = try JSONSerialization.data(withJSONObject: output)
+            return try decoder.decode(PredictionResponse.self, from: outputData)
+        }
         return try decoder.decode(PredictionResponse.self, from: data)
     }
 
@@ -82,15 +121,14 @@ public final class StrgAPIClient {
         originalEntries: [WorkoutEntry]? = nil,
         notes: String? = nil
     ) async throws -> FeedbackResponse {
-        let url = baseURL.appendingPathComponent("feedback")
+        let url = appendPath(url: baseURL, path: "feedback")
+        var request = buildRequest(url: url, method: "POST")
 
         guard let imageData = image.jpegData(compressionQuality: 0.85) else {
             throw StrgAPIError.imageConversionFailed
         }
 
         let boundary = UUID().uuidString
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
         request.setValue(
             "multipart/form-data; boundary=\(boundary)",
             forHTTPHeaderField: "Content-Type"
@@ -101,21 +139,15 @@ public final class StrgAPIClient {
         let entriesJSON = String(data: entriesData, encoding: .utf8)!
 
         var body = Data()
-
-        // Image
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"image\"; filename=\"photo.jpg\"\r\n".data(using: .utf8)!)
         body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
         body.append(imageData)
         body.append("\r\n".data(using: .utf8)!)
-
-        // Corrected entries
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"entries\"\r\n\r\n".data(using: .utf8)!)
         body.append(entriesJSON.data(using: .utf8)!)
         body.append("\r\n".data(using: .utf8)!)
-
-        // Original entries (optional)
         if let original = originalEntries {
             let origData = try encoder.encode(original)
             let origJSON = String(data: origData, encoding: .utf8)!
@@ -124,20 +156,23 @@ public final class StrgAPIClient {
             body.append(origJSON.data(using: .utf8)!)
             body.append("\r\n".data(using: .utf8)!)
         }
-
-        // Notes (optional)
         if let notes = notes {
             body.append("--\(boundary)\r\n".data(using: .utf8)!)
             body.append("Content-Disposition: form-data; name=\"notes\"\r\n\r\n".data(using: .utf8)!)
             body.append(notes.data(using: .utf8)!)
             body.append("\r\n".data(using: .utf8)!)
         }
-
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
         request.httpBody = body
 
         let (data, _) = try await session.data(for: request)
         return try decoder.decode(FeedbackResponse.self, from: data)
+    }
+
+    // MARK: - Helpers
+
+    private func appendPath(url: URL, path: String) -> URL {
+        url.appendingPathComponent(path)
     }
 }
 

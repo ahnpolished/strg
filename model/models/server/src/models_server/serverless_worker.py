@@ -106,6 +106,7 @@ def handler(event: dict) -> dict:
 # For local testing
 if __name__ == "__main__":
     import sys
+
     path = sys.argv[1] if len(sys.argv) > 1 else "data/test/001.jpg"
     with open(path, "rb") as f:
         img_b64 = base64.b64encode(f.read()).decode()
