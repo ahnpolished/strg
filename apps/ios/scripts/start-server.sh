@@ -129,26 +129,28 @@ for i in $(seq 1 12); do
     fi
 done
 
-# ── 4. Create SSH tunnel ────────────────────────────────────────────────────
-echo ""
-echo "--- [4/4] Creating SSH tunnel ---"
+# ── 4. Print connection info ───────────────────────────────────────────────
+
+# Create SSH tunnel so localhost:8000 works for simulator
 kill $(lsof -ti tcp:8000) 2>/dev/null || true
 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
   -o ConnectTimeout=10 -o BatchMode=yes \
   -p $PORT -i ~/.ssh/id_ed25519 \
-  -L 8000:127.0.0.1:8000 -N -f root@$IP
+  -L 8000:127.0.0.1:8000 -N -f root@$IP 2>/dev/null || true
 
 echo ""
 echo "========================================"
 echo " ✅ Server is live!"
 echo "========================================"
-echo "  Pod IP:   $IP:$PORT"
-echo "  API:      http://localhost:8000"
-echo "  Device:   $(curl -s http://localhost:8000/health 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('device','?'))")"
-echo "  LoRA:     $(curl -s http://localhost:8000/health 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print(bool(d.get('lora_checkpoint')) and 'loaded' or 'none')")"
 echo ""
-echo "  Test:     curl http://localhost:8000/health"
-echo "  Predict:  curl -X POST -F 'image=@model/data/test/001.jpg' http://localhost:8000/predict"
+echo "  📱 Simulator:"
+echo "     http://localhost:8000"
 echo ""
-echo "  Stop:     ./apps/ios/scripts/stop-server.sh"
+echo "  📱 Real iPhone:"
+echo "     http://$IP:8000"
+echo ""
+echo "  ▶️  Paste this in the app's Server URL field:"
+echo "     http://$IP:8000"
+echo ""
+echo "  🛑  Stop:  ./apps/ios/scripts/stop-server.sh"
 echo "========================================"
