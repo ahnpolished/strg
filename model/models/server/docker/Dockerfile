@@ -1,41 +1,37 @@
-# Dockerfile for strg-model — RunPod Serverless worker.
-#
-# No model weights baked in — they download at runtime (~30s on RunPod).
-# Image size: ~8GB (fits GHA 14GB runner limit).
+# Minimal Dockerfile for strg-model serverless worker.
+# Uses the EXACT same setup as the pod (uv sync into .venv).
 
 FROM pytorch/pytorch:2.4.0-cuda12.4-cudnn9-runtime
 
-# Minimize size
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential curl && rm -rf /var/lib/apt/lists/*
 
+# Install uv
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:${PATH}"
+
 WORKDIR /app
 
-# Copy everything
-COPY model/ ./model/
+# Copy workspace files
+COPY model/pyproject.toml model/uv.lock /app/model/
+COPY model/packages/common/ /app/model/packages/common/
+COPY model/models/server/ /app/model/models/server/
+COPY model/evaluation/ /app/model/evaluation/
 
-# Install deps — use python3 -m pip to be sure we hit the right pip
-# No pipe to tail — let errors be visible in build logs
-RUN python3 -m pip install --no-cache-dir \
-    "transformers>=4.45,<4.50" \
-    "accelerate>=0.26" \
-    "pillow>=10.0" \
-    "sentencepiece>=0.2.0" \
-    timm einops peft bitsandbytes \
-    fastapi uvicorn python-multipart
+# Mirror runpod_install_fast.sh: create venv with uv
+RUN cd /app/model \
+    && uv sync --package models-server --package evaluation --frozen --no-dev --no-cache 2>&1 | tail -5
 
-# Verify install succeeded
-RUN python3 --version \
-    && python3 -c "import transformers;import peft;import PIL;import torch;print('torch',torch.__version__,'CUDA',torch.cuda.is_available())" \
-    && echo "✅ All deps verified"
+# Install peft for LoRA
+RUN cd /app/model && uv pip install peft --no-cache 2>&1 | tail -2
 
-# Paths for our source modules
-ENV PYTHONPATH="/app/model/models/server/src:/app/model/packages/common/src"
+# Verify
+RUN /app/model/.venv/bin/python -c "import torch; print('torch',torch.__version__,'CUDA',torch.cuda.is_available())"
+
 ENV TORCH_COMPILE=0
 ENV HF_HOME="/tmp/hf-cache"
 
 EXPOSE 8000
 
-# RunPod Serverless: start FastAPI HTTP server on port 8000.
-# RunPod routes external requests → container:8000 via --ports flag.
-CMD ["python3", "-m", "models_server.serve", "--port", "8000", "--host", "0.0.0.0"]
+# Use venv python (mirrors pod setup)
+CMD ["/app/model/.venv/bin/python", "-m", "models_server.serve", "--port", "8000", "--host", "0.0.0.0"]
