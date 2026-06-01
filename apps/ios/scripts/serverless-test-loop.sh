@@ -156,77 +156,68 @@ create_or_get_endpoint() {
 
 test_endpoint() {
     local endpoint_id="$1"
-    local run_url="https://api.runpod.ai/v2/$endpoint_id/run"
-    local status_url="https://api.runpod.ai/v2/$endpoint_id/status"
+    local url="https://api.runpod.ai/v2/$endpoint_id/runsync"
 
     echo ""
-    echo "--- Testing endpoint ---"
+    echo "--- Testing endpoint (runsync, 300s timeout for cold start) ---"
 
-    # Encode test image as base64 (small image for fast test)
     local img_b64
     img_b64=$(base64 -i "$TEST_IMAGE" 2>/dev/null || base64 "$TEST_IMAGE")
 
-    # 1. Submit async job (don't wait long)
-    echo "  Submitting predict (async)..."
-    local submit
-    submit=$(curl -s -X POST "$run_url" \
+    echo "  Sending request..."
+    local t0
+    t0=$(date +%s)
+    local response
+    response=$(curl -s -X POST "$url" \
         -H "Authorization: Bearer $RUNPOD_API_KEY" \
         -H "Content-Type: application/json" \
         -d "{\"input\":{\"image\":\"$img_b64\",\"filename\":\"photo.jpg\"}}" \
-        --max-time 30 2>&1)
+        --max-time 300 2>&1)
+    local elapsed=$(($(date +%s) - t0))
 
-    local job_id
-    job_id=$(echo "$submit" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('id',''))" 2>/dev/null || echo "")
-    
-    if [[ -z "$job_id" ]]; then
-        echo "  ❌ Failed to submit: $(echo "$submit" | head -1)"
-        return 1
-    fi
-    echo "  Job ID: $job_id"
+    echo "  Response (after ${elapsed}s):"
+    echo "$response" | python3 -c "
+import json,sys
+try:
+    d=json.load(sys.stdin)
+    status = d.get('status','')
+    if status == 'COMPLETED':
+        o=d.get('output',{})
+        print(f'    ✅ Entries: {o.get(\"entry_count\",\"?\")}  Latency: {o.get(\"latency_s\",\"?\")}s')
+        for e in o.get('entries',[])[:3]:
+            print(f'      {e[\"exercise\"]}: {e[\"sets\"]}x{e[\"reps\"]}')
+    elif status == 'IN_QUEUE':
+        print(f'    ⏳ Worker not ready — still cold starting')
+        print(f'    Check RunPod Console for logs')
+    elif status == 'FAILED':
+        print(f'    ❌ Failed: {d.get(\"output\",d.get(\"error\",\"?\"))}')
+    elif 'output' in d:
+        o=d['output']
+        print(f'    ✅ Entries: {o.get(\"entry_count\",\"?\")}  Latency: {o.get(\"latency_s\",\"?\")}s')
+        for e in o.get('entries',[])[:3]:
+            print(f'      {e[\"exercise\"]}: {e[\"sets\"]}x{e[\"reps\"]}')
+    elif 'error' in d:
+        print(f'    ❌ Error: {d[\"error\"]}')
+    else:
+        print(f'    Raw: {json.dumps(d)[:300]}')
+except:
+    print(f'    Raw: {sys.stdin.read()[:300]}')
+" 2>/dev/null || echo "  Raw: $response"
 
-    # 2. Poll status until complete
-    echo "  Waiting for result (model cold start may take 2-5min)..."
-    for i in $(seq 1 60); do
-        sleep 10
-        local status
-        status=$(curl -s -X POST "$status_url/$job_id" \
-            -H "Authorization: Bearer $RUNPOD_API_KEY" \
-            -H "Content-Type: application/json" \
-            --max-time 10 2>&1)
-
-        local state
-        state=$(echo "$status" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('status','UNKNOWN'))" 2>/dev/null || echo "UNKNOWN")
-        
-        case "$state" in
-            COMPLETED) 
-                echo ""
-                echo "  Response:"
-                echo "$status" | python3 -c "
+    if echo "$response" | python3 -c "
 import json,sys
 d=json.load(sys.stdin)
-o=d.get('output',{})
-print(f'    Entries: {o.get(\"entry_count\",\"?\")}  Latency: {o.get(\"latency_s\",\"?\")}s')
-for e in o.get('entries',[])[:3]:
-    print(f'      {e[\"exercise\"]}: {e[\"sets\"]}x{e[\"reps\"]}')
-" 2>/dev/null
-                echo ""
-                echo "  ✅ Prediction succeeded!"
-                return 0
-                ;;
-            FAILED)
-                echo "  ❌ Job failed: $status"
-                return 1
-                ;;
-            IN_PROGRESS|IN_QUEUE)
-                echo "  [$((i*10))s] $state..."
-                ;;
-            *)
-                echo "  [$((i*10))s] $state: $(echo "$status" | head -1)"
-                ;;
-        esac
-    done
+status = d.get('status','')
+ok = (status == 'COMPLETED' or d.get('output',{}).get('entry_count',0) > 0)
+print('OK' if ok else '')
+" 2>/dev/null | grep -q "OK"; then
+        echo ""
+        echo "  ✅ Prediction succeeded!"
+        return 0
+    fi
 
-    echo "  ❌ Timeout waiting for result"
+    echo ""
+    echo "  ❌ Worker not ready or failed"
     return 1
 }
 

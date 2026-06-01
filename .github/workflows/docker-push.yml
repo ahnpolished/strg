@@ -1,14 +1,12 @@
 name: Build & Push Docker Image (Serverless)
 
 on:
-  workflow_dispatch:        # manual trigger
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
       - "model/models/server/**"
       - "model/packages/common/**"
-      - "model/pyproject.toml"
-      - "model/uv.lock"
       - "model/models/server/docker/Dockerfile"
 
 env:
@@ -45,25 +43,13 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=sha,prefix=
 
-      - name: Download LoRA checkpoint from W&B
-        env:
-          WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
-        run: |
-          pip install wandb
-          mkdir -p /tmp/lora-checkpoint
-          wandb artifact get ahnpolished-ahnpolished/strg-model/qwen2-vl-lora:latest \
-            --root /tmp/lora-checkpoint
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: model/models/server/docker/Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            LORA_CHECKPOINT=/tmp/lora-checkpoint
-            HF_TOKEN=${{ secrets.HF_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
