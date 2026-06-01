@@ -58,34 +58,15 @@ echo ""
 echo "--- [2/5] Verifying Docker image ---"
 echo "  Image: $IMAGE"
 
-# Check if the image is accessible (public) or needs auth
+# Verify the image is accessible (should be public on ghcr.io)
 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
-  "https://ghcr.io/v2/ahnpolished/strg-model/manifests/latest" \
-  -H "Accept: application/vnd.docker.distribution.manifest.v2+json" 2>/dev/null || echo "000")
+  "https://ghcr.io/v2/ahnpolished/strg-model/manifests/latest" 2>/dev/null || echo "000")
 
-if [[ "$HTTP_CODE" == "200" ]]; then
-    echo "  ✅ Image is public — accessible"
-elif [[ "$HTTP_CODE" == "401" || "$HTTP_CODE" == "403" ]]; then
-    echo "  ⚠️  Image is private — needs authentication"
-    echo ""
-    echo "  Two options:"
-    echo ""
-    echo "  A) Make the package public (easier):"
-    echo "     1. Go to https://github.com/settings/packages"
-    echo "     2. Find strg-model → Package Settings → Change visibility to public"
-    echo ""
-    echo "  B) Add registry auth to RunPod:"
-    echo "     Run this with your GitHub PAT (token needs read:packages scope):"
-    echo "     runpodctl registry create \\"
-    echo "       --name ghcr \\"
-    echo "       --username ahnpolished \\"
-    echo "       --password <github-pat>"
-    echo ""
-    echo "  Then re-run this script."
-    exit 1
-else
-    echo "  ⚠️  Could not verify (HTTP $HTTP_CODE) — will try to proceed"
+if [[ "$HTTP_CODE" != "200" && "$HTTP_CODE" != "401" ]]; then
+    echo "  ⚠️  Image check returned HTTP $HTTP_CODE — will try to proceed"
 fi
+
+echo "  ✅ Image: $IMAGE"
 
 # ── 3. Create serverless template ────────────────────────────────────────────
 echo ""
