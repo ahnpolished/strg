@@ -5,7 +5,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:${PATH}"
 WORKDIR /app
 COPY model/ /app/model/
-RUN cd /app/model && uv sync --package models-server --package evaluation --frozen --no-dev 2>&1 | tail -3 && uv pip install peft 2>&1 | tail -1
+RUN cd /app/model && uv sync --package models-server --package evaluation --frozen --no-dev 2>&1 | tail -3 && uv pip install peft runpod 2>&1 | tail -1
 ENV PYTHONPATH="/app/model/models/server/src:/app/model/packages/common/src"
 ENV TORCH_COMPILE=0 HF_HOME="/tmp/hf-cache"
 EXPOSE 8000
