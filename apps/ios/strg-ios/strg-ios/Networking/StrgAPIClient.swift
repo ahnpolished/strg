@@ -71,6 +71,74 @@ public final class StrgAPIClient {
         let (data, _) = try await session.data(for: request)
         return try decoder.decode(PredictionResponse.self, from: data)
     }
+
+    // MARK: - Feedback
+
+    /// Submit corrected workout data for future fine-tuning.
+    @discardableResult
+    public func submitFeedback(
+        image: UIImage,
+        entries: [WorkoutEntry],
+        originalEntries: [WorkoutEntry]? = nil,
+        notes: String? = nil
+    ) async throws -> FeedbackResponse {
+        let url = baseURL.appendingPathComponent("feedback")
+
+        guard let imageData = image.jpegData(compressionQuality: 0.85) else {
+            throw StrgAPIError.imageConversionFailed
+        }
+
+        let boundary = UUID().uuidString
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue(
+            "multipart/form-data; boundary=\(boundary)",
+            forHTTPHeaderField: "Content-Type"
+        )
+
+        let encoder = JSONEncoder()
+        let entriesData = try encoder.encode(entries)
+        let entriesJSON = String(data: entriesData, encoding: .utf8)!
+
+        var body = Data()
+
+        // Image
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"photo.jpg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(imageData)
+        body.append("\r\n".data(using: .utf8)!)
+
+        // Corrected entries
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"entries\"\r\n\r\n".data(using: .utf8)!)
+        body.append(entriesJSON.data(using: .utf8)!)
+        body.append("\r\n".data(using: .utf8)!)
+
+        // Original entries (optional)
+        if let original = originalEntries {
+            let origData = try encoder.encode(original)
+            let origJSON = String(data: origData, encoding: .utf8)!
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"original_entries\"\r\n\r\n".data(using: .utf8)!)
+            body.append(origJSON.data(using: .utf8)!)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+
+        // Notes (optional)
+        if let notes = notes {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"notes\"\r\n\r\n".data(using: .utf8)!)
+            body.append(notes.data(using: .utf8)!)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        request.httpBody = body
+
+        let (data, _) = try await session.data(for: request)
+        return try decoder.decode(FeedbackResponse.self, from: data)
+    }
 }
 
 // MARK: - Errors

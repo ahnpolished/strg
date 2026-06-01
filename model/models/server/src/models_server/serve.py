@@ -15,11 +15,17 @@ API:
     - Upload an image file (multipart/form-data, field name "image")
     - Returns JSON with extracted workout entries
 
+  POST /feedback
+    - Submit corrected workout data for future fine-tuning.
+    - Fields: image (file), entries (JSON), original_entries (JSON, optional)
+    - Saves to {STRG_FEEDBACK_DIR}/{timestamp}/
+
   GET /health
     - Returns {"status": "ok", "model": "..."}
 """
 
 import io
+import json
 import os
 import time
 from pathlib import Path
@@ -28,7 +34,7 @@ from PIL import Image
 
 try:
     import uvicorn
-    from fastapi import FastAPI, File, HTTPException, UploadFile
+    from fastapi import FastAPI, File, Form, HTTPException, UploadFile
     from fastapi.responses import JSONResponse
 except ImportError:
     msg = (
@@ -49,6 +55,9 @@ app = FastAPI(
 
 # Global model runner (loaded once at startup)
 _runner: Qwen2VLRunner | None = None
+
+# Feedback directory for collecting corrected data
+FEEDBACK_DIR = Path(os.environ.get("STRG_FEEDBACK_DIR", "data/feedback"))
 
 
 def get_runner() -> Qwen2VLRunner:
@@ -119,6 +128,59 @@ async def predict(image: UploadFile = File(...)):
         # Clean up temp file
         if tmp_path.exists():
             tmp_path.unlink()
+
+
+@app.post("/feedback", response_class=JSONResponse)
+async def feedback(
+    image: UploadFile = File(...),
+    entries: str = Form(...),
+    original_entries: str | None = Form(None),
+    notes: str | None = Form(None),
+):
+    """Submit corrected workout data to use in future fine-tuning.
+
+    Saves the photo + corrected entries to the feedback directory.
+    This data feeds back into the training pipeline for continuous improvement.
+    """
+    if not image.content_type or not image.content_type.startswith("image/"):
+        raise HTTPException(status_code=400, detail="Only image files are accepted")
+
+    # Validate entries JSON
+    try:
+        parsed = json.loads(entries)
+        if not isinstance(parsed, list):
+            raise ValueError("entries must be a list")
+    except (json.JSONDecodeError, ValueError) as e:
+        raise HTTPException(status_code=400, detail=f"Invalid entries JSON: {e}") from e
+
+    # Create feedback directory
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+    feedback_id = f"feedback_{timestamp}"
+    save_dir = FEEDBACK_DIR / feedback_id
+    save_dir.mkdir(parents=True, exist_ok=True)
+
+    # Save the image
+    contents = await image.read()
+    img_path = save_dir / "photo.jpg"
+    img_path.write_bytes(contents)
+
+    # Save corrected entries
+    data = {
+        "entries": parsed,
+        "original_entries": json.loads(original_entries) if original_entries else None,
+        "notes": notes or "",
+        "submitted_at": timestamp,
+    }
+    json_path = save_dir / "ground_truth.json"
+    json_path.write_text(json.dumps(data, indent=2))
+
+    print(f"[feedback] Saved corrected data to {save_dir} ({len(parsed)} entries)")
+
+    return {
+        "status": "ok",
+        "feedback_id": feedback_id,
+        "entries_saved": len(parsed),
+    }
 
 
 def main() -> None:

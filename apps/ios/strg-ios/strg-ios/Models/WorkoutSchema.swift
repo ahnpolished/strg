@@ -27,6 +27,19 @@ public struct WorkoutPage: Codable {
     public let entries: [WorkoutEntry]
 }
 
+/// Feedback submission response.
+public struct FeedbackResponse: Codable {
+    public let status: String
+    public let feedbackId: String
+    public let entriesSaved: Int
+
+    enum CodingKeys: String, CodingKey {
+        case status
+        case feedbackId = "feedback_id"
+        case entriesSaved = "entries_saved"
+    }
+}
+
 /// API prediction response envelope.
 public struct PredictionResponse: Codable {
     public let entries: [WorkoutEntry]
