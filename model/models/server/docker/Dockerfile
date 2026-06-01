@@ -39,3 +39,5 @@ EXPOSE 8000
 # Default: RunPod Serverless worker
 # CMD uses shell form so PATH is searched
 CMD ["python3", "-m", "models_server.serverless_worker"]
+
+# Trigger GHA rebuild Sun May 31 23:52:28 EDT 2026
