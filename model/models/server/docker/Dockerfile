@@ -38,15 +38,18 @@ COPY model/ ./model/
 
 # Install dependencies system-wide (so system python can find them)
 RUN pip install --no-cache-dir \
-    transformers>=4.45,<4.50 \
-    accelerate>=0.26 \
-    pillow>=10.0 \
-    sentencepiece>=0.2.0 \
+    "transformers>=4.45,<4.50" \
+    "accelerate>=0.26" \
+    "pillow>=10.0" \
+    "sentencepiece>=0.2.0" \
     timm \
     einops \
     peft \
     bitsandbytes \
     2>&1 | tail -5
+
+# Verify python and key modules are available
+RUN python3 --version && python3 -c "import transformers; import PIL; print('deps OK')"
 
 # Default env
 ENV TORCH_COMPILE=0
@@ -58,4 +61,4 @@ EXPOSE 8000
 # Default: RunPod Serverless worker
 # For FastAPI, override CMD in the RunPod template
 # Use system python (has torch pre-installed) with PYTHONPATH set
-CMD ["/usr/bin/python3", "-m", "models_server.serverless_worker"]
+CMD ["python3", "-m", "models_server.serverless_worker"]
