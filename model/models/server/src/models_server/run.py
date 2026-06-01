@@ -4,9 +4,9 @@ import statistics
 from pathlib import Path
 
 import torch
+import wandb
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 
-import wandb
 from models_server.base import ServerModelRunner
 
 MODEL_CHOICES = ["qwen2-vl", "internvl2", "florence2", "donut"]

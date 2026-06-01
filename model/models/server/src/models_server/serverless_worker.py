@@ -31,7 +31,6 @@ API:
 import base64
 import io
 import json
-import os
 import time
 from pathlib import Path
 

@@ -117,10 +117,11 @@ fi
 echo ""
 echo "--- [4/5] Creating serverless endpoint ---"
 
+GPU="NVIDIA GeForce RTX 3090"
 ENDPOINT_ID=$($RCTL serverless create \
     --template-id "$TEMPLATE_ID" \
     --name "strg-model" \
-    --gpu-id "NVIDIA GeForce RTX 3090" \
+    --gpu-id "$GPU" \
     --workers-min 0 \
     --workers-max 2 \
     --idle-timeout 30 \
@@ -163,7 +164,7 @@ echo " ✅ Serverless endpoint is live!"
 echo "========================================"
 echo ""
 echo "  Endpoint ID: $ENDPOINT_ID"
-echo "  GPU:         $GPU"
+echo "  GPU:         ${GPU:-unknown}"
 echo ""
 echo "  ▶️  Paste this in your app's Server URL field:"
 echo "     https://api.runpod.ai/v2/$ENDPOINT_ID"

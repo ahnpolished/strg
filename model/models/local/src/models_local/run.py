@@ -4,9 +4,9 @@ import statistics
 import tracemalloc
 from pathlib import Path
 
+import wandb
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 
-import wandb
 from models_local.base import LocalModelRunner
 
 

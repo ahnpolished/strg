@@ -20,6 +20,7 @@ import argparse
 from pathlib import Path
 
 import torch
+import wandb
 from common.schema import WorkoutPage, load_page
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 from peft import LoraConfig, PeftModel, TaskType, get_peft_model
@@ -27,7 +28,6 @@ from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoModelForCausalLM, AutoProcessor, BitsAndBytesConfig
 
-import wandb
 from models_local.prompt import EXTRACTION_PROMPT
 
 MODEL_ID = "microsoft/Phi-3.5-vision-instruct"

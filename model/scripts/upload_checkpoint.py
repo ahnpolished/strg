@@ -12,10 +12,9 @@ import argparse
 import shutil
 from pathlib import Path
 
+import wandb
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT
 from models_server.prompt import EXTRACTION_PROMPT
-
-import wandb
 
 
 def main() -> None:

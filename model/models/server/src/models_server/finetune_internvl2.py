@@ -16,6 +16,7 @@ import argparse
 from pathlib import Path
 
 import torch
+import wandb
 from common.schema import WorkoutPage, load_page
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 from peft import LoraConfig, TaskType, get_peft_model
@@ -23,7 +24,6 @@ from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoModel, AutoTokenizer, BitsAndBytesConfig
 
-import wandb
 from models_server.prompt import EXTRACTION_PROMPT
 
 MODEL_ID = "OpenGVLab/InternVL2-8B"

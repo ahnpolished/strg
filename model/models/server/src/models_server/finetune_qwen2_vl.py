@@ -24,6 +24,7 @@ import argparse
 from pathlib import Path
 
 import torch
+import wandb
 from common.schema import WorkoutPage, load_page
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 from peft import LoraConfig, get_peft_model
@@ -31,7 +32,6 @@ from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoProcessor, BitsAndBytesConfig, Qwen2VLForConditionalGeneration
 
-import wandb
 from models_server.prompt import EXTRACTION_PROMPT
 
 MODEL_ID = "Qwen/Qwen2-VL-7B-Instruct"
