@@ -91,6 +91,47 @@ async def health():
     }
 
 
+@app.post("/")
+@app.post("/serverless/predict")
+async def serverless_predict(request: Request):
+    """Handle RunPod serverless JSON format: {"input": {"image": "<base64>"}}."""
+    runner = get_runner()
+    body = await request.json()
+    inp = body.get("input", body)
+
+    image_b64 = inp.get("image", "")
+    if not image_b64:
+        raise HTTPException(status_code=400, detail="No 'image' in input")
+
+    try:
+        import base64
+        image_bytes = base64.b64decode(image_b64)
+        pil_image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid image: {e}") from e
+
+    tmp_dir = Path("/tmp/strg-serve")
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    tmp_path = tmp_dir / f"sless_{int(time.time())}.jpg"
+    pil_image.save(tmp_path, "JPEG", quality=90)
+
+    t0 = time.perf_counter()
+    try:
+        page: WorkoutPage = runner.predict(tmp_path)
+        latency = time.perf_counter() - t0
+        result = page.model_dump(mode="json")
+        return {
+            "entries": result.get("entries", []),
+            "latency_s": round(latency, 2),
+            "entry_count": len(page.entries),
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Prediction failed: {e}") from e
+    finally:
+        if tmp_path.exists():
+            tmp_path.unlink()
+
+
 @app.post("/predict", response_class=JSONResponse)
 async def predict(image: UploadFile = File(...)):
     """Upload a workout journal photo and get structured workout data."""

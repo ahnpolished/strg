@@ -36,8 +36,6 @@ ENV HF_HOME="/tmp/hf-cache"
 
 EXPOSE 8000
 
-# Default: RunPod Serverless worker
-# CMD uses shell form so PATH is searched
-CMD ["python3", "-m", "models_server.serverless_worker"]
-
-# Trigger GHA rebuild Sun May 31 23:52:28 EDT 2026
+# RunPod Serverless: start FastAPI HTTP server on port 8000.
+# RunPod routes external requests → container:8000 via --ports flag.
+CMD ["python3", "-m", "models_server.serve", "--port", "8000", "--host", "0.0.0.0"]
