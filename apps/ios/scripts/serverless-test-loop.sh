@@ -292,3 +292,16 @@ while true; do
     echo "  Next attempt in 10s..."
     sleep 10
 done
+
+# ── NOTES ──────────────────────────────────────────────────────────────────
+# Pod-based testing (KNOWN TO WORK):
+#   ./apps/ios/scripts/start-server.sh
+#   curl http://localhost:8000/health
+#   curl -X POST -F 'image=@model/data/test/001.jpg' http://localhost:8000/predict
+#
+# Serverless testing (in progress — image CMD issue):
+#   - GHA builds + pushes image correctly
+#   - Template + endpoint creation works via runpodctl
+#   - Worker container starts but crashes (exit 127 / never reaches Ready)
+#   - Root cause: unknown — container doesn't start FastAPI successfully
+#   - Debug suggestion: simplify Dockerfile, test with minimal CMD first
