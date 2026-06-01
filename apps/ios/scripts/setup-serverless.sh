@@ -73,7 +73,7 @@ echo ""
 echo "--- [3/5] Creating serverless template ---"
 
 TEMPLATE_NAME="strg-model-$(date +%s)"
-CMD="/app/model/.venv/bin/python -m models_server.serverless_worker"
+CMD="/usr/bin/python3 -m models_server.serverless_worker"
 
 TEMPLATE_ID=$($RCTL template create \
     --name "$TEMPLATE_NAME" \

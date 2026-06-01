@@ -31,26 +31,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install uv (fast Python package manager)
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.local/bin:${PATH}"
-
 WORKDIR /app
 
-# Copy dependency files first (for Docker layer caching)
-COPY model/pyproject.toml model/uv.lock ./model/
-COPY model/packages/common/pyproject.toml ./model/packages/common/
-COPY model/models/server/pyproject.toml ./model/models/server/
+# Copy all source code
+COPY model/ ./model/
 
-# Install dependencies (using system torch from base image)
-RUN cd model && uv sync --package models-server --frozen --no-dev --no-cache 2>&1 | tail -3
-
-# Install peft for LoRA support
-RUN cd model && uv pip install peft --no-cache 2>&1 | tail -2
-
-# Copy source code (after deps for layer caching)
-COPY model/packages/common/src/ ./model/packages/common/src/
-COPY model/models/server/src/ ./model/models/server/src/
+# Install dependencies system-wide (so system python can find them)
+RUN pip install --no-cache-dir \
+    transformers>=4.45,<4.50 \
+    accelerate>=0.26 \
+    pillow>=10.0 \
+    sentencepiece>=0.2.0 \
+    timm \
+    einops \
+    peft \
+    bitsandbytes \
+    2>&1 | tail -5
 
 # Default env
 ENV TORCH_COMPILE=0
@@ -61,5 +57,5 @@ EXPOSE 8000
 
 # Default: RunPod Serverless worker
 # For FastAPI, override CMD in the RunPod template
-# Use venv python directly (uv not always in PATH at runtime)
-CMD ["/app/model/.venv/bin/python", "-m", "models_server.serverless_worker"]
+# Use system python (has torch pre-installed) with PYTHONPATH set
+CMD ["/usr/bin/python3", "-m", "models_server.serverless_worker"]
