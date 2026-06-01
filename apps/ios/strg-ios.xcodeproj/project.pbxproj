@@ -1,46 +1,47 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = {};
+	classes = {
+	};
 	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		230312F6CD4B4E66A3F0DC5C /* WorkoutSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110CB5C643F045B1B07E0B85; };
-		431BFBD27F2942EC95CA639E /* StrgAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8974ABF0B83B4CE3BD1B12DC; };
-		10D76E5F39F94A73939F9C46 /* StrgApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59C4FE8CB1640F4A5D2A6EB; };
-		FE8E40BFFF004120858DE4B3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26E31F526CB45C4808F380F; };
+		10D76E5F39F94A73939F9C46 /* strg-ios/StrgApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59C4FE8CB1640F4A5D2A6EB /* strg-ios/StrgApp.swift */; };
+		230312F6CD4B4E66A3F0DC5C /* strg-ios/Models/WorkoutSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110CB5C643F045B1B07E0B85 /* strg-ios/Models/WorkoutSchema.swift */; };
+		431BFBD27F2942EC95CA639E /* strg-ios/Networking/StrgAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8974ABF0B83B4CE3BD1B12DC /* strg-ios/Networking/StrgAPIClient.swift */; };
+		FE8E40BFFF004120858DE4B3 /* strg-ios/Views/ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26E31F526CB45C4808F380F /* strg-ios/Views/ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		110CB5C643F045B1B07E0B85 /* WorkoutSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/Models/WorkoutSchema.swift"; sourceTree = "<group>"; };
-		8974ABF0B83B4CE3BD1B12DC /* StrgAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/Networking/StrgAPIClient.swift"; sourceTree = "<group>"; };
-		A59C4FE8CB1640F4A5D2A6EB /* StrgApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/StrgApp.swift"; sourceTree = "<group>"; };
-		F26E31F526CB45C4808F380F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/Views/ContentView.swift"; sourceTree = "<group>"; };
-		43B40300001D4A6C9B6B422A /* strg-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = strg-ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		110CB5C643F045B1B07E0B85 /* strg-ios/Models/WorkoutSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/Models/WorkoutSchema.swift"; sourceTree = "<group>"; };
+		43B40300001D4A6C9B6B422A /* strg-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "strg-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8974ABF0B83B4CE3BD1B12DC /* strg-ios/Networking/StrgAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/Networking/StrgAPIClient.swift"; sourceTree = "<group>"; };
+		A59C4FE8CB1640F4A5D2A6EB /* strg-ios/StrgApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/StrgApp.swift"; sourceTree = "<group>"; };
+		F26E31F526CB45C4808F380F /* strg-ios/Views/ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/Views/ContentView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		22E07F6F55854C348CA48E90 = {
 			isa = PBXGroup;
 			children = (
-				B31237F778B64BA8A791AEFF,
-				C940950EE8D04B90B828219E,
+				B31237F778B64BA8A791AEFF /* strg-ios */,
+				C940950EE8D04B90B828219E /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		B31237F778B64BA8A791AEFF = {
+		B31237F778B64BA8A791AEFF /* strg-ios */ = {
 			isa = PBXGroup;
 			children = (
-				110CB5C643F045B1B07E0B85 /* WorkoutSchema.swift */,
-				8974ABF0B83B4CE3BD1B12DC /* StrgAPIClient.swift */,
-				A59C4FE8CB1640F4A5D2A6EB /* StrgApp.swift */,
-				F26E31F526CB45C4808F380F /* ContentView.swift */,
+				110CB5C643F045B1B07E0B85 /* strg-ios/Models/WorkoutSchema.swift */,
+				8974ABF0B83B4CE3BD1B12DC /* strg-ios/Networking/StrgAPIClient.swift */,
+				A59C4FE8CB1640F4A5D2A6EB /* strg-ios/StrgApp.swift */,
+				F26E31F526CB45C4808F380F /* strg-ios/Views/ContentView.swift */,
 			);
 			path = "strg-ios";
 			sourceTree = "<group>";
 		};
-		C940950EE8D04B90B828219E = {
+		C940950EE8D04B90B828219E /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				43B40300001D4A6C9B6B422A /* strg-ios.app */,
@@ -50,71 +51,73 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXSourcesBuildPhase section */
-		F9CE8859D84B49CFA8CDB87E = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				230312F6CD4B4E66A3F0DC5C /* WorkoutSchema.swift in Sources */,
-				431BFBD27F2942EC95CA639E /* StrgAPIClient.swift in Sources */,
-				10D76E5F39F94A73939F9C46 /* StrgApp.swift in Sources */,
-				FE8E40BFFF004120858DE4B3 /* ContentView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2E4162D869694D6B8D00F0D6 = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = ();
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		84C03D9C136B4FCF91FD22CF = {
+		84C03D9C136B4FCF91FD22CF /* strg-ios */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E2A5D6F216DE44FCBD6EAD1D;
+			buildConfigurationList = E2A5D6F216DE44FCBD6EAD1D /* Build configuration list for PBXNativeTarget "strg-ios" */;
 			buildPhases = (
-				F9CE8859D84B49CFA8CDB87E,
-				2E4162D869694D6B8D00F0D6,
+				F9CE8859D84B49CFA8CDB87E /* Sources */,
+				2E4162D869694D6B8D00F0D6 /* Resources */,
 			);
-			buildRules = ();
-			dependencies = ();
+			buildRules = (
+			);
+			dependencies = (
+			);
 			name = "strg-ios";
-			productName = strg-ios;
-			productReference = 43B40300001D4A6C9B6B422A;
+			productName = "strg-ios";
+			productReference = 43B40300001D4A6C9B6B422A /* strg-ios.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		E74A01A9AAD340A592086CB1 = {
+		E74A01A9AAD340A592086CB1 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 724361C8CDF140F583F047B3;
+			attributes = {
+			};
+			buildConfigurationList = 724361C8CDF140F583F047B3 /* Build configuration list for PBXProject "strg-ios" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
-			knownRegions = (en, Base);
+			knownRegions = (
+				en,
+				Base,
+			);
 			mainGroup = 22E07F6F55854C348CA48E90;
-			productRefGroup = C940950EE8D04B90B828219E;
+			productRefGroup = C940950EE8D04B90B828219E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				84C03D9C136B4FCF91FD22CF,
+				84C03D9C136B4FCF91FD22CF /* strg-ios */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin XCBuildConfiguration section */
-		2E0BCF0E31D242CCB4DA7A5D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 5.0;
-			};
-			name = "Debug";
+/* Begin PBXResourcesBuildPhase section */
+		2E4162D869694D6B8D00F0D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F9CE8859D84B49CFA8CDB87E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				230312F6CD4B4E66A3F0DC5C /* strg-ios/Models/WorkoutSchema.swift in Sources */,
+				431BFBD27F2942EC95CA639E /* strg-ios/Networking/StrgAPIClient.swift in Sources */,
+				10D76E5F39F94A73939F9C46 /* strg-ios/StrgApp.swift in Sources */,
+				FE8E40BFFF004120858DE4B3 /* strg-ios/Views/ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
 		10F7E385D1F840F784F9F110 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -122,13 +125,14 @@
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 			};
-			name = "Release";
+			name = Release;
 		};
 		2B75752BED1C4968BD855177 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DW533WG57T;
 				INFOPLIST_FILE = "strg-ios/strg-ios/Resources/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -144,13 +148,23 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Debug";
+			name = Debug;
+		};
+		2E0BCF0E31D242CCB4DA7A5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
 		};
 		C82C799A38194E79988A1938 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DW533WG57T;
 				INFOPLIST_FILE = "strg-ios/strg-ios/Resources/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -166,31 +180,30 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Release";
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		724361C8CDF140F583F047B3 = {
+		724361C8CDF140F583F047B3 /* Build configuration list for PBXProject "strg-ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2E0BCF0E31D242CCB4DA7A5D,
-				10F7E385D1F840F784F9F110,
+				2E0BCF0E31D242CCB4DA7A5D /* Debug */,
+				10F7E385D1F840F784F9F110 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E2A5D6F216DE44FCBD6EAD1D = {
+		E2A5D6F216DE44FCBD6EAD1D /* Build configuration list for PBXNativeTarget "strg-ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2B75752BED1C4968BD855177,
-				C82C799A38194E79988A1938,
+				2B75752BED1C4968BD855177 /* Debug */,
+				C82C799A38194E79988A1938 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 	};
-	rootObject = E74A01A9AAD340A592086CB1;
+	rootObject = E74A01A9AAD340A592086CB1 /* Project object */;
 }
