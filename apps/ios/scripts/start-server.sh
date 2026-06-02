@@ -41,31 +41,14 @@ echo ""
 echo "--- [1/4] Provisioning pod ---"
 cd "$INFRA_DIR"
 
-# Try provisioning with interruptible (better availability)
-# Retry with different GPU types if first attempt fails
-for GPU in \
-  "NVIDIA GeForce RTX 3090" \
-  "NVIDIA RTX A5000" \
-  "NVIDIA A40" \
-  "NVIDIA GeForce RTX 4090" \
-  "NVIDIA L4" \
-  "NVIDIA RTX 6000 Ada Generation" \
-  "NVIDIA RTX A6000" \
-  "NVIDIA L40S"; do
-  echo "  Trying $GPU (interruptible)..."
-  if terraform apply -auto-approve \
-    -var "pod_count=1" \
-    -var "cloud_type=$CLOUD_TYPE" \
-    -var "interruptible=true" \
-    -var "ports=[\"22/tcp\", \"8888/http\", \"6006/http\", \"8000/http\"]" \
-    -var "gpu_type_ids=[\"$GPU\"]" \
-    -target=runpod_pod.trainer 2>&1 | grep -q "Creation complete"; then
-    echo "  ✅ Pod created with $GPU"
-    break
-  fi
-  echo "  ⚠️  $GPU unavailable, trying next..."
-  terraform destroy -auto-approve -target=runpod_pod.trainer 2>/dev/null || true
-done
+# Terraform's gpu_type_ids handles fallback automatically — RunPod picks the first available
+terraform apply -auto-approve \
+  -var "pod_count=1" \
+  -var "cloud_type=$CLOUD_TYPE" \
+  -var "interruptible=true" \
+  -var "ports=[\"22/tcp\", \"8888/http\", \"6006/http\", \"8000/http\"]" \
+  -var "gpu_type_ids=[$(echo "$GPU_TYPES" | sed 's/,/","/g; s/^/"/; s/$/"/')]" \
+  -target=runpod_pod.trainer 2>&1 | tail -5
 
 # ── 2. Wait for IP ──────────────────────────────────────────────────────────
 echo ""

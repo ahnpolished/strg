@@ -10,25 +10,14 @@ public final class StrgAPIClient {
     private var session: URLSession
     private let decoder: JSONDecoder
 
-    public init(baseURL: URL = URL(string: "http://localhost:8000")!) {
-        self.baseURL = baseURL
+    public init() {
+        self.baseURL = AppConfig.serverURL
+        self.apiKey = AppConfig.apiKey
         let config = URLSessionConfiguration.default
         config.timeoutIntervalForRequest = 120
         config.timeoutIntervalForResource = 300
         self.session = URLSession(configuration: config)
         self.decoder = JSONDecoder()
-    }
-
-    /// Update the server URL (e.g. when user types a new address).
-    public func setServerURL(_ urlString: String) {
-        guard let url = URL(string: urlString) else { return }
-        baseURL = url
-    }
-
-    /// Set the API key for RunPod Serverless authentication.
-    /// Sent as "Authorization: Bearer <key>" on every request.
-    public func setAPIKey(_ key: String) {
-        apiKey = key
     }
 
     // MARK: - Request Builder
