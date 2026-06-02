@@ -66,8 +66,6 @@ for GPU in \
   echo "  ⚠️  $GPU unavailable, trying next..."
   terraform destroy -auto-approve -target=runpod_pod.trainer 2>/dev/null || true
 done
-  -var "gpu_type_ids=[$(echo "$GPU_TYPES" | sed 's/,/","/g; s/^/"/; s/$/"/')]" \
-  -target=runpod_pod.trainer 2>&1 | tail -5
 
 # ── 2. Wait for IP ──────────────────────────────────────────────────────────
 echo ""
