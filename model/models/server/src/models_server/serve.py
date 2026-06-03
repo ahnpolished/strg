@@ -107,10 +107,18 @@ async def health():
 @app.post("/run")
 @app.post("/runsync")
 @app.post("/serverless/predict")
-async def serverless_predict(request: Request):
+@app.post("/{path:path}")
+async def serverless_predict(request: Request, path: str = ""):
     """Handle RunPod serverless JSON format: {"input": {"image": "<base64>"}}."""
+    # Log what we got for debugging
+    body = None
+    try:
+        body = await request.json()
+        print(f"[serverless] path={path} body_keys={list(body.keys()) if body else 'none'}", flush=True)
+    except Exception:
+        print(f"[serverless] path={path} body=NOT_JSON", flush=True)
+    
     runner = get_runner()
-    body = await request.json()
     inp = body.get("input", body)
 
     image_b64 = inp.get("image", "")
