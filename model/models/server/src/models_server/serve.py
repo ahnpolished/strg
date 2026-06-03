@@ -114,10 +114,11 @@ async def serverless_predict(request: Request, path: str = ""):
     body = None
     try:
         body = await request.json()
-        print(f"[serverless] path={path} body_keys={list(body.keys()) if body else 'none'}", flush=True)
+        keys = list(body.keys()) if body else "none"
+        print(f"[serverless] path={path} body_keys={keys}", flush=True)
     except Exception:
         print(f"[serverless] path={path} body=NOT_JSON", flush=True)
-    
+
     runner = get_runner()
     inp = body.get("input", body)
 
