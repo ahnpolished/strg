@@ -120,6 +120,8 @@ async def serverless_predict(request: Request, path: str = ""):
         print(f"[serverless] path={path} body=NOT_JSON", flush=True)
 
     runner = get_runner()
+    if body is None:
+        raise HTTPException(status_code=400, detail="Request body is not valid JSON")
     inp = body.get("input", body)
 
     image_b64 = inp.get("image", "")
