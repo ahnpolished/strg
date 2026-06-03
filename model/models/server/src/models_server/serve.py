@@ -72,19 +72,6 @@ def get_runner() -> Qwen2VLRunner:
     return _runner
 
 
-@app.on_event("startup")
-async def startup():
-    """Warm up the model on server start (non-blocking)."""
-    import asyncio
-
-    asyncio.create_task(_warm_model())
-
-
-async def _warm_model():
-    """Background model loading."""
-    get_runner()
-
-
 @app.get("/health")
 async def health():
     global _runner
