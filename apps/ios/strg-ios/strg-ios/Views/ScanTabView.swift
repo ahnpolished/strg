@@ -187,19 +187,41 @@ struct ScanTabView: View {
     private var shutterZone: some View {
         VStack(spacing: 12) {
             if camera.isReady {
-                // Real shutter
-                Button { handleCapture() } label: {
-                    ZStack {
-                        Circle()
-                            .stroke(Color.white.opacity(0.85), lineWidth: 3)
-                            .frame(width: 78, height: 78)
-                        Circle()
-                            .fill(Color.strgAccent)
-                            .frame(width: 62, height: 62)
-                            .shadow(color: Color.strgAccent.opacity(0.6), radius: 20)
+                // Real shutter button with pulsing accent rings
+                ZStack {
+                    PulsingRing(delay: 0)
+                    PulsingRing(delay: 0.4)
+
+                    Button { handleCapture() } label: {
+                        ZStack {
+                            Circle()
+                                .fill(.ultraThinMaterial)
+                                .frame(width: 160, height: 160)
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.white.opacity(0.12), lineWidth: 0.5)
+                                )
+                                .shadow(
+                                    color: Color.strgAccent.opacity(0.18),
+                                    radius: 30
+                                )
+                                .overlay {
+                                    Circle()
+                                        .fill(
+                                            LinearGradient(
+                                                colors: [.white.opacity(0.14), .clear],
+                                                startPoint: .top, endPoint: .bottom
+                                            )
+                                        )
+                                        .clipShape(Circle())
+                                }
+
+                            // Viewfinder icon
+                            ViewfinderGlyph()
+                        }
                     }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             } else {
                 // Photo picker fallback
                 PhotosPicker(selection: $pickerItem, matching: .images, photoLibrary: .shared()) {
@@ -217,10 +239,16 @@ struct ScanTabView: View {
                     }
                 }
             }
-            Text("CAPTURE")
-                .font(.system(size: 10, weight: .bold))
-                .foregroundStyle(.white.opacity(0.5))
-                .tracking(2.5)
+            // Labels below the capture button
+            VStack(spacing: 7) {
+                Text("SCAN WORKOUT")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(.white.opacity(0.45))
+                    .tracking(2.5)
+                Text("Tap to analyze your page")
+                    .font(.system(size: 13))
+                    .foregroundStyle(.white.opacity(0.25))
+            }
         }
     }
 
@@ -432,112 +460,22 @@ struct ScanTabView: View {
     }
 }
 
-// MARK: - Spinner
+// MARK: - Processing spinner
 
-private struct SpinnerView: View {
-    @State private var spinning = false
-
-    var body: some View {
-        ZStack {
-            Circle()
-                .stroke(Color.white.opacity(0.1), lineWidth: 2.5)
-                .frame(width: 64, height: 64)
-            Circle()
-                .trim(from: 0, to: 0.72)
-                .stroke(Color.strgAccent, style: StrokeStyle(lineWidth: 2.5, lineCap: .round))
-                .frame(width: 64, height: 64)
-                .rotationEffect(.degrees(spinning ? 360 : 0))
-                .animation(.linear(duration: 0.9).repeatForever(autoreverses: false), value: spinning)
-        }
-        .onAppear { spinning = true }
-    }
-}
+// Moved to Views/Components/SpinnerView.swift
 
 // MARK: - Viewfinder overlay
 
-private struct ViewfinderOverlay: View {
-    @State private var phase = false
+// Moved to Views/Components/ViewfinderOverlay.swift
 
-    var body: some View {
-        GeometryReader { geo in
-            let W = geo.size.width
-            let H = geo.size.height
-            let frameTop: CGFloat = 150
-            let frameBottom: CGFloat = H - 250
-            let frameH = frameBottom - frameTop
-            let frameLeft: CGFloat = 36
-            let frameRight: CGFloat = W - 36
+// MARK: - Corner bracket
 
-            ZStack {
-                // Corner brackets
-                Group {
-                    CornerBracket(v: .top,    h: .left)
-                        .position(x: frameLeft + 13,  y: frameTop + 13)
-                    CornerBracket(v: .top,    h: .right)
-                        .position(x: frameRight - 13, y: frameTop + 13)
-                    CornerBracket(v: .bottom, h: .left)
-                        .position(x: frameLeft + 13,  y: frameBottom - 13)
-                    CornerBracket(v: .bottom, h: .right)
-                        .position(x: frameRight - 13, y: frameBottom - 13)
-                }
-                .opacity(phase ? 1.0 : 0.55)
-                .animation(.easeInOut(duration: 2.6).repeatForever(autoreverses: true), value: phase)
+// VEdge, HEdge, and CornerBracket moved to Views/Components/ViewfinderOverlay.swift
 
-                // Sweep line
-                Rectangle()
-                    .fill(
-                        LinearGradient(
-                            colors: [.clear, Color.strgAccent, .clear],
-                            startPoint: .leading, endPoint: .trailing
-                        )
-                    )
-                    .frame(width: frameRight - frameLeft - 12, height: 2)
-                    .shadow(color: Color.strgAccent, radius: 6)
-                    .position(
-                        x: (frameLeft + frameRight) / 2,
-                        y: frameTop + (phase ? frameH - 10 : 10)
-                    )
-                    .animation(
-                        .easeInOut(duration: 2.6).repeatForever(autoreverses: true),
-                        value: phase
-                    )
-            }
-        }
-        .onAppear { phase = true }
-    }
-}
+// MARK: - Pulsing concentric rings
 
-private enum VEdge { case top, bottom }
-private enum HEdge { case left, right }
+// Moved to Views/Components/PulsingRing.swift
 
-private struct CornerBracket: View {
-    let v: VEdge
-    let h: HEdge
+// MARK: - Viewfinder glyph
 
-    var body: some View {
-        Canvas { ctx, size in
-            let bw: CGFloat = 2.5
-            let r: CGFloat  = 6
-            let L: CGFloat  = 26
-
-            var path = Path()
-            // vertical arm
-            let startY: CGFloat = v == .top ? -L / 2 : L / 2
-            let endY:   CGFloat = v == .top ? r - bw / 2 : -(r - bw / 2)
-            path.move(to: CGPoint(x: 0, y: startY))
-            path.addLine(to: CGPoint(x: 0, y: endY))
-            // horizontal arm
-            let startX: CGFloat = h == .left ? -L / 2 : L / 2
-            let endX:   CGFloat = h == .left ? r - bw / 2 : -(r - bw / 2)
-            path.move(to: CGPoint(x: startX, y: 0))
-            path.addLine(to: CGPoint(x: endX, y: 0))
-
-            ctx.stroke(
-                path,
-                with: .color(Color.strgAccent),
-                style: StrokeStyle(lineWidth: bw, lineCap: .round)
-            )
-        }
-        .frame(width: 26, height: 26)
-    }
-}
+// Moved to Views/Components/ViewfinderGlyph.swift

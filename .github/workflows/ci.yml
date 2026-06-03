@@ -58,9 +58,8 @@ jobs:
 
       - name: Build iOS app
         run: |
-          cd strg-ios
-          xcodebuild -scheme strg-ios \
+          xcodebuild -project strg-ios.xcodeproj \
+            -scheme strg-ios \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 16 Pro,OS=latest' \
-            build | xcpretty && exit ${PIPESTATUS[0]} || true
-        continue-on-error: true
+            -destination 'generic/platform=iOS Simulator' \
+            build

@@ -7,57 +7,172 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		10D76E5F39F94A73939F9C46 /* strg-ios/StrgApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59C4FE8CB1640F4A5D2A6EB /* strg-ios/StrgApp.swift */; };
-		230312F6CD4B4E66A3F0DC5C /* strg-ios/Models/WorkoutSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110CB5C643F045B1B07E0B85 /* strg-ios/Models/WorkoutSchema.swift */; };
-		431BFBD27F2942EC95CA639E /* strg-ios/Networking/StrgAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8974ABF0B83B4CE3BD1B12DC /* strg-ios/Networking/StrgAPIClient.swift */; };
-		FE8E40BFFF004120858DE4B3 /* strg-ios/Views/ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26E31F526CB45C4808F380F /* strg-ios/Views/ContentView.swift */; };
+		B00100000000000000000001 /* StrgApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000001 /* StrgApp.swift */; };
+		B00100000000000000000002 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000002 /* AppConfig.swift */; };
+		B00100000000000000000003 /* WorkoutSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000003 /* WorkoutSchema.swift */; };
+		B00100000000000000000004 /* WorkoutSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000004 /* WorkoutSession.swift */; };
+		B00100000000000000000005 /* OnboardingPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000005 /* OnboardingPreferences.swift */; };
+		B00100000000000000000006 /* StrgAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000006 /* StrgAPIClient.swift */; };
+		B00100000000000000000007 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000007 /* ContentView.swift */; };
+		B00100000000000000000008 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000008 /* DesignSystem.swift */; };
+		B00100000000000000000009 /* ScanTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000009 /* ScanTabView.swift */; };
+		B0010000000000000000000A /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0020000000000000000000A /* HistoryView.swift */; };
+		B0010000000000000000000B /* SessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0020000000000000000000B /* SessionDetailView.swift */; };
+		B0010000000000000000000C /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0020000000000000000000C /* EditView.swift */; };
+		B0010000000000000000000D /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0020000000000000000000D /* OnboardingView.swift */; };
+		B0010000000000000000000E /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0020000000000000000000E /* CameraController.swift */; };
+		B0010000000000000000000F /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0020000000000000000000F /* CameraPreviewView.swift */; };
+		B00100000000000000000010 /* GlassTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000010 /* GlassTabBar.swift */; };
+		B00100000000000000000011 /* EntryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000011 /* EntryCard.swift */; };
+		B00100000000000000000012 /* StrgBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000012 /* StrgBackground.swift */; };
+		B00100000000000000000013 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000013 /* SpinnerView.swift */; };
+		B00100000000000000000014 /* ViewfinderOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000014 /* ViewfinderOverlay.swift */; };
+		B00100000000000000000015 /* PulsingRing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000015 /* PulsingRing.swift */; };
+		B00100000000000000000016 /* ViewfinderGlyph.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000016 /* ViewfinderGlyph.swift */; };
+		B00100000000000000000017 /* OnboardingComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000017 /* OnboardingComponents.swift */; };
+		B00100000000000000000018 /* EditComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000018 /* EditComponents.swift */; };
+		B00100000000000000000019 /* GlassModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00200000000000000000019 /* GlassModifiers.swift */; };
+		B0010000000000000000001A /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0020000000000000000001A /* Typography.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		110CB5C643F045B1B07E0B85 /* strg-ios/Models/WorkoutSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/Models/WorkoutSchema.swift"; sourceTree = "<group>"; };
-		43B40300001D4A6C9B6B422A /* strg-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "strg-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8974ABF0B83B4CE3BD1B12DC /* strg-ios/Networking/StrgAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/Networking/StrgAPIClient.swift"; sourceTree = "<group>"; };
-		A59C4FE8CB1640F4A5D2A6EB /* strg-ios/StrgApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/StrgApp.swift"; sourceTree = "<group>"; };
-		F26E31F526CB45C4808F380F /* strg-ios/Views/ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "strg-ios/Views/ContentView.swift"; sourceTree = "<group>"; };
+		B00200000000000000000001 /* StrgApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrgApp.swift; sourceTree = "<group>"; };
+		B00200000000000000000002 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		B00200000000000000000003 /* WorkoutSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSchema.swift; sourceTree = "<group>"; };
+		B00200000000000000000004 /* WorkoutSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSession.swift; sourceTree = "<group>"; };
+		B00200000000000000000005 /* OnboardingPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPreferences.swift; sourceTree = "<group>"; };
+		B00200000000000000000006 /* StrgAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrgAPIClient.swift; sourceTree = "<group>"; };
+		B00200000000000000000007 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B00200000000000000000008 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		B00200000000000000000009 /* ScanTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTabView.swift; sourceTree = "<group>"; };
+		B0020000000000000000000A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		B0020000000000000000000B /* SessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
+		B0020000000000000000000C /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
+		B0020000000000000000000D /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B0020000000000000000000E /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		B0020000000000000000000F /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
+		B00200000000000000000010 /* GlassTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassTabBar.swift; sourceTree = "<group>"; };
+		B00200000000000000000011 /* EntryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCard.swift; sourceTree = "<group>"; };
+		B00200000000000000000012 /* StrgBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrgBackground.swift; sourceTree = "<group>"; };
+		B00200000000000000000013 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
+		B00200000000000000000014 /* ViewfinderOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewfinderOverlay.swift; sourceTree = "<group>"; };
+		B00200000000000000000015 /* PulsingRing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulsingRing.swift; sourceTree = "<group>"; };
+		B00200000000000000000016 /* ViewfinderGlyph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewfinderGlyph.swift; sourceTree = "<group>"; };
+		B00200000000000000000017 /* OnboardingComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingComponents.swift; sourceTree = "<group>"; };
+		B00200000000000000000018 /* EditComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditComponents.swift; sourceTree = "<group>"; };
+		B00200000000000000000019 /* GlassModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassModifiers.swift; sourceTree = "<group>"; };
+		B0020000000000000000001A /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
+		B0020000000000000000001B /* strg-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "strg-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		22E07F6F55854C348CA48E90 = {
+		B00300000000000000000001 = {
 			isa = PBXGroup;
 			children = (
-				B31237F778B64BA8A791AEFF /* strg-ios */,
-				C940950EE8D04B90B828219E /* Products */,
+				B00300000000000000000002 /* strg-ios */,
+				B00300000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		B31237F778B64BA8A791AEFF /* strg-ios */ = {
+		B00300000000000000000002 /* strg-ios */ = {
 			isa = PBXGroup;
 			children = (
-				110CB5C643F045B1B07E0B85 /* strg-ios/Models/WorkoutSchema.swift */,
-				8974ABF0B83B4CE3BD1B12DC /* strg-ios/Networking/StrgAPIClient.swift */,
-				A59C4FE8CB1640F4A5D2A6EB /* strg-ios/StrgApp.swift */,
-				F26E31F526CB45C4808F380F /* strg-ios/Views/ContentView.swift */,
+				B00200000000000000000001 /* StrgApp.swift */,
+				B00200000000000000000002 /* AppConfig.swift */,
+				B00300000000000000000004 /* Models */,
+				B00300000000000000000005 /* Networking */,
+				B00300000000000000000006 /* Views */,
 			);
-			path = "strg-ios";
-			sourceTree = "<group>";
+			name = "strg-ios";
+			path = "strg-ios/strg-ios";
+			sourceTree = SOURCE_ROOT;
 		};
-		C940950EE8D04B90B828219E /* Products */ = {
+		B00300000000000000000003 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				43B40300001D4A6C9B6B422A /* strg-ios.app */,
+				B0020000000000000000001B /* strg-ios.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B00300000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B00200000000000000000003 /* WorkoutSchema.swift */,
+				B00200000000000000000004 /* WorkoutSession.swift */,
+				B00200000000000000000005 /* OnboardingPreferences.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B00300000000000000000005 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				B00200000000000000000006 /* StrgAPIClient.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		B00300000000000000000006 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B00200000000000000000007 /* ContentView.swift */,
+				B00200000000000000000008 /* DesignSystem.swift */,
+				B00200000000000000000009 /* ScanTabView.swift */,
+				B0020000000000000000000A /* HistoryView.swift */,
+				B0020000000000000000000B /* SessionDetailView.swift */,
+				B0020000000000000000000C /* EditView.swift */,
+				B0020000000000000000000D /* OnboardingView.swift */,
+				B00300000000000000000007 /* Camera */,
+				B00300000000000000000008 /* Components */,
+				B00300000000000000000009 /* DesignSystem */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B00300000000000000000007 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				B0020000000000000000000E /* CameraController.swift */,
+				B0020000000000000000000F /* CameraPreviewView.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		B00300000000000000000008 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B00200000000000000000010 /* GlassTabBar.swift */,
+				B00200000000000000000011 /* EntryCard.swift */,
+				B00200000000000000000012 /* StrgBackground.swift */,
+				B00200000000000000000013 /* SpinnerView.swift */,
+				B00200000000000000000014 /* ViewfinderOverlay.swift */,
+				B00200000000000000000015 /* PulsingRing.swift */,
+				B00200000000000000000016 /* ViewfinderGlyph.swift */,
+				B00200000000000000000017 /* OnboardingComponents.swift */,
+				B00200000000000000000018 /* EditComponents.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		B00300000000000000000009 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				B00200000000000000000019 /* GlassModifiers.swift */,
+				B0020000000000000000001A /* Typography.swift */,
+			);
+			path = DesignSystem;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		84C03D9C136B4FCF91FD22CF /* strg-ios */ = {
+		B00400000000000000000001 /* strg-ios */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E2A5D6F216DE44FCBD6EAD1D /* Build configuration list for PBXNativeTarget "strg-ios" */;
+			buildConfigurationList = B00600000000000000000001 /* Build configuration list for PBXNativeTarget "strg-ios" */;
 			buildPhases = (
-				F9CE8859D84B49CFA8CDB87E /* Sources */,
-				2E4162D869694D6B8D00F0D6 /* Resources */,
+				B00500000000000000000001 /* Sources */,
+				B00500000000000000000002 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -65,17 +180,17 @@
 			);
 			name = "strg-ios";
 			productName = "strg-ios";
-			productReference = 43B40300001D4A6C9B6B422A /* strg-ios.app */;
+			productReference = B0020000000000000000001B /* strg-ios.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		E74A01A9AAD340A592086CB1 /* Project object */ = {
+		B00400000000000000000002 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 			};
-			buildConfigurationList = 724361C8CDF140F583F047B3 /* Build configuration list for PBXProject "strg-ios" */;
+			buildConfigurationList = B00600000000000000000002 /* Build configuration list for PBXProject "strg-ios" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -83,18 +198,18 @@
 				en,
 				Base,
 			);
-			mainGroup = 22E07F6F55854C348CA48E90;
-			productRefGroup = C940950EE8D04B90B828219E /* Products */;
+			mainGroup = B00300000000000000000001;
+			productRefGroup = B00300000000000000000003 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				84C03D9C136B4FCF91FD22CF /* strg-ios */,
+				B00400000000000000000001 /* strg-ios */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2E4162D869694D6B8D00F0D6 /* Resources */ = {
+		B00500000000000000000002 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -104,21 +219,43 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		F9CE8859D84B49CFA8CDB87E /* Sources */ = {
+		B00500000000000000000001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				230312F6CD4B4E66A3F0DC5C /* strg-ios/Models/WorkoutSchema.swift in Sources */,
-				431BFBD27F2942EC95CA639E /* strg-ios/Networking/StrgAPIClient.swift in Sources */,
-				10D76E5F39F94A73939F9C46 /* strg-ios/StrgApp.swift in Sources */,
-				FE8E40BFFF004120858DE4B3 /* strg-ios/Views/ContentView.swift in Sources */,
+				B00100000000000000000001 /* StrgApp.swift in Sources */,
+				B00100000000000000000002 /* AppConfig.swift in Sources */,
+				B00100000000000000000003 /* WorkoutSchema.swift in Sources */,
+				B00100000000000000000004 /* WorkoutSession.swift in Sources */,
+				B00100000000000000000005 /* OnboardingPreferences.swift in Sources */,
+				B00100000000000000000006 /* StrgAPIClient.swift in Sources */,
+				B00100000000000000000007 /* ContentView.swift in Sources */,
+				B00100000000000000000008 /* DesignSystem.swift in Sources */,
+				B00100000000000000000009 /* ScanTabView.swift in Sources */,
+				B0010000000000000000000A /* HistoryView.swift in Sources */,
+				B0010000000000000000000B /* SessionDetailView.swift in Sources */,
+				B0010000000000000000000C /* EditView.swift in Sources */,
+				B0010000000000000000000D /* OnboardingView.swift in Sources */,
+				B0010000000000000000000E /* CameraController.swift in Sources */,
+				B0010000000000000000000F /* CameraPreviewView.swift in Sources */,
+				B00100000000000000000010 /* GlassTabBar.swift in Sources */,
+				B00100000000000000000011 /* EntryCard.swift in Sources */,
+				B00100000000000000000012 /* StrgBackground.swift in Sources */,
+				B00100000000000000000013 /* SpinnerView.swift in Sources */,
+				B00100000000000000000014 /* ViewfinderOverlay.swift in Sources */,
+				B00100000000000000000015 /* PulsingRing.swift in Sources */,
+				B00100000000000000000016 /* ViewfinderGlyph.swift in Sources */,
+				B00100000000000000000017 /* OnboardingComponents.swift in Sources */,
+				B00100000000000000000018 /* EditComponents.swift in Sources */,
+				B00100000000000000000019 /* GlassModifiers.swift in Sources */,
+				B0010000000000000000001A /* Typography.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		10F7E385D1F840F784F9F110 /* Release */ = {
+		B00700000000000000000001 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -127,7 +264,7 @@
 			};
 			name = Release;
 		};
-		2B75752BED1C4968BD855177 /* Debug */ = {
+		B00700000000000000000002 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -150,7 +287,7 @@
 			};
 			name = Debug;
 		};
-		2E0BCF0E31D242CCB4DA7A5D /* Debug */ = {
+		B00700000000000000000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -159,7 +296,7 @@
 			};
 			name = Debug;
 		};
-		C82C799A38194E79988A1938 /* Release */ = {
+		B00700000000000000000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -185,25 +322,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		724361C8CDF140F583F047B3 /* Build configuration list for PBXProject "strg-ios" */ = {
+		B00600000000000000000002 /* Build configuration list for PBXProject "strg-ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2E0BCF0E31D242CCB4DA7A5D /* Debug */,
-				10F7E385D1F840F784F9F110 /* Release */,
+				B00700000000000000000003 /* Debug */,
+				B00700000000000000000001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E2A5D6F216DE44FCBD6EAD1D /* Build configuration list for PBXNativeTarget "strg-ios" */ = {
+		B00600000000000000000001 /* Build configuration list for PBXNativeTarget "strg-ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2B75752BED1C4968BD855177 /* Debug */,
-				C82C799A38194E79988A1938 /* Release */,
+				B00700000000000000000002 /* Debug */,
+				B00700000000000000000004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = E74A01A9AAD340A592086CB1 /* Project object */;
+	rootObject = B00400000000000000000002 /* Project object */;
 }

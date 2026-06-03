@@ -169,8 +169,7 @@ private struct EditRowCard: View {
             VStack(alignment: .leading, spacing: 8) {
                 fieldLabel("WEIGHT · LBS")
                 HStack(spacing: 10) {
-                    // Minus
-                    stepperBtn("−", disabled: row.weightLbs != nil && row.weightLbs! <= 0) {
+                    WeightBtn(label: "−", disabled: row.weightLbs != nil && row.weightLbs! <= 0) {
                         row.weightLbs = max(0, (row.weightLbs ?? 0) - 5)
                     }
                     // Input
@@ -186,7 +185,7 @@ private struct EditRowCard: View {
                         .clipShape(.rect(cornerRadius: 10))
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white.opacity(0.1), lineWidth: 0.5))
                     // Plus
-                    stepperBtn("+") {
+                    WeightBtn(label: "+", disabled: false) {
                         row.weightLbs = (row.weightLbs ?? 0) + 5
                     }
                     if row.weightLbs == nil {
@@ -221,51 +220,9 @@ private struct EditRowCard: View {
             .foregroundStyle(.white.opacity(0.3))
             .tracking(1.5)
     }
-
-    private func stepperBtn(_ label: String, disabled: Bool = false, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text(label)
-                .font(.system(size: 20, weight: .semibold))
-                .foregroundStyle(disabled ? .white.opacity(0.2) : .white)
-                .frame(width: 38, height: 38)
-                .background(Color.white.opacity(0.06))
-                .clipShape(.rect(cornerRadius: 11))
-                .overlay(RoundedRectangle(cornerRadius: 11).stroke(Color.white.opacity(0.1), lineWidth: 0.5))
-        }
-        .buttonStyle(.plain)
-        .disabled(disabled)
-    }
 }
 
-// MARK: - Stepper control (sets/reps)
+// MARK: - Legacy (moved to Components/EditComponents.swift)
 
-private struct StepperControl: View {
-    @Binding var value: Int
-    var min: Int = 0
-    var step: Int = 1
-
-    var body: some View {
-        HStack(spacing: 10) {
-            btn("−", disabled: value <= min) { value = Swift.max(min, value - step) }
-            Text("\(value)")
-                .font(.system(size: 22, weight: .black, design: .rounded))
-                .foregroundStyle(.white)
-                .frame(minWidth: 30)
-            btn("+") { value += step }
-        }
-    }
-
-    private func btn(_ label: String, disabled: Bool = false, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text(label)
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(disabled ? .white.opacity(0.2) : .white)
-                .frame(width: 32, height: 32)
-                .background(Color.white.opacity(0.06))
-                .clipShape(.rect(cornerRadius: 9))
-                .overlay(RoundedRectangle(cornerRadius: 9).stroke(Color.white.opacity(0.1), lineWidth: 0.5))
-        }
-        .buttonStyle(.plain)
-        .disabled(disabled)
-    }
-}
+// StepperControl and WeightBtn are now in Views/Components/EditComponents.swift
+// and remain accessible module-wide.
