@@ -34,7 +34,7 @@ from PIL import Image
 
 try:
     import uvicorn
-    from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+    from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
     from fastapi.responses import JSONResponse
 except ImportError:
     msg = (

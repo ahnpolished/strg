@@ -35,6 +35,8 @@
     <string>$(STRG_SERVER_URL)</string>
     <key>STRG_API_KEY</key>
     <string>$(STRG_API_KEY)</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Point your camera at a handwritten workout page to scan it</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Select workout journal photos to analyze</string>
     <key>NSAppTransportSecurity</key>
