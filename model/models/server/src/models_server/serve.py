@@ -76,6 +76,7 @@ def get_runner() -> Qwen2VLRunner:
 async def startup():
     """Warm up the model on server start (non-blocking)."""
     import asyncio
+
     asyncio.create_task(_warm_model())
 
 
@@ -89,7 +90,11 @@ async def health():
     global _runner
     status = "ready" if _runner is not None and hasattr(_runner, "_model") else "warmup"
     lora = os.environ.get("STRG_QWEN_LORA_CHECKPOINT", "")
-    device = str(_runner._model.device) if _runner is not None and hasattr(_runner, "_model") else "loading"
+    device = (
+        str(_runner._model.device)
+        if _runner is not None and hasattr(_runner, "_model")
+        else "loading"
+    )
     return {
         "status": status,
         "model": "Qwen2-VL-7B-Instruct",
@@ -112,6 +117,7 @@ async def serverless_predict(request: Request):
 
     try:
         import base64
+
         image_bytes = base64.b64decode(image_b64)
         pil_image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
     except Exception as e:
