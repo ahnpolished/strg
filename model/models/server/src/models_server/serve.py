@@ -104,6 +104,8 @@ async def health():
 
 
 @app.post("/")
+@app.post("/run")
+@app.post("/runsync")
 @app.post("/serverless/predict")
 async def serverless_predict(request: Request):
     """Handle RunPod serverless JSON format: {"input": {"image": "<base64>"}}."""
