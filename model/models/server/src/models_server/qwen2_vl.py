@@ -159,14 +159,19 @@ def _extract_json(text: str) -> dict:
     try:
         return json.loads(json_str)
     except json.JSONDecodeError as exc:
-        # Recovery: truncated JSON — remove last incomplete entry, close list+dict
-        last_entry = recovery_text.rfind("\n    }")
-        if last_entry != -1:
-            truncated = recovery_text[: last_entry + 6] + "\n  ]\n}"
-            try:
-                return json.loads(truncated)
-            except json.JSONDecodeError:
-                pass
+        # Recovery: truncated JSON — drop the last incomplete entry and close
+        # the entries array + outer object. Handles both pretty-printed
+        # ("\n    }") and compact (no-whitespace) model output by scanning
+        # backwards for the last complete "}" and trying to close from there.
+        for idx in range(len(recovery_text) - 1, -1, -1):
+            if recovery_text[idx] != "}":
+                continue
+            candidate = recovery_text[: idx + 1]
+            for suffix in ("]}", "}"):
+                try:
+                    return json.loads(candidate + suffix)
+                except json.JSONDecodeError:
+                    continue
         raise exc
 
 

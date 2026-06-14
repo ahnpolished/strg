@@ -16,7 +16,7 @@ dependencies = [
     "uvicorn>=0.48.0",
     "python-multipart>=0.0.29",
     "peft>=0.13",
-    "bitsandbytes>=0.45,<0.46",
+    "bitsandbytes>=0.45,<0.46; sys_platform == 'linux'",
 ]
 
 [project.optional-dependencies]
