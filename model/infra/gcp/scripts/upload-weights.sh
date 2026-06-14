@@ -10,7 +10,7 @@
 #
 # Prerequisites:
 #   - gcloud CLI authenticated: gcloud auth application-default login
-#   - huggingface-cli installed: pip install huggingface_hub
+#   - huggingface_hub installed: pip install huggingface_hub (provides `hf`)
 #   - wandb installed and logged in: pip install wandb && wandb login
 #   - GCS bucket already created (via terraform apply of storage.tf)
 #
@@ -41,9 +41,8 @@ mkdir -p "$TMPDIR"
 
 # ── 1. Download base model from HuggingFace ─────────────────────────
 echo "[1/3] Downloading ${MODEL_ID} from HuggingFace ..."
-huggingface-cli download "$MODEL_ID" \
-  --local-dir "${TMPDIR}/Qwen2-VL-7B-Instruct" \
-  --local-dir-use-symlinks False
+hf download "$MODEL_ID" \
+  --local-dir "${TMPDIR}/Qwen2-VL-7B-Instruct"
 echo "  Done: $(du -sh "${TMPDIR}/Qwen2-VL-7B-Instruct" | cut -f1)"
 
 # ── 2. Download LoRA adapter from W&B ───────────────────────────────
