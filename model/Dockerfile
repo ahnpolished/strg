@@ -12,11 +12,9 @@
 
 FROM pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime
 
-# Install uv (fast Python package manager)
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.local/bin:${PATH}"
-
-# Install gcloud SDK for gsutil (weight download at cold start)
+# Install gcloud SDK for gsutil (weight download at cold start).
+# This also installs curl, which the uv installer below depends on —
+# must run before the uv install step.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-transport-https \
     ca-certificates \
@@ -29,6 +27,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get update && apt-get install -y --no-install-recommends \
        google-cloud-cli \
     && rm -rf /var/lib/apt/lists/*
+
+# Install uv (fast Python package manager)
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:${PATH}"
 
 WORKDIR /app
 
