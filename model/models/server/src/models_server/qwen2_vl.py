@@ -180,15 +180,33 @@ class Qwen2VLRunner(ServerModelRunner):
         max_visual_tokens = int(os.environ.get("STRG_QWEN_MAX_VISUAL_TOKENS", "1280"))
         self._max_new_tokens = int(os.environ.get("STRG_QWEN_MAX_NEW_TOKENS", "1536"))
         lora_checkpoint = os.environ.get("STRG_QWEN_LORA_CHECKPOINT", "")
+        model_path = os.environ.get("STRG_QWEN_MODEL_PATH", self.model_id)
+        load_in_4bit = os.environ.get("STRG_QWEN_LOAD_IN_4BIT", "").lower() in (
+            "1",
+            "true",
+            "yes",
+        )
         self._processor = AutoProcessor.from_pretrained(
-            self.model_id,
+            model_path,
             min_pixels=min_visual_tokens * 28 * 28,
             max_pixels=max_visual_tokens * 28 * 28,
         )
+        model_kwargs: dict = {
+            "torch_dtype": torch.bfloat16,
+            "device_map": "auto",
+        }
+        if load_in_4bit:
+            from transformers import BitsAndBytesConfig  # noqa: PLC0415
+
+            model_kwargs["quantization_config"] = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_compute_dtype=torch.bfloat16,
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_quant_type="nf4",
+            )
         base = Qwen2VLForConditionalGeneration.from_pretrained(
-            self.model_id,
-            torch_dtype=torch.bfloat16,
-            device_map="auto",
+            model_path,
+            **model_kwargs,
         )
         if lora_checkpoint:
             from peft import PeftModel  # noqa: PLC0415

@@ -28,10 +28,16 @@ jobs:
           terraform_version: 1.5.7
 
       - name: Terraform format check
-        run: terraform fmt -check -recursive infra/runpod
+        run: terraform fmt -check -recursive infra/runpod infra/gcp
 
-      - name: Terraform validate
+      - name: Terraform validate (RunPod)
         working-directory: model/infra/runpod
+        run: |
+          terraform init -backend=false
+          terraform validate
+
+      - name: Terraform validate (GCP)
+        working-directory: model/infra/gcp
         run: |
           terraform init -backend=false
           terraform validate
