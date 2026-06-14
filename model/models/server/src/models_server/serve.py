@@ -34,7 +34,7 @@ from PIL import Image
 
 try:
     import uvicorn
-    from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
+    from fastapi import FastAPI, File, Form, HTTPException, UploadFile
     from fastapi.responses import JSONResponse
 except ImportError:
     msg = (
@@ -88,61 +88,6 @@ async def health():
         "lora_checkpoint": lora or None,
         "device": device,
     }
-
-
-@app.post("/")
-@app.post("/run")
-@app.post("/runsync")
-@app.post("/serverless/predict")
-@app.post("/{path:path}")
-async def serverless_predict(request: Request, path: str = ""):
-    """Handle RunPod serverless JSON format: {"input": {"image": "<base64>"}}."""
-    # Log what we got for debugging
-    body = None
-    try:
-        body = await request.json()
-        keys = list(body.keys()) if body else "none"
-        print(f"[serverless] path={path} body_keys={keys}", flush=True)
-    except Exception:
-        print(f"[serverless] path={path} body=NOT_JSON", flush=True)
-
-    runner = get_runner()
-    if body is None:
-        raise HTTPException(status_code=400, detail="Request body is not valid JSON")
-    inp = body.get("input", body)
-
-    image_b64 = inp.get("image", "")
-    if not image_b64:
-        raise HTTPException(status_code=400, detail="No 'image' in input")
-
-    try:
-        import base64
-
-        image_bytes = base64.b64decode(image_b64)
-        pil_image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Invalid image: {e}") from e
-
-    tmp_dir = Path("/tmp/strg-serve")
-    tmp_dir.mkdir(parents=True, exist_ok=True)
-    tmp_path = tmp_dir / f"sless_{int(time.time())}.jpg"
-    pil_image.save(tmp_path, "JPEG", quality=90)
-
-    t0 = time.perf_counter()
-    try:
-        page: WorkoutPage = runner.predict(tmp_path)
-        latency = time.perf_counter() - t0
-        result = page.model_dump(mode="json")
-        return {
-            "entries": result.get("entries", []),
-            "latency_s": round(latency, 2),
-            "entry_count": len(page.entries),
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Prediction failed: {e}") from e
-    finally:
-        if tmp_path.exists():
-            tmp_path.unlink()
 
 
 @app.post("/predict", response_class=JSONResponse)

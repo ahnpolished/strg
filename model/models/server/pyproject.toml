@@ -4,7 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.11,<3.13"
 dependencies = [
     "common",
-    "torch>=2.0",
+    "torch==2.5.1",
     "transformers>=4.45,<4.50",
     "pillow>=10.0",
     "wandb>=0.16",
@@ -16,7 +16,7 @@ dependencies = [
     "uvicorn>=0.48.0",
     "python-multipart>=0.0.29",
     "peft>=0.13",
-    "bitsandbytes>=0.45",
+    "bitsandbytes>=0.45,<0.46",
 ]
 
 [project.optional-dependencies]
