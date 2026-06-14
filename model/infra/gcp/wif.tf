@@ -69,6 +69,6 @@ resource "google_project_iam_member" "github_run_admin" {
 # runtime service account.
 resource "google_service_account_iam_member" "github_actions_act_as_serve" {
   service_account_id = google_service_account.serve.name
-  role                = "roles/iam.serviceAccountUser"
-  member              = "serviceAccount:${google_service_account.github_actions.email}"
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:${google_service_account.github_actions.email}"
 }
