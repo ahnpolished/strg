@@ -43,9 +43,9 @@ gcloud billing budgets create \
   --threshold-rule=percent=0.5 \
   --threshold-rule=percent=0.8 \
   --threshold-rule=percent=1.0 \
-  --all-updates-rule-monitoring-notification-channels="$CHANNEL_ID" \
+  --notifications-rule-monitoring-notification-channels="$CHANNEL_ID" \
   --filter-projects="projects/$PROJECT_NUMBER" \
-  --filter-credit-types-treatment=exclude-all-credits
+  --credit-types-treatment=exclude-all-credits
 
 echo ""
 echo "=== Done ==="
