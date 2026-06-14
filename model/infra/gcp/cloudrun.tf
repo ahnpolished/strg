@@ -87,7 +87,7 @@ resource "google_cloud_run_v2_service" "serve" {
       # on every cold start (~1-2 min), then uvicorn starts.
       startup_probe {
         initial_delay_seconds = 0
-        timeout_seconds       = 300
+        timeout_seconds       = 10
         period_seconds        = 30
         failure_threshold     = 10 # 10 × 30 s = 5 min total
         tcp_socket {
