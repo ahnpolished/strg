@@ -1,0 +1,114 @@
+name: Build & Deploy (GCP Cloud Run GPU)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "model/models/server/**"
+      - "model/packages/common/**"
+      - "model/Dockerfile"
+      - "model/infra/gcp/**"
+      - "model/pyproject.toml"
+      - "model/uv.lock"
+      - ".github/workflows/gcp-deploy.yml"
+
+env:
+  PROJECT: ${{ vars.GCP_PROJECT || 'ahnpolished' }}
+  REGION: us-central1
+  REPO: strg-serve
+  SERVICE: strg-serve
+
+jobs:
+  build-push-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Required for Workload Identity Federation
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── GCP Auth (Workload Identity Federation) ────────────────────
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ env.PROJECT }}
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_WIF_SA }}
+
+      - name: Configure Docker credential helper for Artifact Registry
+        run: |
+          gcloud auth configure-docker \
+            "${{ env.REGION }}-docker.pkg.dev" \
+            --quiet
+
+      # ── Docker Build + Push (with GHA layer cache) ─────────────────
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./model
+          file: ./model/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT }}/${{ env.REPO }}/serve:latest
+            ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT }}/${{ env.REPO }}/serve:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # ── Deploy to Cloud Run (update existing service revision) ─────
+      # This updates ONLY the container image. All other settings
+      # (GPU, min/max instances, concurrency) are managed by Terraform
+      # and preserved by gcloud run deploy.
+      #
+      # On the very first push, the Cloud Run service may not exist yet
+      # (created by terraform apply). Skip deploy gracefully in that case.
+      - name: Deploy to Cloud Run
+        run: |
+          if gcloud run services describe "${{ env.SERVICE }}" \
+              --project="${{ env.PROJECT }}" \
+              --region="${{ env.REGION }}" \
+              --format='value(name)' >/dev/null 2>&1; then
+            gcloud run deploy "${{ env.SERVICE }}" \
+              --project="${{ env.PROJECT }}" \
+              --region="${{ env.REGION }}" \
+              --image="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT }}/${{ env.REPO }}/serve:${{ github.sha }}" \
+              --quiet
+          else
+            echo "Service not yet created — skipping deploy (first time? Run terraform apply manually)."
+          fi
+
+      # ── Smoke test ─────────────────────────────────────────────────
+      - name: Smoke test the deployed endpoint
+        if: success()
+        run: |
+          if ! gcloud run services describe "${{ env.SERVICE }}" \
+              --project="${{ env.PROJECT }}" \
+              --region="${{ env.REGION }}" \
+              --format='value(name)' >/dev/null 2>&1; then
+            echo "Service not yet created — skipping smoke test."
+            exit 0
+          fi
+          URL="$(gcloud run services describe "${{ env.SERVICE }}" \
+            --project="${{ env.PROJECT }}" \
+            --region="${{ env.REGION }}" \
+            --format='value(status.url)')"
+          echo "Deployed URL: $URL"
+          echo "serve_url=$URL" >> "$GITHUB_OUTPUT"
+          # Health check (cold start may take a few minutes)
+          echo "Running health check..."
+          for i in $(seq 1 15); do
+            STATUS=$(curl -s -o /dev/null -w '%{http_code}' "$URL/health" || echo "000")
+            echo "  attempt $i: HTTP $STATUS"
+            if [ "$STATUS" = "200" ]; then
+              echo "Health check passed!"
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "Health check did not return 200 within 5 minutes — cold start may still be in progress."
+          echo "Check manually: curl $URL/health"
