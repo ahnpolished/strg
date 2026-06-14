@@ -2,9 +2,9 @@
 RunPod Serverless worker using the standard handler protocol.
 This is the ONLY way to get RunPod to dispatch jobs to the worker.
 """
+
 import base64
 import io
-import os
 import time
 from pathlib import Path
 

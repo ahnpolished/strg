@@ -33,10 +33,10 @@ resource "google_artifact_registry_repository_iam_member" "serve_read_images" {
 
 # The GPU Cloud Run service
 resource "google_cloud_run_v2_service" "serve" {
-  name               = var.serve_name
-  location           = var.region
-  project            = var.project
-  ingress            = "INGRESS_TRAFFIC_ALL"
+  name                = var.serve_name
+  location            = var.region
+  project             = var.project
+  ingress             = "INGRESS_TRAFFIC_ALL"
   deletion_protection = false
 
   template {
