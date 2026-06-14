@@ -195,6 +195,7 @@ class Qwen2VLRunner(ServerModelRunner):
             model_path,
             min_pixels=min_visual_tokens * 28 * 28,
             max_pixels=max_visual_tokens * 28 * 28,
+            use_fast=True,
         )
         model_kwargs: dict = {
             "torch_dtype": torch.bfloat16,
