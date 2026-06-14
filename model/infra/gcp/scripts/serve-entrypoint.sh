@@ -28,15 +28,15 @@ SERVER_PORT="${PORT:-8080}"
 if [ -n "${GCS_BUCKET:-}" ]; then
   if [ ! -f "$MODEL_DIR/.weights_ready" ]; then
     echo "[entrypoint] Downloading base model from gs://${GCS_BUCKET}/weights/Qwen2-VL-7B-Instruct/ ..."
-    mkdir -p "$(dirname "$MODEL_PATH")"
+    mkdir -p "$MODEL_PATH"
     gsutil -m cp -r \
-      "gs://${GCS_BUCKET}/weights/Qwen2-VL-7B-Instruct/" \
+      "gs://${GCS_BUCKET}/weights/Qwen2-VL-7B-Instruct/*" \
       "$MODEL_PATH/"
 
     echo "[entrypoint] Downloading LoRA adapter from gs://${GCS_BUCKET}/weights/lora/ ..."
-    mkdir -p "$(dirname "$LORA_PATH")"
+    mkdir -p "$LORA_PATH"
     gsutil -m cp -r \
-      "gs://${GCS_BUCKET}/weights/lora/" \
+      "gs://${GCS_BUCKET}/weights/lora/*" \
       "$LORA_PATH/"
 
     touch "$MODEL_DIR/.weights_ready"
