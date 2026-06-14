@@ -47,7 +47,7 @@ echo "  Done: $(du -sh "${TMPDIR}/Qwen2-VL-7B-Instruct" | cut -f1)"
 
 # ── 2. Download LoRA adapter from W&B ───────────────────────────────
 echo "[2/3] Downloading LoRA adapter from W&B ..."
-python3 -c "
+uv run python -c "
 import wandb, os, shutil
 api = wandb.Api()
 artifact = api.artifact(
