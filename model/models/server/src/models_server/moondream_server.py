@@ -30,20 +30,28 @@ MODEL_REVISION = "2025-01-09"
 
 
 def _patch_pyvips() -> None:
-    """Install a stub pyvips module if the real one isn't available.
+    """Ensure pyvips is available — install stub only as last resort.
 
     moondream's image_crops.py imports pyvips at module level for
-    multi-crop tiling. Single-image inference (our use case) never
-    calls those functions, so a stub is safe.
+    multi-crop tiling. Try real pyvips first; if it's not available
+    (e.g. libvips system lib missing), fall back to a stub that
+    raises a clear error if crop functions are called.
     """
+    # If real pyvips is already imported, we're done
     if "pyvips" in sys.modules:
-        return  # real pyvips already loaded
+        return
+
+    # Try importing real pyvips
+    try:
+        import pyvips  # noqa: F401
+
+        return  # Real pyvips loaded successfully
+    except ImportError:
+        pass  # Not available — install stub
 
     stub = types.ModuleType("pyvips")
 
     class _StubImage:
-        """Stub that raises if crop functions are accidentally called."""
-
         width = 100
         height = 100
 
@@ -55,13 +63,11 @@ def _patch_pyvips() -> None:
             return self
 
         def numpy(self):
-            raise RuntimeError(
-                "pyvips stub: multi-crop tiling requires real pyvips. "
-                "Install libvips-dev and pyvips for multi-crop support."
-            )
+            raise RuntimeError("pyvips is not available. Install libvips-dev and pyvips.")
 
     stub.Image = _StubImage
     sys.modules["pyvips"] = stub
+    print("[moondream] pyvips not found — using stub (single-image mode only)")
 
 
 class MoondreamServerRunner(ServerModelRunner):
@@ -81,7 +87,7 @@ class MoondreamServerRunner(ServerModelRunner):
             os.environ.get("HF_HOME", "/tmp/hf-cache"),
             "modules",
             "transformers_modules",
-            "moondream2",
+            "vikhyatk--moondream2",
         )
         if os.path.exists(cache_dir):
             shutil.rmtree(cache_dir, ignore_errors=True)
