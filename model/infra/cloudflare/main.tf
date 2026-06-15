@@ -1,17 +1,17 @@
-# Cloudflare Worker — stable URL proxy to RunPod serverless.
+# Cloudflare Worker — stable URL proxy to the backend (Cloud Run or RunPod serverless).
 #
 # Prerequisites:
 #   1. Domain managed by Cloudflare
 #   2. Cloudflare API token with Account.Workers Scripts Edit permission
+#      (and Zone.DNS Edit + Zone.Workers Routes Edit if using custom_domain)
 #
 # Set in .env or export:
 #   CLOUDFLARE_API_TOKEN  — Cloudflare API token
 #   CLOUDFLARE_ACCOUNT_ID — your Cloudflare account ID
-#   CLOUDFLARE_ZONE_ID    — zone ID for your domain (optional, for custom domain)
 #
 # Usage:
 #   cd model/infra/cloudflare
-#   terraform init && terraform apply -var "serverless_url=https://api.runpod.ai/v2/{endpoint_id}"
+#   terraform init && terraform apply -var "backend_url=https://strg-serve-xxxx-uc.a.run.app"
 
 terraform {
   required_providers {
@@ -33,9 +33,9 @@ variable "cloudflare_account_id" {
   default = null
 }
 
-variable "serverless_url" {
+variable "backend_url" {
   type        = string
-  description = "Current RunPod serverless endpoint URL (e.g. https://api.runpod.ai/v2/abc123)"
+  description = "Current backend URL to proxy to (e.g. Cloud Run service URL or RunPod serverless endpoint)"
   default     = ""
 }
 
@@ -64,22 +64,30 @@ resource "cloudflare_worker_script" "proxy" {
   account_id  = var.cloudflare_account_id
   name        = var.worker_name
   content     = file("${path.module}/worker.js")
+  module      = true
 
   plain_text_binding {
-    name = "SERVERLESS_URL"
-    text = var.serverless_url
+    name = "BACKEND_URL"
+    text = var.backend_url
   }
-
-  # Free tier: 100k requests/day
-  usage_model = "standard"
 }
 
-# Optional: custom domain route
-resource "cloudflare_worker_route" "custom_domain" {
-  count       = var.custom_domain != "" && var.zone_id != null ? 1 : 0
-  zone_id     = var.zone_id
-  pattern     = "${var.custom_domain}/*"
-  script_name = cloudflare_worker_script.proxy.name
+# DNS-only CNAME pointing directly at Cloud Run's domain-mapping frontend.
+# Proxy is OFF (Cloudflare not in the path) so Google can issue the TLS cert
+# and so requests aren't subject to Cloudflare's ~100s proxy timeout — needed
+# for Cloud Run cold starts that can take >100s.
+resource "cloudflare_record" "custom_domain" {
+  count   = var.custom_domain != "" && var.zone_id != null ? 1 : 0
+  zone_id = var.zone_id
+  name    = trimsuffix(var.custom_domain, ".${data.cloudflare_zone.this[0].name}")
+  type    = "CNAME"
+  content = "ghs.googlehosted.com"
+  proxied = false
+}
+
+data "cloudflare_zone" "this" {
+  count   = var.custom_domain != "" && var.zone_id != null ? 1 : 0
+  zone_id = var.zone_id
 }
 
 # Output the Worker URL

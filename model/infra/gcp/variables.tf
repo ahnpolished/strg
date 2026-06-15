@@ -81,6 +81,30 @@ variable "github_repo" {
   type        = string
 }
 
+# ── Model selection ─────────────────────────────────────────────────
+
+variable "default_model" {
+  description = "Default model to serve on Cloud Run (moondream | phi35 | qwen2-vl)."
+  type        = string
+  default     = "moondream"
+
+  validation {
+    condition     = contains(["moondream", "phi35", "qwen2-vl"], var.default_model)
+    error_message = "default_model must be one of: moondream, phi35, qwen2-vl."
+  }
+}
+
+variable "finetune_model" {
+  description = "Model to fine-tune on the spot VM (moondream | phi35 | qwen2-vl)."
+  type        = string
+  default     = "moondream"
+
+  validation {
+    condition     = contains(["moondream", "phi35", "qwen2-vl"], var.finetune_model)
+    error_message = "finetune_model must be one of: moondream, phi35, qwen2-vl."
+  }
+}
+
 # ── Fine-tune VM (disabled by default) ──────────────────────────────
 
 variable "finetune_instance_count" {
@@ -104,4 +128,12 @@ variable "finetune_boot_disk_size_gb" {
   description = "Boot disk size in GB for fine-tune VMs."
   type        = number
   default     = 100
+}
+
+# ── Feedback storage ────────────────────────────────────────────────
+
+variable "feedback_bucket_name" {
+  description = "GCS bucket name for user feedback (photos + corrected labels). Leave empty to auto-generate from project."
+  type        = string
+  default     = ""
 }

@@ -17,6 +17,7 @@ dependencies = [
     "python-multipart>=0.0.29",
     "peft>=0.13",
     "bitsandbytes>=0.45,<0.46; sys_platform == 'linux'",
+    "moondream>=1.2.2",
 ]
 
 [project.optional-dependencies]

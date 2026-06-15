@@ -1,118 +1,82 @@
-"""Upload fine-tuned LoRA checkpoint to W&B and save local copy.
+"""Upload fine-tuned checkpoint to W&B as a versioned artifact.
+
+Called by the finetune-loop.sh script after training completes.
+Also updates the GCS weights bucket with the latest checkpoint path.
 
 Usage:
   uv run python scripts/upload_checkpoint.py \
-    --checkpoint-dir infra/runpod/logs/checkpoints/<run-id>/qwen2-vl \
-    --model qwen2-vl
-
-Uploads to W&B as artifact and saves a stable local copy.
+    --checkpoint-dir checkpoints/moondream-20260615/best \
+    --model moondream \
+    --notes "Fine-tuned on 15 feedback samples"
 """
 
 import argparse
-import shutil
+import subprocess
 from pathlib import Path
 
 import wandb
-from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT
-from models_server.prompt import EXTRACTION_PROMPT
+from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--checkpoint-dir",
-        required=True,
-        type=Path,
-        help="Path to the LoRA checkpoint (adapter_model.safetensors, adapter_config.json, etc.)",
+    parser = argparse.ArgumentParser(
+        description="Upload fine-tuned checkpoint to W&B and GCS",
     )
+    parser.add_argument("--checkpoint-dir", required=True, type=Path)
     parser.add_argument(
         "--model",
-        default="qwen2-vl",
-        choices=["qwen2-vl"],
-        help="Model name for artifact naming",
+        required=True,
+        choices=["moondream", "phi35", "qwen2-vl"],
     )
+    parser.add_argument("--notes", default="")
     parser.add_argument(
-        "--local-copy",
-        type=Path,
-        default=None,
-        help="Optional: save a local copy to this directory (for serving without W&B)",
-    )
-    parser.add_argument(
-        "--epochs",
-        type=int,
-        default=3,
-        help="Training epochs (for artifact metadata)",
-    )
-    parser.add_argument(
-        "--notes",
-        default="QLoRA fine-tuned Qwen2-VL-7B for workout extraction",
-        help="Artifact description",
+        "--gcs-bucket",
+        default="ahnpolished-strg-weights",
     )
     args = parser.parse_args()
 
-    ckpt_dir: Path = args.checkpoint_dir
-    if not ckpt_dir.exists():
-        print(f"ERROR: checkpoint directory not found: {ckpt_dir}")
-        print("Run fine-tuning first, then check infra/runpod/logs/checkpoints/")
-        exit(1)
+    _load_dotenv()
 
-    # Verify we have the right files
-    required = ["adapter_config.json", "adapter_model.safetensors"]
-    for f in required:
-        if not (ckpt_dir / f).exists():
-            print(f"ERROR: missing {f} in {ckpt_dir}")
-            print("Contents:", [p.name for p in ckpt_dir.iterdir()])
-            exit(1)
+    ckpt = args.checkpoint_dir
+    if not ckpt.exists():
+        print(f"ERROR: checkpoint dir not found: {ckpt}")
+        return
 
-    print(f"Found checkpoint at {ckpt_dir}")
-    print(f"  Files: {[p.name for p in ckpt_dir.iterdir()]}")
+    artifact_name = f"{args.model}-checkpoint"
 
-    # Save local copy if requested
-    if args.local_copy:
-        local_path = Path(args.local_copy)
-        local_path.mkdir(parents=True, exist_ok=True)
-        for f in ckpt_dir.iterdir():
-            if f.is_file():
-                shutil.copy2(f, local_path / f.name)
-        print(f"Local copy saved to {local_path}")
-
-    # Upload to W&B
     run = wandb.init(
         entity=WANDB_ENTITY,
         project=WANDB_PROJECT,
-        name=f"{args.model}-checkpoint-upload",
-        job_type="upload-checkpoint",
-        config={
-            "model": args.model,
-            "epochs": args.epochs,
-            "base_model": "Qwen/Qwen2-VL-7B-Instruct",
-        },
+        name=f"checkpoint-upload-{args.model}",
+        job_type="model-upload",
+        notes=args.notes,
         tags=["phase:checkpoint-upload", f"model:{args.model}"],
     )
 
-    artifact = wandb.Artifact(
-        name=f"{args.model}-lora",
+    art = wandb.Artifact(
+        name=artifact_name,
         type="model",
-        description=args.notes,
+        description=f"Fine-tuned {args.model} checkpoint",
         metadata={
-            "base_model": "Qwen/Qwen2-VL-7B-Instruct",
-            "framework": "peft",
-            "format": "safetensors",
-            "epochs": args.epochs,
-            "extraction_prompt": EXTRACTION_PROMPT[:200],
+            "model": args.model,
+            "notes": args.notes,
+            "files": [f.name for f in ckpt.iterdir()][:10],
         },
     )
-    artifact.add_dir(str(ckpt_dir))
-    run.log_artifact(artifact)
+    art.add_dir(str(ckpt))
+    run.log_artifact(art)
     run.finish()
 
-    print("\nCheckpoint uploaded to W&B!")
-    print(f"  Artifact: {args.model}-lora (v{artifact.version})")
-    print(f"  Project: {WANDB_ENTITY}/{WANDB_PROJECT}")
-    print(f"  Local copy: {args.local_copy or 'not saved'}")
-    print("\nTo serve with this checkpoint:")
-    print(f"  export STRG_QWEN_LORA_CHECKPOINT={args.local_copy or ckpt_dir}")
-    print("  uv run python -m models_server.serve")
+    print(f"Uploaded {artifact_name} v{art.version} to W&B")
+    print(f"  {WANDB_ENTITY}/{WANDB_PROJECT}/{artifact_name}:v{art.version}")
+
+    # Also upload to GCS weights bucket
+    gcs_path = f"gs://{args.gcs_bucket}/weights/{args.model}-lora-v{art.version}/"
+    print(f"Uploading to GCS: {gcs_path}")
+    subprocess.run(
+        ["gsutil", "-m", "cp", "-r", f"{ckpt}/*", gcs_path],
+        check=False,
+    )
 
 
 if __name__ == "__main__":

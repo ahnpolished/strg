@@ -51,6 +51,7 @@ RUN mkdir -p packages/common/src/common \
     models/local/src/models_local/__init__.py
 
 # Install Python dependencies via uv (cached unless dep files change)
+# --no-dev excludes ruff/ty for smaller image
 RUN uv sync --package models-server --frozen --no-dev
 
 # ── Layer 2: source code + scripts (frequently changes, but fast) ───
@@ -58,9 +59,11 @@ COPY . .
 RUN chmod +x infra/gcp/scripts/serve-entrypoint.sh
 
 # Environment
-ENV PYTHONPATH="/app/models/server/src:/app/packages/common/src"
+ENV PYTHONPATH="/app/models/server/src:/app/models/local/src:/app/packages/common/src"
 ENV HF_HOME="/tmp/hf-cache"
-ENV TORCH_COMPILE=0
+ENV HF_HUB_ENABLE_HF_TRANSFER="1"
+ENV TORCH_COMPILE="0"
+ENV STRG_MODEL="moondream"
 
 # Cloud Run provides $PORT (default 8080)
 EXPOSE 8080

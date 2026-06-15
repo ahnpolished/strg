@@ -29,6 +29,16 @@ output "weights_bucket_url" {
   value       = "gs://${google_storage_bucket.weights.name}"
 }
 
+output "feedback_bucket_name" {
+  description = "GCS bucket holding user feedback photos and corrected labels."
+  value       = google_storage_bucket.feedback.name
+}
+
+output "feedback_bucket_url" {
+  description = "gs:// URL of the feedback bucket."
+  value       = "gs://${google_storage_bucket.feedback.name}"
+}
+
 # ── Artifact Registry ───────────────────────────────────────────────
 
 output "docker_repo_url" {

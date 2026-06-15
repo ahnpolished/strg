@@ -5,13 +5,15 @@
 project    = "ahnpolished"
 region     = "us-central1"
 
-# Serving
+# Serving — model selection
 serve_name      = "strg-serve"
 serve_image_tag = "latest"
 load_in_4bit    = true
+default_model   = "moondream"   # moondream | phi35 | qwen2-vl
 
 # Storage
 weights_bucket_name     = ""   # auto-generate from project name
+feedback_bucket_name    = ""   # auto-generate from project name
 weights_bucket_location = "US-CENTRAL1"
 
 # Artifact Registry
@@ -26,3 +28,4 @@ github_repo = "myorg/strg"   # <-- change to your actual repo
 
 # Fine-tune (disabled by default)
 finetune_instance_count = 0
+finetune_model          = "moondream"  # moondream | phi35 | qwen2-vl

@@ -1,23 +1,23 @@
-// Cloudflare Worker — proxies requests to the current RunPod serverless endpoint.
+// Cloudflare Worker — proxies requests to the current backend (Cloud Run or RunPod).
 //
-// Deploy once, update the SERVERLESS_URL env var when the endpoint changes.
-// Your app always hits https://strg-api.yourdomain.com — the Worker
-// forwards to whatever RunPod endpoint is currently active.
+// Deploy once, update the BACKEND_URL env var when the backend changes.
+// Your app always hits https://strg.ahnpolished.com — the Worker
+// forwards to whatever backend is currently active.
 
 export default {
   async fetch(request, env, ctx) {
-    const serverlessUrl = env.SERVERLESS_URL;
-    if (!serverlessUrl) {
-      return new Response(JSON.stringify({ error: "SERVERLESS_URL not configured" }), {
+    const backendUrl = env.BACKEND_URL;
+    if (!backendUrl) {
+      return new Response(JSON.stringify({ error: "BACKEND_URL not configured" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },
       });
     }
 
     const url = new URL(request.url);
-    const targetUrl = `${serverlessUrl}${url.pathname}${url.search}`;
+    const targetUrl = `${backendUrl}${url.pathname}${url.search}`;
 
-    // Forward the request to RunPod
+    // Forward the request to the backend
     const modified = new Request(targetUrl, {
       method: request.method,
       headers: request.headers,

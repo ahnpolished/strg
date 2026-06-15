@@ -22,6 +22,20 @@ resource "google_storage_bucket_iam_member" "serve_read_weights" {
   member = "serviceAccount:${google_service_account.serve.email}"
 }
 
+# Grant write access to the feedback bucket (for /feedback endpoint uploads)
+resource "google_storage_bucket_iam_member" "serve_write_feedback" {
+  bucket = google_storage_bucket.feedback.name
+  role   = "roles/storage.objectCreator"
+  member = "serviceAccount:${google_service_account.serve.email}"
+}
+
+# Grant read access to the feedback bucket (for fine-tuning data pull)
+resource "google_storage_bucket_iam_member" "serve_read_feedback" {
+  bucket = google_storage_bucket.feedback.name
+  role   = "roles/storage.objectViewer"
+  member = "serviceAccount:${google_service_account.serve.email}"
+}
+
 # Grant Artifact Registry read access for container image pull
 resource "google_artifact_registry_repository_iam_member" "serve_read_images" {
   project    = var.project
@@ -63,6 +77,15 @@ resource "google_cloud_run_v2_service" "serve" {
         value = google_storage_bucket.weights.name
       }
       env {
+        name  = "STRG_MODEL"
+        value = var.default_model
+      }
+      env {
+        name  = "STRG_FEEDBACK_GCS_BUCKET"
+        value = google_storage_bucket.feedback.name
+      }
+      # ── Qwen2-VL-7B (legacy, high quality, ~130s) ──
+      env {
         name  = "STRG_QWEN_MODEL_PATH"
         value = "/tmp/model/Qwen2-VL-7B-Instruct"
       }
@@ -74,6 +97,20 @@ resource "google_cloud_run_v2_service" "serve" {
         name  = "STRG_QWEN_LOAD_IN_4BIT"
         value = var.load_in_4bit ? "true" : "false"
       }
+      # ── Phi-3.5-Vision (3.8B, ~20-35s, best accuracy/speed) ──
+      env {
+        name  = "STRG_PHI35_MODEL_PATH"
+        value = "/tmp/model/Phi-3.5-vision-instruct"
+      }
+      env {
+        name  = "STRG_PHI35_LOAD_IN_4BIT"
+        value = "true"
+      }
+      env {
+        name  = "STRG_PHI35_LORA_CHECKPOINT"
+        value = "/tmp/model/phi35-lora"
+      }
+      # ── Shared ──
       env {
         name  = "HF_HOME"
         value = "/tmp/hf-cache"
