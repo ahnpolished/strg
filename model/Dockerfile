@@ -29,6 +29,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
        build-essential \
        pkg-config \
        libvips-dev \
+       libvips42 \
+    && ldconfig \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv (fast Python package manager)
@@ -60,7 +62,7 @@ RUN uv sync --package models-server --no-dev
 # Explicitly install pyvips (moondream2 dependency).
 # uv sync may not resolve its platform-specific binary wheel correctly.
 # The manylinux wheel needs libvips-dev at runtime (installed above).
-RUN cd /app && uv pip install --python .venv/bin/python pyvips>=2.2.3
+RUN cd /app && uv pip install --python .venv/bin/python --reinstall pyvips>=2.2.3
 
 # ── Layer 2: source code + scripts (frequently changes, but fast) ───
 COPY . .

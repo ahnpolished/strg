@@ -19,6 +19,7 @@ dependencies = [
     "bitsandbytes>=0.45,<0.46; sys_platform == 'linux'",
     "moondream>=1.2.2",
     "pyvips>=2.2.3",
+    "hf-transfer>=0.1.9",
 ]
 
 [project.optional-dependencies]
