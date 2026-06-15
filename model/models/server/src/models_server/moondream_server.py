@@ -5,9 +5,15 @@ Sacrifices some accuracy (CER 0.160, Field Acc 0.72) for speed.
 Accuracy improves iteratively via the feedback → fine-tune loop.
 
 On L4 (24 GB): ~3-8 s per inference.
+
+Note: pyvips is required by moondream's image_crops.py for multi-crop
+tiling, but we only do single-image inference. We monkey-patch a stub
+pyvips module so the model loads without installing the C library.
 """
 
 import json
+import sys
+import types
 from pathlib import Path
 
 import torch
@@ -22,10 +28,47 @@ MODEL_ID = "vikhyatk/moondream2"
 MODEL_REVISION = "2025-01-09"
 
 
+def _patch_pyvips() -> None:
+    """Install a stub pyvips module if the real one isn't available.
+
+    moondream's image_crops.py imports pyvips at module level for
+    multi-crop tiling. Single-image inference (our use case) never
+    calls those functions, so a stub is safe.
+    """
+    if "pyvips" in sys.modules:
+        return  # real pyvips already loaded
+
+    stub = types.ModuleType("pyvips")
+
+    class _StubImage:
+        """Stub that raises if crop functions are accidentally called."""
+
+        width = 100
+        height = 100
+
+        @staticmethod
+        def new_from_array(_arr):
+            return _StubImage()
+
+        def resize(self, *_args, **_kwargs):
+            return self
+
+        def numpy(self):
+            raise RuntimeError(
+                "pyvips stub: multi-crop tiling requires real pyvips. "
+                "Install libvips-dev and pyvips for multi-crop support."
+            )
+
+    stub.Image = _StubImage
+    sys.modules["pyvips"] = stub
+
+
 class MoondreamServerRunner(ServerModelRunner):
     model_id = MODEL_ID
 
     def load(self) -> None:
+        _patch_pyvips()
+
         self._tokenizer = AutoTokenizer.from_pretrained(self.model_id, revision=MODEL_REVISION)
         torch_dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
 
