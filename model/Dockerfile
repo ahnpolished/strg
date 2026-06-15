@@ -61,7 +61,6 @@ RUN chmod +x infra/gcp/scripts/serve-entrypoint.sh
 # Environment
 ENV PYTHONPATH="/app/models/server/src:/app/models/local/src:/app/packages/common/src"
 ENV HF_HOME="/tmp/hf-cache"
-ENV HF_HUB_ENABLE_HF_TRANSFER="1"
 ENV TORCH_COMPILE="0"
 ENV STRG_MODEL="moondream"
 
