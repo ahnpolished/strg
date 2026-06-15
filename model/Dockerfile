@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
        | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg \
     && apt-get update && apt-get install -y --no-install-recommends \
        google-cloud-cli \
+       libvips-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv (fast Python package manager)
