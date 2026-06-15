@@ -63,7 +63,7 @@ RUN chmod +x infra/gcp/scripts/serve-entrypoint.sh
 ENV PYTHONPATH="/app/models/server/src:/app/models/local/src:/app/packages/common/src"
 ENV HF_HOME="/tmp/hf-cache"
 ENV TORCH_COMPILE="0"
-ENV STRG_MODEL="moondream"
+ENV STRG_MODEL="qwen2-vl"
 
 # Cloud Run provides $PORT (default 8080)
 EXPOSE 8080

@@ -86,7 +86,7 @@ variable "github_repo" {
 variable "default_model" {
   description = "Default model to serve on Cloud Run (moondream | phi35 | qwen2-vl)."
   type        = string
-  default     = "moondream"
+  default     = "qwen2-vl"
 
   validation {
     condition     = contains(["moondream", "phi35", "qwen2-vl"], var.default_model)
