@@ -74,8 +74,6 @@ class MoondreamServerRunner(ServerModelRunner):
     model_id = MODEL_ID
 
     def load(self) -> None:
-        _patch_pyvips()
-
         # Use local path from GCS if available, otherwise HF model ID
         model_path = os.environ.get("STRG_MOONDREAM_MODEL_PATH", self.model_id)
         print(f"[moondream] Loading from: {model_path}")
