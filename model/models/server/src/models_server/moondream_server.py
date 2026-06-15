@@ -74,15 +74,27 @@ class MoondreamServerRunner(ServerModelRunner):
         model_path = os.environ.get("STRG_MOONDREAM_MODEL_PATH", self.model_id)
         print(f"[moondream] Loading from: {model_path}")
 
+        # Clear stale transformers cache to avoid partial download issues
+        import shutil
+
+        cache_dir = os.path.join(
+            os.environ.get("HF_HOME", "/tmp/hf-cache"),
+            "modules",
+            "transformers_modules",
+            "moondream2",
+        )
+        if os.path.exists(cache_dir):
+            shutil.rmtree(cache_dir, ignore_errors=True)
+            print(f"[moondream] Cleared stale cache: {cache_dir}")
+
         self._tokenizer = AutoTokenizer.from_pretrained(
-            model_path, revision=MODEL_REVISION if model_path == self.model_id else None
+            model_path, trust_remote_code=model_path != self.model_id
         )
         torch_dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
 
         self._model = AutoModelForCausalLM.from_pretrained(
             model_path,
             trust_remote_code=True,
-            revision=MODEL_REVISION if model_path == self.model_id else None,
             torch_dtype=torch_dtype,
         )
 
