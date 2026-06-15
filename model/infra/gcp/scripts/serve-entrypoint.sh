@@ -70,10 +70,20 @@ if [ -n "${GCS_BUCKET:-}" ]; then
         ;;
 
       moondream)
-        echo "[entrypoint] Moondream2 (~4 GB) — downloading from HuggingFace."
-        echo "  First cold start will download and cache in /tmp/hf-cache."
-        echo "  Subsequent warm starts reuse the cache."
+        MOONDREAM_PATH="${STRG_MOONDREAM_MODEL_PATH:-$MODEL_DIR/moondream2}"
+
+        echo "[entrypoint] Downloading Moondream2 config + code from GCS..."
+        mkdir -p "$MOONDREAM_PATH"
+        gsutil -m cp -r \
+          "gs://${GCS_BUCKET}/weights/moondream2/*" \
+          "$MOONDREAM_PATH/" 2>/dev/null || {
+            echo "  Moondream2 files not in GCS — will download from HuggingFace."
+            export STRG_MOONDREAM_MODEL_PATH="vikhyatk/moondream2"
+        }
+
+        # Pre-create HF cache dir for weight caching
         mkdir -p /tmp/hf-cache
+        echo "[entrypoint] Moondream2 config ready. Weights will download from HF on first load."
         ;;
 
       *)

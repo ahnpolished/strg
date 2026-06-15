@@ -110,10 +110,19 @@ resource "google_cloud_run_v2_service" "serve" {
         name  = "STRG_PHI35_LORA_CHECKPOINT"
         value = "/tmp/model/phi35-lora"
       }
+      # ── Moondream2 (1.8B, ~3-8s, fastest) ──
+      env {
+        name  = "STRG_MOONDREAM_MODEL_PATH"
+        value = "/tmp/model/moondream2"
+      }
       # ── Shared ──
       env {
         name  = "HF_HOME"
         value = "/tmp/hf-cache"
+      }
+      env {
+        name  = "HF_TOKEN"
+        value = var.hf_token
       }
       env {
         name  = "TORCH_COMPILE"

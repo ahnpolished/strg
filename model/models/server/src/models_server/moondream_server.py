@@ -12,6 +12,7 @@ pyvips module so the model loads without installing the C library.
 """
 
 import json
+import os
 import sys
 import types
 from pathlib import Path
@@ -69,13 +70,19 @@ class MoondreamServerRunner(ServerModelRunner):
     def load(self) -> None:
         _patch_pyvips()
 
-        self._tokenizer = AutoTokenizer.from_pretrained(self.model_id, revision=MODEL_REVISION)
+        # Use local path from GCS if available, otherwise HF model ID
+        model_path = os.environ.get("STRG_MOONDREAM_MODEL_PATH", self.model_id)
+        print(f"[moondream] Loading from: {model_path}")
+
+        self._tokenizer = AutoTokenizer.from_pretrained(
+            model_path, revision=MODEL_REVISION if model_path == self.model_id else None
+        )
         torch_dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
 
         self._model = AutoModelForCausalLM.from_pretrained(
-            self.model_id,
+            model_path,
             trust_remote_code=True,
-            revision=MODEL_REVISION,
+            revision=MODEL_REVISION if model_path == self.model_id else None,
             torch_dtype=torch_dtype,
         )
 
