@@ -94,6 +94,9 @@ if [ -n "${GCS_BUCKET:-}" ]; then
     esac
 
     mkdir -p "$MODEL_DIR"
+    # Clear stale HF modules cache (trust_remote_code artifacts from
+    # previous deployments can be corrupted/incomplete).
+    rm -rf /tmp/hf-cache/modules/transformers_modules 2>/dev/null || true
     touch "$MODEL_DIR/.weights_ready"
     echo "[entrypoint] Weights download complete."
   else
