@@ -33,6 +33,7 @@ API:
 import io
 import json
 import os
+import threading
 import time
 from pathlib import Path
 
@@ -83,6 +84,21 @@ app = FastAPI(
     description="Extract structured workout data from handwritten journal photos",
     version="0.2.0",
 )
+
+
+@app.on_event("startup")
+async def startup_warm_model():
+    """Warm the model in a background thread so uvicorn starts immediately."""
+
+    def _warm():
+        print("[serve] Starting background model warm-up...")
+        try:
+            get_runner()
+        except Exception as e:
+            print(f"[serve] Model warm-up failed (will retry on first request): {e}")
+
+    threading.Thread(target=_warm, daemon=True).start()
+
 
 # Global model runner (loaded once at startup)
 _runner = None
