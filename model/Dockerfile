@@ -53,7 +53,7 @@ RUN mkdir -p packages/common/src/common \
 
 # Install Python dependencies via uv (cached unless dep files change)
 # --no-dev excludes ruff/ty for smaller image
-RUN uv sync --package models-server --frozen --no-dev
+RUN uv sync --package models-server --no-dev
 
 # ── Layer 2: source code + scripts (frequently changes, but fast) ───
 COPY . .
