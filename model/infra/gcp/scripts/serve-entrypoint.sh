@@ -98,9 +98,7 @@ export STRG_SERVE_PORT="$SERVER_PORT"
 export HF_HOME="${HF_HOME:-/tmp/hf-cache}"
 export PYTHONPATH="/app/models/server/src:/app/packages/common/src"
 
-echo "[entrypoint] Starting uvicorn with STRG_MODEL=$MODEL on 0.0.0.0:${SERVER_PORT} ..."
-exec /app/.venv/bin/python -m uvicorn models_server.serve:app \
+echo "[entrypoint] Starting strg-model server with STRG_MODEL=$MODEL on 0.0.0.0:${SERVER_PORT} ..."
+exec /app/.venv/bin/python -m models_server.serve \
   --host 0.0.0.0 \
-  --port "${SERVER_PORT}" \
-  --log-level info \
-  --timeout-keep-alive 120
+  --port "${SERVER_PORT}"
