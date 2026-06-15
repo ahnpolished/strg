@@ -57,6 +57,11 @@ RUN mkdir -p packages/common/src/common \
 # --no-dev excludes ruff/ty for smaller image
 RUN uv sync --package models-server --no-dev
 
+# Explicitly install pyvips (moondream2 dependency).
+# uv sync may not resolve its platform-specific binary wheel correctly.
+# The manylinux wheel needs libvips-dev at runtime (installed above).
+RUN /app/.venv/bin/pip install --no-deps pyvips>=2.2.3
+
 # ── Layer 2: source code + scripts (frequently changes, but fast) ───
 COPY . .
 RUN chmod +x infra/gcp/scripts/serve-entrypoint.sh
