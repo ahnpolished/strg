@@ -26,6 +26,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
        | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg \
     && apt-get update && apt-get install -y --no-install-recommends \
        google-cloud-cli \
+       build-essential \
+       pkg-config \
        libvips-dev \
     && rm -rf /var/lib/apt/lists/*
 
@@ -63,7 +65,7 @@ RUN chmod +x infra/gcp/scripts/serve-entrypoint.sh
 ENV PYTHONPATH="/app/models/server/src:/app/models/local/src:/app/packages/common/src"
 ENV HF_HOME="/tmp/hf-cache"
 ENV TORCH_COMPILE="0"
-ENV STRG_MODEL="qwen2-vl"
+ENV STRG_MODEL="moondream"
 
 # Cloud Run provides $PORT (default 8080)
 EXPOSE 8080
