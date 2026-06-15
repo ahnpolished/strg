@@ -70,10 +70,23 @@ if [ -n "${GCS_BUCKET:-}" ]; then
         ;;
 
       moondream)
-        echo "[entrypoint] Moondream2 (~4 GB) — will download from HuggingFace."
-        echo "  HF_TOKEN is set — authenticated download."
+        echo "[entrypoint] Moondream2 (~4 GB) — loading from GCS + HF weights."
         mkdir -p /tmp/hf-cache
-        # Use HF model ID directly (weights + code download together)
+
+        # Pre-load model code files from GCS into HF cache
+        HF_MODULES="/tmp/hf-cache/modules/transformers_modules/moondream2"
+        if [ ! -d "$HF_MODULES" ]; then
+          mkdir -p "$HF_MODULES"
+          echo "[entrypoint] Downloading moondream2 model code from GCS..."
+          gsutil -m cp -r \
+            "gs://${GCS_BUCKET}/weights/moondream2/*.py" \
+            "gs://${GCS_BUCKET}/weights/moondream2/*.json" \
+            "gs://${GCS_BUCKET}/weights/moondream2/*.txt" \
+            "$HF_MODULES/" 2>/dev/null || echo "  (some files skipped)"
+          ls "$HF_MODULES"/*.py 2>/dev/null | wc -l | xargs echo "  Python files cached:"
+        fi
+
+        # Use HF model ID for weights download (model.safetensors ~2GB)
         export STRG_MOONDREAM_MODEL_PATH="vikhyatk/moondream2"
         ;;
 
