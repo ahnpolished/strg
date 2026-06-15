@@ -83,6 +83,7 @@ if [ -n "${GCS_BUCKET:-}" ]; then
         ;;
     esac
 
+    mkdir -p "$MODEL_DIR"
     touch "$MODEL_DIR/.weights_ready"
     echo "[entrypoint] Weights download complete."
   else
