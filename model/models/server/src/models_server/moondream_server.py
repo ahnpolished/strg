@@ -92,11 +92,26 @@ class MoondreamServerRunner(ServerModelRunner):
         )
         torch_dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
 
-        self._model = AutoModelForCausalLM.from_pretrained(
-            model_path,
-            trust_remote_code=True,
-            torch_dtype=torch_dtype,
-        )
+        # Retry with backoff for transient HF connection errors
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                self._model = AutoModelForCausalLM.from_pretrained(
+                    model_path,
+                    trust_remote_code=True,
+                    torch_dtype=torch_dtype,
+                )
+                break
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    wait = 2**attempt
+                    print(f"[moondream] Load attempt {attempt + 1} failed: {e}")
+                    print(f"[moondream] Retrying in {wait}s...")
+                    import time
+
+                    time.sleep(wait)
+                else:
+                    raise
 
         device = "cuda" if torch.cuda.is_available() else "cpu"
         self._model = self._model.to(device).eval()

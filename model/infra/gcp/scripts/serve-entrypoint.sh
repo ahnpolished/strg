@@ -76,14 +76,16 @@ if [ -n "${GCS_BUCKET:-}" ]; then
         mkdir -p "$MOONDREAM_PATH"
         gsutil -m cp -r \
           "gs://${GCS_BUCKET}/weights/moondream2/*" \
-          "$MOONDREAM_PATH/" 2>/dev/null || {
-            echo "  Moondream2 files not in GCS — will download from HuggingFace."
-            export STRG_MOONDREAM_MODEL_PATH="vikhyatk/moondream2"
-        }
+          "$MOONDREAM_PATH/" 2>/dev/null || true
 
-        # Pre-create HF cache dir for weight caching
+        if [ -f "$MOONDREAM_PATH/config.json" ]; then
+          echo "[entrypoint] Moondream2 config ready. Weights download from HF on first load."
+        else
+          echo "[entrypoint] Moondream2 not in GCS — full HF download on first load."
+        fi
         mkdir -p /tmp/hf-cache
-        echo "[entrypoint] Moondream2 config ready. Weights will download from HF on first load."
+        # Use HF mirror for faster downloads from GCP
+        export HF_ENDPOINT="${HF_ENDPOINT:-https://huggingface.co}"
         ;;
 
       *)
