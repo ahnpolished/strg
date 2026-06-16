@@ -81,8 +81,8 @@ resource "google_cloud_run_v2_service" "serve" {
         value = var.default_model
       }
       env {
-        name  = "STRG_FEEDBACK_GCS_BUCKET"
-        value = google_storage_bucket.feedback.name
+        name  = "STRG_GCS_MOUNT"
+        value = "/mnt/gcs"
       }
       # ── Qwen2-VL-7B (legacy, high quality, ~130s) ──
       env {
@@ -121,12 +121,15 @@ resource "google_cloud_run_v2_service" "serve" {
         value = "/tmp/hf-cache"
       }
       env {
-        name  = "HF_TOKEN"
-        value = var.hf_token
-      }
-      env {
         name  = "TORCH_COMPILE"
         value = "0"
+      }
+
+      # Mount GCS feedback bucket as a filesystem for predict images & feedback.
+      # The service account has objectViewer + objectCreator on this bucket.
+      volume_mounts {
+        name       = "gcs-data"
+        mount_path = "/mnt/gcs"
       }
 
       # Generous startup probe — the container downloads ~14 GB from GCS
@@ -139,6 +142,17 @@ resource "google_cloud_run_v2_service" "serve" {
         tcp_socket {
           port = 8080
         }
+      }
+    }
+
+    # GCS bucket mounted as a filesystem (gcsfuse).
+    # Predict images → /mnt/gcs/predict/
+    # Feedback data   → /mnt/gcs/feedback/
+    volumes {
+      name = "gcs-data"
+      gcs {
+        bucket    = google_storage_bucket.feedback.name
+        read_only = false
       }
     }
 

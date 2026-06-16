@@ -22,13 +22,14 @@ from pathlib import Path
 os.environ.setdefault("TORCH_COMPILE", "0")
 
 import torch
-import wandb
 from common.schema import WorkoutPage, load_page
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
 from models_server.prompt import EXTRACTION_PROMPT
 from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
+
+import wandb
 
 MODEL_ID = "vikhyatk/moondream2"
 MODEL_REVISION = "2025-01-09"
@@ -159,7 +160,7 @@ def main() -> None:
             for item in batch_items:
                 image = item["image"]
                 target = item["target"]
-                enc = model.encode_image(image)
+                model.encode_image(image)  # warm encoder cache
                 # Moondream uses a custom training API
                 try:
                     # Use the model's built-in training method if available

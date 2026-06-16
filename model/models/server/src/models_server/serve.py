@@ -103,8 +103,11 @@ async def startup_warm_model():
 # Global model runner (loaded once at startup)
 _runner = None
 
-# GCS feedback bucket (set via env var)
-FEEDBACK_GCS_BUCKET = os.environ.get("STRG_FEEDBACK_GCS_BUCKET", "")
+# GCS mount path (Cloud Run volume mount via gcsfuse).
+# When set, predict images and feedback data are written directly to this
+# mounted filesystem — no gsutil, no subprocess, no background threads.
+# Falls back to local disk when not mounted (dev / non-GCP environments).
+GCS_MOUNT = Path(os.environ.get("STRG_GCS_MOUNT", ""))
 FEEDBACK_DIR = Path(os.environ.get("STRG_FEEDBACK_DIR", "data/feedback"))
 
 
@@ -138,37 +141,42 @@ def get_runner():
     return _runner
 
 
-def _upload_to_gcs(feedback_id: str, photo_bytes: bytes, entries_json: str) -> str | None:
-    """Upload feedback photo + labels to GCS. Returns gs:// URL or None."""
-    if not FEEDBACK_GCS_BUCKET:
-        return None
+def _persist_predict_image(image_id: str, image_bytes: bytes) -> Path | None:
+    """Save predict image to GCS mount (or local fallback). Returns path."""
+    if GCS_MOUNT.name:
+        gcs_dir = GCS_MOUNT / "predict"
+        gcs_dir.mkdir(parents=True, exist_ok=True)
+        path = gcs_dir / f"{image_id}.jpg"
+        path.write_bytes(image_bytes)
+        print(f"[predict] Saved to GCS mount {path}")
+        return path
 
-    import subprocess
-    import tempfile
+    # Local fallback (dev / non-GCP)
+    local_dir = FEEDBACK_DIR / "predict"
+    local_dir.mkdir(parents=True, exist_ok=True)
+    path = local_dir / f"{image_id}.jpg"
+    path.write_bytes(image_bytes)
+    print(f"[predict] Saved locally {path}")
+    return path
 
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tmp = Path(tmpdir)
-        (tmp / f"{feedback_id}.jpg").write_bytes(photo_bytes)
-        (tmp / f"{feedback_id}.json").write_text(entries_json)
 
-        gcs_prefix = f"gs://{FEEDBACK_GCS_BUCKET}/feedback/{feedback_id}"
-        try:
-            subprocess.run(
-                [
-                    "gsutil",
-                    "-q",
-                    "cp",
-                    str(tmp / f"{feedback_id}.jpg"),
-                    str(tmp / f"{feedback_id}.json"),
-                    gcs_prefix + "/",
-                ],
-                check=True,
-                timeout=30,
-            )
-            return f"{gcs_prefix}/"
-        except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
-            print(f"[feedback] GCS upload failed (bucket={FEEDBACK_GCS_BUCKET}): {e}")
-            return None
+def _persist_feedback(feedback_id: str, photo_bytes: bytes, entries_json: str) -> Path:
+    """Save feedback photo + labels to GCS mount (or local fallback). Returns dir path."""
+    if GCS_MOUNT.name:
+        feedback_dir = GCS_MOUNT / "feedback" / feedback_id
+        feedback_dir.mkdir(parents=True, exist_ok=True)
+        (feedback_dir / "photo.jpg").write_bytes(photo_bytes)
+        (feedback_dir / "ground_truth.json").write_text(entries_json)
+        print(f"[feedback] Saved to GCS mount {feedback_dir}")
+        return feedback_dir
+
+    # Local fallback (dev / non-GCP)
+    feedback_dir = FEEDBACK_DIR / feedback_id
+    feedback_dir.mkdir(parents=True, exist_ok=True)
+    (feedback_dir / "photo.jpg").write_bytes(photo_bytes)
+    (feedback_dir / "ground_truth.json").write_text(entries_json)
+    print(f"[feedback] Saved locally {feedback_dir}")
+    return feedback_dir
 
 
 @app.get("/health")
@@ -218,8 +226,12 @@ async def predict(image: UploadFile = File(...)):
     # Save to temp file for the runner
     tmp_dir = Path("/tmp/strg-serve")
     tmp_dir.mkdir(parents=True, exist_ok=True)
-    tmp_path = tmp_dir / f"upload_{int(time.time())}.jpg"
+    image_id = f"{SELECTED_MODEL}_{int(time.time() * 1000)}"
+    tmp_path = tmp_dir / f"{image_id}.jpg"
     pil_image.save(tmp_path, "JPEG", quality=90)
+
+    # Persist to GCS mount (synchronous, gcsfuse write is fast)
+    _persist_predict_image(image_id, tmp_path.read_bytes())
 
     t0 = time.perf_counter()
     try:
@@ -281,24 +293,16 @@ async def feedback(
     }
     entries_json = json.dumps(data, indent=2)
 
-    # ── Upload to GCS (primary) ──
-    gcs_url = _upload_to_gcs(feedback_id, contents, entries_json)
-
-    # ── Fallback: save locally ──
-    save_dir = FEEDBACK_DIR / feedback_id
-    save_dir.mkdir(parents=True, exist_ok=True)
-    (save_dir / "photo.jpg").write_bytes(contents)
-    (save_dir / "ground_truth.json").write_text(entries_json)
-
-    storage = f"GCS ({gcs_url})" if gcs_url else f"local ({save_dir})"
-    print(f"[feedback] Saved to {storage} ({len(parsed)} entries)")
+    # Persist to GCS mount (or local fallback)
+    save_path = _persist_feedback(feedback_id, contents, entries_json)
+    on_gcs = GCS_MOUNT.name != ""
 
     return {
         "status": "ok",
         "feedback_id": feedback_id,
         "entries_saved": len(parsed),
-        "storage": "gcs" if gcs_url else "local",
-        "gcs_url": gcs_url,
+        "storage": "gcs" if on_gcs else "local",
+        "path": str(save_path),
     }
 
 

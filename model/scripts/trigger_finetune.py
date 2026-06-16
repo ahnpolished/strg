@@ -24,8 +24,9 @@ import subprocess
 import sys
 import time
 
-import wandb
 from common.wandb_utils import WANDB_ENTITY, WANDB_PROJECT, _load_dotenv
+
+import wandb
 
 # GCE instance config — matches Terraform finetune.tf
 DEFAULT_ZONE = "us-central1-a"
@@ -170,9 +171,8 @@ def _poll_vm_until_done(
             if item.get("key") == "finetune-status":
                 finetune_status = item.get("value")
 
-        print(
-            f"  [{time.strftime('%H:%M:%S')}] VM status={status}, finetune={finetune_status or 'running'}"
-        )
+        ts = time.strftime("%H:%M:%S")
+        print(f"  [{ts}] VM status={status}, finetune={finetune_status or 'running'}")
 
         if finetune_status == "done":
             print("Fine-tuning completed successfully!")
@@ -289,7 +289,8 @@ def main() -> None:
     else:
         print("\n=== Fine-tune may have failed ===")
         print(
-            f"  Check VM logs: gcloud compute instances get-serial-port-output {args.instance} --zone={args.zone}"
+            "  Check VM logs: gcloud compute instances"
+            f" get-serial-port-output {args.instance} --zone={args.zone}"
         )
         sys.exit(1)
 
