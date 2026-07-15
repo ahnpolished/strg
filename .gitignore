@@ -48,6 +48,10 @@ model/infra/runpod/tfplan
 # Model checkpoints
 model/models/server/checkpoints/
 
+# Backend
+backend/data/*.db
+backend/data/feedback/
+
 # Xcode
 apps/ios/**/xcuserdata/
 apps/ios/**/DerivedData/
